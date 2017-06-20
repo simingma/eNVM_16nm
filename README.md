@@ -1,4 +1,5 @@
-This is the git repository for 16nm eNVM testing, after the HardDrive crisis.
+This is the git repository for 16nm eNVM testing
+after the HardDrive crisis.
 subdirectories include:
 1. Testing_code
 2. Scan_files
