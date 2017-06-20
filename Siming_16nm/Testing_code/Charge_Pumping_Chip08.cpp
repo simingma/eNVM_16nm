@@ -116,9 +116,9 @@ int main(void) {
 		IDS_VGS(Measure_file, col, chip, 0);
 		sprintf(Measure_file, "../Data/Stress_VG2p4_VD1p0_5sec_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource_%02d", chip, col, PulseCycle);
 		IDS_VGS(Measure_file, col, chip, 1);
-	}
+	}*/
 
-/*	
+	
 	int Num_of_Pulse = 12;
 	int PulseCycle;
 
@@ -131,8 +131,49 @@ int main(void) {
 						1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 
 						1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 
 						1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8 };
+	double VDS_col33[128] = { 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0,
+		2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0,
+		2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0,
+		2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0 };
+	double VDS_col34[128] = { 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3,
+		1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3,
+		1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3,
+		1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3, 1.3 };
+	double VDS_col35[128] = { 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7,
+		1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7,
+		1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7,
+		1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7 };
+	col = 33;
+	for (PulseCycle = 1; PulseCycle <= 1; PulseCycle++){
+		sprintf(Measure_file, "../Data/Chip%02d_Col%02d_stress_VG_ConstPulse_VAsource_VBdrain_%02d", chip, col, PulseCycle);
+		stress_VG_ConstPulse(Measure_file, VDS_col33, VGS, "200ms", chip, col, 0, Num_of_Pulse);
 
-	col = 21;
+		sprintf(Measure_file, "../Data/HCI_VG1p8_VD2p0_12x0p2s_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain_%02d", chip, col, PulseCycle);
+		IDS_VGS(Measure_file, col, chip, 0);
+		sprintf(Measure_file, "../Data/HCI_VG1p8_VD2p0_12x0p2s_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource_%02d", chip, col, PulseCycle);
+		IDS_VGS(Measure_file, col, chip, 1);
+	}
+	col = 34;
+	for (PulseCycle = 1; PulseCycle <= 1; PulseCycle++){
+		sprintf(Measure_file, "../Data/Chip%02d_Col%02d_stress_VG_ConstPulse_VAsource_VBdrain_%02d", chip, col, PulseCycle);
+		stress_VG_ConstPulse(Measure_file, VDS_col34, VGS, "200ms", chip, col, 0, Num_of_Pulse);
+
+		sprintf(Measure_file, "../Data/HCI_VG1p8_VD1p3_12x0p2s_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain_%02d", chip, col, PulseCycle);
+		IDS_VGS(Measure_file, col, chip, 0);
+		sprintf(Measure_file, "../Data/HCI_VG1p8_VD1p3_12x0p2s_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource_%02d", chip, col, PulseCycle);
+		IDS_VGS(Measure_file, col, chip, 1);
+	}
+	col = 35;
+	for (PulseCycle = 1; PulseCycle <= 1; PulseCycle++){
+		sprintf(Measure_file, "../Data/Chip%02d_Col%02d_stress_VG_ConstPulse_VAsource_VBdrain_%02d", chip, col, PulseCycle);
+		stress_VG_ConstPulse(Measure_file, VDS_col35, VGS, "200ms", chip, col, 0, Num_of_Pulse);
+
+		sprintf(Measure_file, "../Data/HCI_VG1p8_VD1p7_12x0p2s_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain_%02d", chip, col, PulseCycle);
+		IDS_VGS(Measure_file, col, chip, 0);
+		sprintf(Measure_file, "../Data/HCI_VG1p8_VD1p7_12x0p2s_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource_%02d", chip, col, PulseCycle);
+		IDS_VGS(Measure_file, col, chip, 1);
+	}
+/*	col = 21;
 	sprintf(Measure_file, "../Data/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain_02", chip, col);
 	IDS_VGS(Measure_file, col, chip, 0);
 	sprintf(Measure_file, "../Data/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource_02", chip, col);
@@ -186,7 +227,7 @@ int main(void) {
 		sprintf(Measure_file, "../Data/AfterAllErase01_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource", chip, col);
 		IDS_VGS(Measure_file, col, chip, 1);
 	}*/
-	
+/*
 //	double CP_VDD_DIG = 1.7;
 	double CP_VDD_DIG = 1.6;
 	double CP_VSS_WL = 0;
@@ -233,10 +274,26 @@ int main(void) {
 	sprintf(Measure_file, "../Data/BlockErase01_VDBS2p4_Chip%02d_Col%02d_60Pumping_MultiFreq_SweepVSVBVD_VSS_WL_0_VDD_WL_1p6_ELTM", chip, col);
 	Charge_Pumping_ELTM(Measure_file, VDBS_list_Vr0, Num_of_VDBS, CP_VDD_DIG, CP_VSS_WL, CP_VDD_WL, "ExtTrig_60_0p1sWidth_1sInterval", samp_rate, Num_of_freq, pumping_freq, Num_of_ExtTrig, chip, col, 0);
 */
-	for (col = 33; col <= 35; col++){
+/*	for (col = 33; col <= 35; col++){
 		sprintf(Measure_file, "../Data/Fresh_AfterCol212223Stress01Erase01_Chip%02d_Col%02d_60Pumping_MultiFreq_SweepVSVBVD_VSS_WL_0_VDD_WL_1p6_ELTM", chip, col);
 		Charge_Pumping_ELTM(Measure_file, VDBS_list_Vr0, Num_of_VDBS, CP_VDD_DIG, CP_VSS_WL, CP_VDD_WL, "ExtTrig_60_0p1sWidth_1sInterval", samp_rate, Num_of_freq, pumping_freq, Num_of_ExtTrig, chip, col, 0);
 	}
+	*/
+
+/*	for (col = 33; col <= 35; col++){
+		sprintf(Measure_file, "../Data/Fresh_AfterCol212223Stress01Erase01_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", chip, col);
+		IDS_VGS(Measure_file, col, chip, 0);
+		sprintf(Measure_file, "../Data/Fresh_AfterCol212223Stress01Erase01_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource", chip, col);
+		IDS_VGS(Measure_file, col, chip, 1);
+	}*/
+
+//haven't run these yet!!!
+/*	for (col = 21; col <= 23; col++){
+		sprintf(Measure_file, "../Data/BeforeErase02_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", chip, col);
+		IDS_VGS(Measure_file, col, chip, 0);
+		sprintf(Measure_file, "../Data/BeforeErase02_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource", chip, col);
+		IDS_VGS(Measure_file, col, chip, 1);
+	}*/ //haven't run these yet!!!
 
 /*	for (PulseCycle = 1; PulseCycle <= 1; PulseCycle++){
 		sprintf(Measure_file, "../Data/Chip%02d_Col%02d_stress_VG_ConstPulse_VAsource_VBdrain_%02d", chip, col, PulseCycle);
