@@ -53,7 +53,10 @@ Data flow:
 	|																   			     |
 	|			        <---/--- GoogleDrive Server(Data/specific folder)<---synch---sort data into a specific folder <------------------------------
         |        
-	|			        <---/---  GoogleDrive Server(/Scripts, /Plots)<---synch---MAC GoogleDrive(/Scripts, /Plots)
+	|			        <---/---  GoogleDrive Server(/Plots)<---synch---MAC GoogleDrive(/Plots)
+	|			        <---/---  GoogleDrive Server(/Scripts)<---synch---MAC GoogleDrive(/Scripts) -------------------push---------->   Remote
+        |													    --------------pull--------------->	  
+        |																		 github 
         |        
-        |        
-	|<-----synch---->    GoogleDrive Server  (/Testing_code, /Scan_files) <---synch--->   MAC GoogleDrive (/Testing_code, /Scan_files)
+	|<-----synch---->    GoogleDrive Server  (/Testing_code, /Scan_files) <---synch--->   MAC GoogleDrive (/Testing_code, /Scan_files) ---push----->   server
+        													           --------------pull---------->
