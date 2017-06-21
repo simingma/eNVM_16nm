@@ -7,6 +7,8 @@ Google drive SYNCH'ed with my MAC(my drive folder): store (the latest version of
 
 /Siming_16nm
 
+    .git/: the complete git repository including all the history
+
     /Data: chip testing data
 
 	/working: ongoing testing always writes data file to this folder
@@ -49,14 +51,14 @@ The testing computer: only store (and synch'ed with google drive) those necessar
 Data flow:
 
          -------synch---->  TestingComputer GoogleDrive(/Data/working/) ---synch---> GoogleDrive Server(Data/working)---synch---> MAC GoogleDrive(Data/working) -----
-	|																			     |
-	|																   			     |
-	|			        <---/--- GoogleDrive Server(Data/specific folder)<---synch---sort data into a specific folder <------------------------------
+        |																			     |
+        |																   			     |
+        |			        <---/--- GoogleDrive Server(Data/specific folder)<---synch---sort data into a specific folder <------------------------------
         |        
-	|			        <---/---  GoogleDrive Server(/Plots)<---synch---MAC GoogleDrive(/Plots)
-	|			        <---/---  GoogleDrive Server(/Scripts)<---synch---MAC GoogleDrive(/Scripts) -------------------push---------->   Remote
+        |			        <---/---  GoogleDrive Server(/Plots)<---synch---MAC GoogleDrive(/Plots)
+        |			        <---/---  GoogleDrive Server(/Scripts)<---synch---MAC GoogleDrive(/Scripts) -------------------push---------->   Remote
         |													    --------------pull--------------->	  
         |																		 github 
         |        
-	|<-----synch---->    GoogleDrive Server  (/Testing_code, /Scan_files) <---synch--->   MAC GoogleDrive (/Testing_code, /Scan_files) ---push----->   server
+        |<-----synch---->    GoogleDrive Server  (/Testing_code, /Scan_files) <---synch--->   MAC GoogleDrive (/Testing_code, /Scan_files) ---push----->   server
         													           --------------pull---------->
