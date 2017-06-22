@@ -295,9 +295,9 @@ int main(void) {
 //haven't run these yet!!!
 //	for (col = 21; col <= 23; col++){
 	col = 21;
-		sprintf(Measure_file, "../Data/working/BeforeErase02_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", chip, col);
+		sprintf(Measure_file, "../Data/BeforeErase02_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", chip, col);
 		IDS_VGS(Measure_file, col, chip, 0);
-		sprintf(Measure_file, "../Data/working/BeforeErase02_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource", chip, col);
+		sprintf(Measure_file, "../Data/BeforeErase02_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource", chip, col);
 		IDS_VGS(Measure_file, col, chip, 1);
 //	}
 	//haven't run these yet!!!

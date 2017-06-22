@@ -24,10 +24,13 @@
     <ClCompile Include="UserTestFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="scan_selfcheck.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scan_selfcheck.cpp">
+    <ClCompile Include="Charge_Pumping_Chip08.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HCI_functions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
