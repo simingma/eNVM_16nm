@@ -294,7 +294,7 @@ int main(void) {
 
 //haven't run these yet!!!
 //	for (col = 21; col <= 23; col++){
-	col = 21;
+/*	col = 21;
 		sprintf(Measure_file, "../Data/BeforeErase02_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", chip, col);
 		IDS_VGS(Measure_file, col, chip, 0);
 		sprintf(Measure_file, "../Data/BeforeErase02_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource", chip, col);
@@ -326,6 +326,13 @@ int main(void) {
 	sprintf(Measure_file, "../Data/Block_BD_Erase_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource_01", chip, col);
 	IDS_VGS(Measure_file, col, chip, 1); */
 
+	FILE *f_ptr;
+	if ((f_ptr = fopen("C:\GoogleDrive\working\writing_to_GoogleDrive_test", "a")) == NULL){ //open file to append
+		printf("Cannot open%s.\n", Measure_file);
+		return FAIL;
+	}
+	fprintf(f_ptr, "test things out!");
+	fclose(f_ptr);
 
 	// Turn off PSU outputs after tests are done!
 	_ibwrt(_VDD_DIG_VDD_WL, "OUTP:STAT OFF");
