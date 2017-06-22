@@ -327,7 +327,7 @@ int main(void) {
 	IDS_VGS(Measure_file, col, chip, 1); */
 
 	FILE *f_ptr;
-	if ((f_ptr = fopen("C:\GoogleDrive\working\writing_to_GoogleDrive_test", "a")) == NULL){ //open file to append
+	if ((f_ptr = fopen("C:/GoogleDrive/working/writing_to_GoogleDrive_test", "a")) == NULL){ //open file to append
 		printf("Cannot open%s.\n", Measure_file);
 		return FAIL;
 	}
