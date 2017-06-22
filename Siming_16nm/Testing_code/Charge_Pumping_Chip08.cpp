@@ -227,7 +227,7 @@ int main(void) {
 		sprintf(Measure_file, "../Data/AfterAllErase01_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource", chip, col);
 		IDS_VGS(Measure_file, col, chip, 1);
 	}*/
-
+/*
 //	double CP_VDD_DIG = 1.7;
 	double CP_VDD_DIG = 1.6;
 	double CP_VSS_WL = 0;
@@ -287,18 +287,20 @@ int main(void) {
 		IDS_VGS(Measure_file, col, chip, 1);
 	}*/
 
-	for (col = 33; col <= 35; col++){
+/*	for (col = 33; col <= 35; col++){
 		sprintf(Measure_file, "../Data/Charge_Pumping_Chip08/HCI_Stress01_Chip%02d_Col%02d_60Pumping_MultiFreq_SweepVSVBVD_VSS_WL_0_VDD_WL_1p6_ELTM", chip, col);
 		Charge_Pumping_ELTM(Measure_file, VDBS_list_Vr0, Num_of_VDBS, CP_VDD_DIG, CP_VSS_WL, CP_VDD_WL, "ExtTrig_60_0p1sWidth_1sInterval", samp_rate, Num_of_freq, pumping_freq, Num_of_ExtTrig, chip, col, 0);
-	}
+	}*/
 
 //haven't run these yet!!!
-/*	for (col = 21; col <= 23; col++){
-		sprintf(Measure_file, "../Data/BeforeErase02_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", chip, col);
+//	for (col = 21; col <= 23; col++){
+	col = 21;
+		sprintf(Measure_file, "../Data/working/BeforeErase02_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", chip, col);
 		IDS_VGS(Measure_file, col, chip, 0);
-		sprintf(Measure_file, "../Data/BeforeErase02_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource", chip, col);
+		sprintf(Measure_file, "../Data/working/BeforeErase02_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource", chip, col);
 		IDS_VGS(Measure_file, col, chip, 1);
-	}*/ //haven't run these yet!!!
+//	}
+	//haven't run these yet!!!
 
 /*	for (PulseCycle = 1; PulseCycle <= 1; PulseCycle++){
 		sprintf(Measure_file, "../Data/Chip%02d_Col%02d_stress_VG_ConstPulse_VAsource_VBdrain_%02d", chip, col, PulseCycle);

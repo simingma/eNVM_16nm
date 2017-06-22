@@ -1,0 +1,8 @@
+Siming_16nm/Testing_code/Visual\ Studio*/
+Siming_16nm/Testing_code/Debug*/
+Siming_16nm/Testing_code/*.suo
+Siming_16nm/visual\ studio*/
+Siming_16nm/Data/
+Siming_16nm/Plots/
+*/**/*.sw[op]
+*/**/*~
