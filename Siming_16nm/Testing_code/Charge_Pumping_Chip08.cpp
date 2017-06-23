@@ -311,28 +311,26 @@ int main(void) {
 		sprintf(Measure_file, "../Data/Stress_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource_%02d", chip, col, PulseCycle);
 		IDS_VGS(Measure_file, col, chip, 1);
 	}
+*/
 
-
-/*	double VS = 0;
-	double VB = 2.4;
+	double VS = 0;
+	double VB = 2.0;
 	double VD = 0;
 	double VDD_DIG_WL = 1.7;
 
-	sprintf(Measure_file, "../Data/Block_BD_erase_Chip%02d_Col%02d_VDD_IO_2p4_VDD_DIG_WL_1p7_VB2p4_VS0_VD0_VG0_5sec_01", chip, col);
-	Block_Erase(Measure_file, VD, VB, VS, VDD_DIG_WL, "5000ms", 500, chip, col, 0, 1);
-
-	sprintf(Measure_file, "../Data/Block_BD_Erase_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain_01", chip, col);
-	IDS_VGS(Measure_file, col, chip, 0);
-	sprintf(Measure_file, "../Data/Block_BD_Erase_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource_01", chip, col);
-	IDS_VGS(Measure_file, col, chip, 1); */
-
-	FILE *f_ptr;
-	if ((f_ptr = fopen("C:/GoogleDrive/working/writing_to_GoogleDrive_test", "a")) == NULL){ //open file to append
-		printf("Cannot open%s.\n", Measure_file);
-		return FAIL;
+	int col_list[2] = {21, 33};
+	for (int i = 0; i < 2; i++){
+	    col = col_list[i];
+	    sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_erase_Chip%02d_Col%02d_VDD_IO_2p4_VDD_DIG_WL_1p7_VB2p0_VS0_VD0_VG0_1min_01", chip, col);
+	    Block_Erase(Measure_file, VD, VB, VS, VDD_DIG_WL, "60000ms", 60, chip, col, 0, 1);
 	}
-	fprintf(f_ptr, "test things out!");
-	fclose(f_ptr);
+
+	for (int i = 0; i < 2; i++){
+	    sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_Erase_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain_01", chip, col);
+	    IDS_VGS(Measure_file, col, chip, 0);
+	    sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_Erase_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource_01", chip, col);
+	    IDS_VGS(Measure_file, col, chip, 1); 
+	}
 
 	// Turn off PSU outputs after tests are done!
 	_ibwrt(_VDD_DIG_VDD_WL, "OUTP:STAT OFF");
