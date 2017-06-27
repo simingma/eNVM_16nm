@@ -2106,7 +2106,7 @@ void MM34410A_6_MeasVoltage_Config(int Device, float NPLCycles, char* TrigSource
 	/*** ADDITION: use Hi-Z input IMPedance to minimize DMM loading during small voltage measurement ******/
 
 	_ibwrt(Device, "CONFigure:VOLtage:DC MIN, MIN");
-    _ibwrt(Device, "VOLtage:DC:RANGe 0.1"); //100mV minimum range
+        _ibwrt(Device, "VOLtage:DC:RANGe 0.1"); //100mV minimum range
 	_ibwrt(Device, "VOLtage:DC:RESolution MINimum"); //highest resolution
 	char Command_NPLC[100];
 	sprintf(Command_NPLC, "VOLtage:DC:NPLCycles %f", NPLCycles);
@@ -2177,6 +2177,9 @@ void MM34401A_MeasCurrent_Config(int Device, float NPLCycles, char* TrigSource="
 
 	_ibwrt(Device, "ZERO:AUTO ON");
 
+	//CAUTIOUS: quick and dirty! temporary! 
+	_ibwrt(Device, "CURRent:DC:RANGe:AUTO ON"); 
+
 //	_ibwrt(_MM34401A, "READ?"); 
 
 	// Measure Average
@@ -2229,7 +2232,7 @@ void MM34410A_6_MeasCurrent_Config(int Device, float NPLCycles, char* TrigSource
 	_ibwrt(Device, "ZERO:AUTO ON");
 
 	//CAUTIOUS: quick and dirty! temporary! 
-//	_ibwrt(Device, "CURRent:DC:RANGe:AUTO ON"); 
+	_ibwrt(Device, "CURRent:DC:RANGe:AUTO ON"); 
 
 }
 
