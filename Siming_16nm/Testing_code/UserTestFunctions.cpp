@@ -2178,7 +2178,7 @@ void MM34401A_MeasCurrent_Config(int Device, float NPLCycles, char* TrigSource="
 	_ibwrt(Device, "ZERO:AUTO ON");
 
 	//CAUTIOUS: quick and dirty! temporary! 
-	_ibwrt(Device, "CURRent:DC:RANGe:AUTO ON"); 
+//	_ibwrt(Device, "CURRent:DC:RANGe:AUTO ON"); 
 
 //	_ibwrt(_MM34401A, "READ?"); 
 
@@ -2232,7 +2232,7 @@ void MM34410A_6_MeasCurrent_Config(int Device, float NPLCycles, char* TrigSource
 	_ibwrt(Device, "ZERO:AUTO ON");
 
 	//CAUTIOUS: quick and dirty! temporary! 
-	_ibwrt(Device, "CURRent:DC:RANGe:AUTO ON"); 
+//	_ibwrt(Device, "CURRent:DC:RANGe:AUTO ON"); 
 
 }
 

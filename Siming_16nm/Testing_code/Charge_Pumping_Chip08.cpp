@@ -322,11 +322,12 @@ int main(void) {
 	double VDD_WL = 1.7;
 
 	int col_list[2] = {21, 33};
-	for (int i = 0; i < 2; i++){
+//	for (int i = 0; i < 2; i++){
+/*	for (int i = 1; i < 2; i++){
 	    col = col_list[i];
 	    sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_erase_Chip%02d_Col%02d_VDD_IO_2p4_VDD_DIG_WL_1p7_VB2p4_VS0_VD0_VG1p7_1min_02", chip, col);
 	    Block_Erase(Measure_file, VD, VB, VS, VDD_DIG, VSS_WL, VDD_WL, "60000msPULSE_MUX_ON_60ExtTrig_1000SampRate", 60, chip, col, 0, 1);
-	}
+	}*/
 
 	for (int i = 0; i < 2; i++){
 	    col = col_list[i];

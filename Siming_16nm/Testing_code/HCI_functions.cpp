@@ -846,8 +846,9 @@ int Block_Erase(char* Measure_file, double VD, double VB, double VS, double VDD_
 		// 30ms initial delay to allow VDS/VDD_DIG/VDD_WL PSUs to transition->settle
 		// before toggling PULSE and trigger Isub measurment
 		//multiple triggers, single sample
-		scan(f_scan_WLpulse_ExtTrig, 0, samp_rate);
-		//For some reason, the scan only lasted for about 10~15sec!
+		long_scan(f_scan_WLpulse_ExtTrig, samp_rate);
+	//	scan(f_scan_WLpulse_ExtTrig, 0, samp_rate);
+		//For some reason, the scan only lasted for about ~20sec!
 		/*temporary solution*/
 		//::Sleep(60000); //wait for Ijunction to flow for 1min
 		/*temporary solution*/

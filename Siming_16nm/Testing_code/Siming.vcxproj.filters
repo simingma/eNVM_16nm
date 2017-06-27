@@ -27,10 +27,10 @@
     <ClCompile Include="scan_selfcheck.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Charge_Pumping_Chip08.cpp">
+    <ClCompile Include="HCI_functions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HCI_functions.cpp">
+    <ClCompile Include="Charge_Pumping_Chip08.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
