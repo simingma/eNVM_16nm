@@ -334,16 +334,16 @@ int main(void) {
 
 /*	for (int i = 0; i < 2; i++){
 	    col = col_list[i];
-	    sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_erase_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain_02", chip, col);
+	    sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_125C_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", chip, col);
 	    IDS_VGS(Measure_file, col, chip, 0);
-	    sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_erase_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource_02", chip, col);
+	    sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_125C_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource", chip, col);
 	    IDS_VGS(Measure_file, col, chip, 1); 
 	}*/
 
-/*	int col_list[2] = {21, 33};
+/*
 	for (int i = 0; i < 2; i++){
 	    col = col_list[i];
-	    sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_erase02_VG1p7_VB2p4_VD0_VS0_Chip%02d_Col%02d_60Pumping_SweepVSVBVD_VSS_WL_0_VDD_WL_1p6_ELTM", chip, col);
+	    sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_125C_VG1p7_VB2p4_VD0_VS0_Chip%02d_Col%02d_60Pumping_SweepVSVBVD_VSS_WL_0_VDD_WL_1p6_ELTM", chip, col);
 	    Charge_Pumping_ELTM(Measure_file, VDBS_list_Vr0, Num_of_VDBS, CP_VDD_DIG, CP_VSS_WL, CP_VDD_WL, "ExtTrig_60_0p1sWidth_1sInterval", samp_rate, Num_of_freq, pumping_freq, Num_of_ExtTrig, chip, col, 0);
 	} */
 
