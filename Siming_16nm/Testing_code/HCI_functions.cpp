@@ -755,6 +755,7 @@ int Block_GateErase(char* Measure_file, double VDD_DIG, double VSS_WL, double VD
 /******************************ADAPTED from Siming_28nm********************************/
 int Block_Erase(char* Measure_file, double VD, double VB, double VS, double VDD_DIG, double VSS_WL, double VDD_WL, char* pulse_scan_file, int Num_of_ExtTrig, int chip, int col, int direction, int Erase_Cycle){
 
+/**************	at 25C **************/
 	ALL_IDSAT(Measure_file, chip, col, 0);
 
 	char direction_char_stress[200], direction_char_mirror[200];
@@ -794,6 +795,8 @@ int Block_Erase(char* Measure_file, double VD, double VB, double VS, double VDD_
 	FILE *f_ptr;
 
 	for (int cycle = 0; cycle < Erase_Cycle; cycle++){
+
+/**************	Heat up the chamber to 125C **************/
 
 		if ((f_ptr = fopen(Measure_file, "a")) == NULL){ //open file to append
 			printf("Cannot open%s.\n", Measure_file);
@@ -921,6 +924,8 @@ int Block_Erase(char* Measure_file, double VD, double VB, double VS, double VDD_
 		//scan("../Scan_files/MUX_OFF", 0, 100000.0);
 		DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled, POLARITY[1:2]=0
 		fclose(f_ptr);
+
+/**************	cool down the chamber to 25C **************/
 
 		ALL_IDSAT(Measure_file, chip, col, 0);
 	}
