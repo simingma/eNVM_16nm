@@ -803,6 +803,7 @@ int Block_Erase(char* Measure_file, double VD, double VB, double VS, double VDD_
 		SYSTEMTIME lt;
 		GetLocalTime(&lt);
 		fprintf(f_ptr, "The local time is: %02d:%02d:%02d\n", lt.wHour, lt.wMinute, lt.wSecond);
+		fprintf(f_ptr, "Scan_file: %s, effective number of triggers: the initial %d\n", pulse_scan_file, Num_of_ExtTrig);
 
 		//row: WL[row] number (row=0~107), t: the number of WLpulse (t=1~Num_of_Pulse), j: number of ExtTrig measurement within one WLpulse
 		int row, t, j;

@@ -312,7 +312,7 @@ int main(void) {
 		IDS_VGS(Measure_file, col, chip, 1);
 	}
 */
-/*
+
 	double VS = 0;
 	double VB = 2.4;
 	double VD = 0;
@@ -322,12 +322,15 @@ int main(void) {
 	double VDD_WL = 1.7;
 
 	int col_list[2] = {21, 33};
-//	for (int i = 0; i < 2; i++){
-/*	for (int i = 1; i < 2; i++){
+	for (int i = 0; i < 2; i++){
 	    col = col_list[i];
-	    sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_erase_Chip%02d_Col%02d_VDD_IO_2p4_VDD_DIG_WL_1p7_VB2p4_VS0_VD0_VG1p7_1min_02", chip, col);
-	    Block_Erase(Measure_file, VD, VB, VS, VDD_DIG, VSS_WL, VDD_WL, "60000msPULSE_MUX_ON_60ExtTrig_1000SampRate", 60, chip, col, 0, 1);
-	}*/
+	    sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_125C_Chip%02d_Col%02d_VDD_IO_2p4_VDD_DIG_WL_1p7_VB2p4_VS0_VD0_VG1p7", chip, col);
+	    Block_Erase(Measure_file, VD, VB, VS, VDD_DIG, VSS_WL, VDD_WL, "600msPULSE_MUX_ON_60ExtTrig_1000SampRate", 1, chip, col, 0, 1);
+
+	    //Block_Erase(Measure_file, VD, VB, VS, VDD_DIG, VSS_WL, VDD_WL, "5400msPULSE_MUX_ON_60ExtTrig_1000SampRate", 1, chip, col, 0, 1);
+
+	    //Block_Erase(Measure_file, VD, VB, VS, VDD_DIG, VSS_WL, VDD_WL, "54000msPULSE_MUX_ON_60ExtTrig_1000SampRate", 60, chip, col, 0, 1);
+	}
 
 /*	for (int i = 0; i < 2; i++){
 	    col = col_list[i];
@@ -337,8 +340,8 @@ int main(void) {
 	    IDS_VGS(Measure_file, col, chip, 1); 
 	}*/
 
-	int col_list[2] = {21, 33};
-/*	for (int i = 0; i < 2; i++){
+/*	int col_list[2] = {21, 33};
+	for (int i = 0; i < 2; i++){
 	    col = col_list[i];
 	    sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_erase02_VG1p7_VB2p4_VD0_VS0_Chip%02d_Col%02d_60Pumping_SweepVSVBVD_VSS_WL_0_VDD_WL_1p6_ELTM", chip, col);
 	    Charge_Pumping_ELTM(Measure_file, VDBS_list_Vr0, Num_of_VDBS, CP_VDD_DIG, CP_VSS_WL, CP_VDD_WL, "ExtTrig_60_0p1sWidth_1sInterval", samp_rate, Num_of_freq, pumping_freq, Num_of_ExtTrig, chip, col, 0);
@@ -352,11 +355,11 @@ int main(void) {
 	    IDS_VGS(Measure_file, col, chip, 1); 
 	}*/
 
-	for (int i = 0; i < 2; i++){
+/*	for (int i = 0; i < 2; i++){
 	    col = col_list[i];
 	    sprintf(Measure_file, "C:/GoogleDrive/working/Anneal_125C_141hrs_Chip%02d_Col%02d_60Pumping_SweepVSVBVD_VSS_WL_0_VDD_WL_1p6_ELTM", chip, col);
 	    Charge_Pumping_ELTM(Measure_file, VDBS_list_Vr0, Num_of_VDBS, CP_VDD_DIG, CP_VSS_WL, CP_VDD_WL, "ExtTrig_60_0p1sWidth_1sInterval", samp_rate, Num_of_freq, pumping_freq, Num_of_ExtTrig, chip, col, 0);
-	} 
+	} */
 
 	// Turn off PSU outputs after tests are done!
 	_ibwrt(_VDD_DIG_VDD_WL, "OUTP:STAT OFF");
