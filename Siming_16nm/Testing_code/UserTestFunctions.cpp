@@ -2316,7 +2316,7 @@ void ELTM6514_MeasCurrent_Config(int Device, int TrigCount, float NPLCycles = 10
 	_ibwrt(Device, "SYSTem:ZCORrect ON");
 	_ibwrt(Device, "SYSTem:ZCHeck OFF");
 	//CAUTIOUS: quick and dirty! temporary! 
-//	_ibwrt(Device, "CURRent:DC:RANGe:AUTO ON"); 
+	_ibwrt(Device, "CURRent:DC:RANGe:AUTO ON"); 
 
 }
 
