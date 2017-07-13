@@ -1184,10 +1184,10 @@ int Charge_Pumping_ELTM(char* Measure_file, double* VDBS_list_Vr0, int Num_of_VD
 			double counter1_freq = pumping_freq[f];
 			//ELTM6514_MeasCurrent_Config(_ELTM6514, Num_of_ExtTrig, NPLCycles);
 			if (VDBS < 1.15){
-				ELTM6514_MeasCurrent_Config(_ELTM6514, Num_of_ExtTrig, NPLCycles, 0.0000002);
+				ELTM6514_MeasCurrent_Config(_ELTM6514, Num_of_ExtTrig, NPLCycles, "0.0000002");
 			}
 			if (VDBS > 1.15){
-				ELTM6514_MeasCurrent_Config(_ELTM6514, Num_of_ExtTrig, NPLCycles, 0.000002);
+				ELTM6514_MeasCurrent_Config(_ELTM6514, Num_of_ExtTrig, NPLCycles, "0.000002");
 			}
 
 			DAQmxErrChk(DAQmxCreateTask("", &taskHandleCounter1));
@@ -1343,7 +1343,7 @@ int Charge_Pumping(char* Measure_file, double VD, double VB, double VS, double V
 	}
 	if (Isub_Rsense == 2){
 		//ELTM6514_MeasCurrent_Config(_ELTM6514, Num_of_ExtTrig, NPLCycles);
-		ELTM6514_MeasCurrent_Config(_ELTM6514, Num_of_ExtTrig, NPLCycles, 0.0000002);
+		ELTM6514_MeasCurrent_Config(_ELTM6514, Num_of_ExtTrig, NPLCycles, "0.0000002");
 	}
 
 /*	_ibwrt(_MM34401A, "INITiate");
