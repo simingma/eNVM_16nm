@@ -30,7 +30,7 @@
     <ClCompile Include="HCI_functions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Charge_Pumping_Chip09.cpp">
+    <ClCompile Include="Charge_Pumping_Chip08.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

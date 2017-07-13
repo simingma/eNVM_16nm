@@ -755,7 +755,7 @@ int Block_GateErase(char* Measure_file, double VDD_DIG, double VSS_WL, double VD
 /******************************ADAPTED from Siming_28nm********************************/
 int Block_Erase(char* Measure_file, double VD, double VB, double VS, double VDD_DIG, double VSS_WL, double VDD_WL, char* pulse_scan_file, int Num_of_ExtTrig, int chip, int col, int direction, int Erase_Cycle){
 
-/**************	at 25C **************/
+/**************	at 20C **************/
 	ALL_IDSAT(Measure_file, chip, col, 0);
 
 	char direction_char_stress[200], direction_char_mirror[200];
