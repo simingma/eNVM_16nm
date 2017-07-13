@@ -2276,12 +2276,16 @@ char* MM34401A_MeasCurrent_MultiSample() {
 }
 */
 
-void ELTM6514_MeasCurrent_Config(int Device, int TrigCount, float NPLCycles = 10) {
+void ELTM6514_MeasCurrent_Config(int Device, int TrigCount, float NPLCycles = 10, float CURRentRANGe = 0.0000002) {
 	/*********Configure the electrometer for current measurement********/
 
 	_ibwrt(Device, "SENSe:FUNCtion 'CURRent'");
 	_ibwrt(Device, "CURRent:DAMPing ON"); //turn on Damping
-	_ibwrt(Device, "CURRent:RANGe 0.0000002"); //200nA range
+//	_ibwrt(Device, "CURRent:RANGe 0.0000002"); //200nA range
+	char Command_CURRentRANGe[100];
+	sprintf(Command_CURRentRANGe, "CURRent:RANGe %f", CURRentRANGe);
+	_ibwrt(Device, Command_CURRentRANGe); 
+
 	_ibwrt(Device, "DISPlay:DIGITs 7"); //6+1/2 digit resolution display
 	//_ibwrt(Device, "CURRent:DC:RESolution MINimum"); //100pA resolution
 	char Command_NPLC[100];
@@ -2316,7 +2320,7 @@ void ELTM6514_MeasCurrent_Config(int Device, int TrigCount, float NPLCycles = 10
 	_ibwrt(Device, "SYSTem:ZCORrect ON");
 	_ibwrt(Device, "SYSTem:ZCHeck OFF");
 	//CAUTIOUS: quick and dirty! temporary! 
-	_ibwrt(Device, "CURRent:DC:RANGe:AUTO ON"); 
+//	_ibwrt(Device, "CURRent:DC:RANGe:AUTO ON"); 
 
 }
 

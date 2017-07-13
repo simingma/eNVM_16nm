@@ -299,7 +299,7 @@ float MM34401A_MeasCurrent(int Device);
 float MM34401A_MeasResistance(int Device);
 float MM34401A_MeasVoltage(int Device);
 void MM34410A_6_MeasVoltage_Config(int Device, float NPLCycles, char* TrigSource, float TrigDelay, int SampCount, int TrigCount);
-void ELTM6514_MeasCurrent_Config(int Device, int TrigCount, float NPLCycles);
+void ELTM6514_MeasCurrent_Config(int Device, int TrigCount, float NPLCycles, float CURRentRANGe);
 
 #endif
 

@@ -1182,7 +1182,13 @@ int Charge_Pumping_ELTM(char* Measure_file, double* VDBS_list_Vr0, int Num_of_VD
 */
 		for (int f = 0; f < Num_of_freq; f++){
 			double counter1_freq = pumping_freq[f];
-			ELTM6514_MeasCurrent_Config(_ELTM6514, Num_of_ExtTrig, NPLCycles);
+			//ELTM6514_MeasCurrent_Config(_ELTM6514, Num_of_ExtTrig, NPLCycles);
+			if (VDBS < 1.15){
+				ELTM6514_MeasCurrent_Config(_ELTM6514, Num_of_ExtTrig, NPLCycles, 0.0000002);
+			}
+			if (VDBS > 1.15){
+				ELTM6514_MeasCurrent_Config(_ELTM6514, Num_of_ExtTrig, NPLCycles, 0.000002);
+			}
 
 			DAQmxErrChk(DAQmxCreateTask("", &taskHandleCounter1));
 			//The output frequency is pumping_freq[f]
@@ -1336,7 +1342,8 @@ int Charge_Pumping(char* Measure_file, double VD, double VB, double VS, double V
 		MM34410A_6_MeasVoltage_Config(_MM34410A_6, NPLCycles, "EXT", Trig_Delay, Num_of_Sample, Num_of_ExtTrig);
 	}
 	if (Isub_Rsense == 2){
-		ELTM6514_MeasCurrent_Config(_ELTM6514, Num_of_ExtTrig, NPLCycles);
+		//ELTM6514_MeasCurrent_Config(_ELTM6514, Num_of_ExtTrig, NPLCycles);
+		ELTM6514_MeasCurrent_Config(_ELTM6514, Num_of_ExtTrig, NPLCycles, 0.0000002);
 	}
 
 /*	_ibwrt(_MM34401A, "INITiate");
