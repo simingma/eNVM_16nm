@@ -1205,6 +1205,10 @@ int Charge_Pumping_ELTM(char* Measure_file, double* VDBS_list_Vr0, int Num_of_VD
 			if (f == 0){
 				::Sleep(300000); //If this is the 1st pumping frequency, need an extra 5min settling time (total = 5+7 = 12min)
 				//since I no longer measure Isub without pumping, either counter idle low or high.
+
+				/******not settled! after putting the PCB into the chamber(even not powered on!)********/
+				::Sleep(180000); // Add another 3min to improve settling
+				/******not settled! after putting the PCB into the chamber(even not powered on!)********/
 			}
 
 			//Starting from the same settling states as the no pumping measurement
@@ -1212,6 +1216,10 @@ int Charge_Pumping_ELTM(char* Measure_file, double* VDBS_list_Vr0, int Num_of_VD
 			//Give it another 4min settling time for VSS_PW current to reach a stable DC value
 			//::Sleep(240000);
 			::Sleep(420000); // Try 7min, to see whether there'd be further change compared with 4min
+
+			/******not settled! after putting the PCB into the chamber(even not powered on!)********/
+			::Sleep(360000); // Add another 6min to improve settling
+			/******not settled! after putting the PCB into the chamber(even not powered on!)********/
 
 			_ibwrt(_ELTM6514, "INITiate");
 			long_scan(f_scan_WLpulse_ExtTrig, samp_rate);
