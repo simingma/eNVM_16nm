@@ -1182,13 +1182,13 @@ int Charge_Pumping_ELTM(char* Measure_file, double* VDBS_list_Vr0, int Num_of_VD
 */
 		for (int f = 0; f < Num_of_freq; f++){
 			double counter1_freq = pumping_freq[f];
-			//ELTM6514_MeasCurrent_Config(_ELTM6514, Num_of_ExtTrig, NPLCycles);
-			if (VDBS < 1.15){
+			ELTM6514_MeasCurrent_Config(_ELTM6514, Num_of_ExtTrig, NPLCycles, "0.0000002");
+/*			if (VDBS < 1.15){
 				ELTM6514_MeasCurrent_Config(_ELTM6514, Num_of_ExtTrig, NPLCycles, "0.0000002");
 			}
 			if (VDBS > 1.15){
 				ELTM6514_MeasCurrent_Config(_ELTM6514, Num_of_ExtTrig, NPLCycles, "0.000002");
-			}
+			} */
 
 			DAQmxErrChk(DAQmxCreateTask("", &taskHandleCounter1));
 			//The output frequency is pumping_freq[f]
@@ -1207,7 +1207,7 @@ int Charge_Pumping_ELTM(char* Measure_file, double* VDBS_list_Vr0, int Num_of_VD
 				//since I no longer measure Isub without pumping, either counter idle low or high.
 
 				/******not settled! after putting the PCB into the chamber(even not powered on!)********/
-				::Sleep(180000); // Add another 3min to improve settling
+//				::Sleep(180000); // Add another 3min to improve settling
 				/******not settled! after putting the PCB into the chamber(even not powered on!)********/
 			}
 
@@ -1218,7 +1218,7 @@ int Charge_Pumping_ELTM(char* Measure_file, double* VDBS_list_Vr0, int Num_of_VD
 			::Sleep(420000); // Try 7min, to see whether there'd be further change compared with 4min
 
 			/******not settled! after putting the PCB into the chamber(even not powered on!)********/
-			::Sleep(360000); // Add another 6min to improve settling
+//			::Sleep(360000); // Add another 6min to improve settling
 			/******not settled! after putting the PCB into the chamber(even not powered on!)********/
 
 			_ibwrt(_ELTM6514, "INITiate");
