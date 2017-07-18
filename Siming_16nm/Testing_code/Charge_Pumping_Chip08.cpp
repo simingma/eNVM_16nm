@@ -240,8 +240,9 @@ int main(void) {
 	double pumping_freq[2] = { 5000000, 1000 };
 	int Num_of_freq = 2;
 	
-    int Num_of_VDBS = 17;
+        int Num_of_VDBS = 17;
 	double VDBS_list_Vr0[17] = { 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6 };
+//	double VDBS_list_Vr0[17] = { 1.6, 1.5, 1.4, 1.3, 1.2, 1.1, 1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0 };
 
 /*	sprintf(Measure_file, "../Data/HCI_VG1p8_VD2p0_12x0p2s_Chip%02d_Col%02d_60Pumping_MultiFreq_SweepVSVBVD_VSS_WL_0_VDD_WL_1p6_ELTM", chip, col);
 	Charge_Pumping_ELTM(Measure_file, VDBS_list_Vr0, Num_of_VDBS, CP_VDD_DIG, CP_VSS_WL, CP_VDD_WL, "ExtTrig_60_0p1sWidth_1sInterval", samp_rate, Num_of_freq, pumping_freq, Num_of_ExtTrig, chip, col, 0);
@@ -314,15 +315,35 @@ int main(void) {
 	}
 */
 
-/*	double VS = 0;
+	double VS = 0;
 	double VB = 2.4;
 	double VD = 0;
 	//double VDD_DIG_WL = 1.7;
 	double VDD_DIG = 1.7;
 	double VSS_WL = 0;
 	double VDD_WL = 1.7;
-*/
+
 	int col_list[2] = { 21, 33 };
+
+	for (int i = 0; i < 2; i++){
+	    col = col_list[i];
+	    sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_125C_Another240sec_Chip%02d_Col%02d_VDD_IO_2p4_VDD_DIG_WL_1p7_VB2p4_VS0_VD0_VG1p7", chip, col);
+            Block_Erase(Measure_file, VD, VB, VS, VDD_DIG, VSS_WL, VDD_WL, "240000msPULSE_MUX_ON_60ExtTrig_1000SampRate", 60, chip, col, 0, 1);
+	}
+
+/*	for (int i = 0; i < 2; i++){
+	    col = col_list[i];
+	    sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_125C_Another240sec_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", chip, col);
+	    IDS_VGS(Measure_file, col, chip, 0);
+	    sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_125C_Another240sec_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource", chip, col);
+	    IDS_VGS(Measure_file, col, chip, 1); 
+	}*/
+
+/*	for (int i = 0; i < 2; i++){
+	    col = col_list[i];
+	    sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_125C_Another240sec_VG1p7_VB2p4_VD0_VS0_Chip%02d_Col%02d_60Pumping_SweepVSVBVD_VSS_WL_0_VDD_WL_1p6_ELTM-Range200nA", chip, col);
+	    Charge_Pumping_ELTM(Measure_file, VDBS_list_Vr0, Num_of_VDBS, CP_VDD_DIG, CP_VSS_WL, CP_VDD_WL, "ExtTrig_60_0p1sWidth_1sInterval", samp_rate, Num_of_freq, pumping_freq, Num_of_ExtTrig, chip, col, 0);
+	} */
 
 /*	col = 21;
 	sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_125C_Chip%02d_Col%02d_VDD_IO_2p4_VDD_DIG_WL_1p7_VB2p4_VS0_VD0_VG1p7", chip, col);
@@ -332,9 +353,9 @@ int main(void) {
 	Block_Erase(Measure_file, VD, VB, VS, VDD_DIG, VSS_WL, VDD_WL, "5400msPULSE_MUX_ON_60ExtTrig_1000SampRate", 1, chip, col, 0, 1);
 
 	Block_Erase(Measure_file, VD, VB, VS, VDD_DIG, VSS_WL, VDD_WL, "54000msPULSE_MUX_ON_60ExtTrig_1000SampRate", 60, chip, col, 0, 1);
-*/
 
-/*	col = 33;
+
+	col = 33;
 	sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_125C_Chip%02d_Col%02d_VDD_IO_2p4_VDD_DIG_WL_1p7_VB2p4_VS0_VD0_VG1p7", chip, col);
 
 	Block_Erase(Measure_file, VD, VB, VS, VDD_DIG, VSS_WL, VDD_WL, "60000msPULSE_MUX_ON_60ExtTrig_1000SampRate", 60, chip, col, 0, 1);
@@ -348,11 +369,11 @@ int main(void) {
 	    IDS_VGS(Measure_file, col, chip, 1); 
 	}*/
 
-	for (int i = 0; i < 2; i++){
+/*	for (int i = 0; i < 2; i++){
 	    col = col_list[i];
 	    sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_125C_1min_VG1p7_VB2p4_VD0_VS0_Chip%02d_Col%02d_60Pumping_SweepVSVBVD_VSS_WL_0_VDD_WL_1p6_ELTM-Range200nA-OrigialSettlingTimes_EnclosedChamberPoweredDown-ThinWiresPickedUp", chip, col);
 	    Charge_Pumping_ELTM(Measure_file, VDBS_list_Vr0, Num_of_VDBS, CP_VDD_DIG, CP_VSS_WL, CP_VDD_WL, "ExtTrig_60_0p1sWidth_1sInterval", samp_rate, Num_of_freq, pumping_freq, Num_of_ExtTrig, chip, col, 0);
-	} 
+	} */
 
 /*	for (int i = 0; i < 2; i++){
 	    col = col_list[i];
