@@ -333,9 +333,9 @@ int main(void) {
 
 	for (int i = 0; i < 2; i++){
 	    col = col_list[i];
-	    sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_125C_OnlyCol21-Another240sec_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain_DMMexistVSVDVB", chip, col);
+	    sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_125C_OnlyCol21-Another240sec_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain_DMMexistVD", chip, col);
 	    IDS_VGS(Measure_file, col, chip, 0);
-	    sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_125C_OnlyCol21-Another240sec_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource_DMMexistVSVDVB", chip, col);
+	    sprintf(Measure_file, "C:/GoogleDrive/working/Block_BD_125C_OnlyCol21-Another240sec_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource_DMMexistVD", chip, col);
 	    IDS_VGS(Measure_file, col, chip, 1); 
 	}
 
