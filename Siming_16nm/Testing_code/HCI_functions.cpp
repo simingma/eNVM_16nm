@@ -783,11 +783,19 @@ int Block_Erase(char* Measure_file, double VD, double VB, double VS, double VDD_
 	sprintf(f_scan_WLpulse_ExtTrig, "../Scan_files/%s", pulse_scan_file);
 	//got rid of the PULSE just in case (even though shouldn't matter since scanned all zero).
 
+	// scan in all WL's=1 in 2FIN domain, pulse=0
+	char f_scan[200];
+	sprintf(f_scan, "../Scan_files/Scan_2FIN_allWL_NOpulse");
+	scan(f_scan, 0, 100000.0); 
+	// CAUTIOUS: all WL's of the 2nd half of the chip "2FIN" domain VG=VDD_WL during Block_Erase
+	
+	/*
 	// scan in all WL's=1 in column[col], pulse=0
 	char f_scan[200];
 	sprintf(f_scan, "../Scan_files/Scan_Col%02d_allWL_NOpulse", col);
 	scan(f_scan, 0, 100000.0); 
 	// CAUTIOUS: all WL's of the selected column VG=VDD_WL during Block_Erase
+	*/
 	
 	//Rather than all VG=VSS_WL
 	//scan("../Scan_files/Scan_all_zero", 0, 100000.0);
