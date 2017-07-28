@@ -83,9 +83,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Charge_Pumping_Chip08.cpp" />
     <ClCompile Include="GpibFunctions.cpp" />
     <ClCompile Include="HCI_functions.cpp" />
+    <ClCompile Include="MLC_chip10.cpp" />
     <ClCompile Include="scan_selfcheck.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="UserTestFunctions.cpp" />

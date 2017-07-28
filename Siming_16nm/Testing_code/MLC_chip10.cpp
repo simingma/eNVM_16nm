@@ -80,9 +80,9 @@ int main(void) {
 	char Measure_file[200];
 
 	for (col = 0; col < 36; col++){
-	    sprintf(Measure_file, "../Data/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", chip, col);
+	    sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", chip, col);
 	    IDS_VGS(Measure_file, col, chip, 0);
-	    sprintf(Measure_file, "../Data/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource", chip, col);
+	    sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource", chip, col);
 	    IDS_VGS(Measure_file, col, chip, 1);
 	}	
 
