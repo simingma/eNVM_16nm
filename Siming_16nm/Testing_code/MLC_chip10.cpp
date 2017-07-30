@@ -101,18 +101,18 @@ int main(void) {
        for(int i=0; i<3; i++){
 	    col = col_list[i];
 
-	    sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_20x10ms_stress_VG_ConstPulse_VAsource_VBdrain_01", chip, col);
-	    stress_VG_ConstPulse(Measure_file, VDS[i], VGS, "10ms", chip, col, 0, 20);
-            sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_20x10ms_Ids_Vgs_VAsource_VBdrain_01", chip, col);   
+	    sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_40x10ms_stress_VG_ConstPulse_VAsource_VBdrain_01", chip, col);
+	    stress_VG_ConstPulse(Measure_file, VDS[i], VGS, "10ms", chip, col, 0, 40);
+            sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_40x10ms_Ids_Vgs_VAsource_VBdrain_01", chip, col);   
 	    IDS_VGS(Measure_file, col, chip, 0);
-            sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_20x10ms_Ids_Vgs_VAdrain_VGsource_01", chip, col);   
+            sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_40x10ms_Ids_Vgs_VAdrain_VGsource_01", chip, col);   
 	    IDS_VGS(Measure_file, col, chip, 1);
 	    
-	    sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_25x40ms_stress_VG_ConstPulse_VAsource_VBdrain_02", chip, col);
-	    stress_VG_ConstPulse(Measure_file, VDS[i], VGS, "40ms", chip, col, 0, 25);
-            sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_25x40ms_Ids_Vgs_VAsource_VBdrain_02", chip, col);   
+	    sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_20x40ms_stress_VG_ConstPulse_VAsource_VBdrain_02", chip, col);
+	    stress_VG_ConstPulse(Measure_file, VDS[i], VGS, "40ms", chip, col, 0, 20);
+            sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_20x40ms_Ids_Vgs_VAsource_VBdrain_02", chip, col);   
 	    IDS_VGS(Measure_file, col, chip, 0);
-            sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_25x40ms_Ids_Vgs_VAdrain_VGsource_02", chip, col);   
+            sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_20x40ms_Ids_Vgs_VAdrain_VGsource_02", chip, col);   
 	    IDS_VGS(Measure_file, col, chip, 1);
 	    
 	    sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_12x200ms_stress_VG_ConstPulse_VAsource_VBdrain_03", chip, col);
