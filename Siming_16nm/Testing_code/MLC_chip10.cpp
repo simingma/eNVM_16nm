@@ -86,7 +86,7 @@ int main(void) {
 	    IDS_VGS(Measure_file, col, chip, 1);
 	}*/
 
-	int col_list[3] = {18, 24, 30};
+/*	int col_list[3] = {18, 24, 30};
 
 	double VGS[32] = {1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 
 		          1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8};
@@ -122,6 +122,26 @@ int main(void) {
             sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_12x200ms_Ids_Vgs_VAdrain_VGsource_03", chip, col);   
 	    IDS_VGS(Measure_file, col, chip, 1);
        }
+       */
+	
+	double CP_VDD_DIG = 1.6;
+	double CP_VSS_WL = 0;
+	double CP_VDD_WL = 1.6;
+	double Num_of_ExtTrig = 60;
+
+	double samp_rate = 10.0;
+	double pumping_freq[2] = { 5000000, 1000 };
+	int Num_of_freq = 2;
+	
+        int Num_of_VDBS = 17;
+	double VDBS_list_Vr0[17] = { 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6 };
+
+	int col_list_128[3] = {21, 27, 33}
+	for (int i = 0; i < 3; i++){
+	    col = col_list_128[i];
+	    sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_60Pumping_SweepVSVBVD_VSS_WL_0_VDD_WL_1p6_ELTM-Range200nA", chip, col);
+	    Charge_Pumping_ELTM(Measure_file, VDBS_list_Vr0, Num_of_VDBS, CP_VDD_DIG, CP_VSS_WL, CP_VDD_WL, "ExtTrig_60_0p1sWidth_1sInterval", samp_rate, Num_of_freq, pumping_freq, Num_of_ExtTrig, chip, col, 0);
+	} 
 
 
 	// Turn off PSU outputs after tests are done!
