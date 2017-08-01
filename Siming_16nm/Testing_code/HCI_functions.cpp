@@ -2434,6 +2434,376 @@ int PBTI_VG_ConstPulse(char* Measure_file, double VDD_WL, double VSS_WL, double 
 	return 0;
 }
 
+/*********************ADAPTED from stress_VG_ConstPulse************************/
+int MLC_programming(char* Measure_file, double VDS, double VGS, char* pulse_width_char, int chip, int col, int direction, int Max_Num_of_Pulse, double IDSAT_threshold){
+
+	char direction_char_stress[200], direction_char_mirror[200];
+	char MUX_Address_file_stress[200], MUX_Address_file_mirror[200];
+
+	if (direction == 0){
+		sprintf(direction_char_stress, "VAsource_VBdrain");
+		sprintf(MUX_Address_file_stress, "../Scan_files/MUX_Col%02d_VAsource_VBdrain", col);
+		sprintf(direction_char_mirror, "VAdrain_VBsource");
+		sprintf(MUX_Address_file_mirror, "../Scan_files/MUX_Col%02d_VAdrain_VBsource", col);
+	}
+	else{
+		sprintf(direction_char_stress, "VAdrain_VBsource");
+		sprintf(MUX_Address_file_stress, "../Scan_files/MUX_Col%02d_VAdrain_VBsource", col);
+		sprintf(direction_char_mirror, "VAsource_VBdrain");
+		sprintf(MUX_Address_file_mirror, "../Scan_files/MUX_Col%02d_VAsource_VBdrain", col);
+	}
+
+
+	double samp_rate = 1000.0; // sampling rate = 1000 is required to use these scan files!!!
+	/*	"char* pulse_width_char" is used for naming the "WL PULSE scan file"
+	all these "WL PULSE + ExtTrigger files" need to use 1000.0 sampling rate, to guarantee 10ms between ExtTrig;
+	the "total number of triggers" = "WL PULSE width" / 10ms */
+	char f_scan_WLpulse_ExtTrig[200];
+	sprintf(f_scan_WLpulse_ExtTrig, "../Scan_files/%sPULSE_MUX_ON_%dExtTrig_1000SampRate", pulse_width_char, 1);
+
+	FILE *f_ptr;
+	if ((f_ptr = fopen(Measure_file, "w")) == NULL){
+		printf("Cannot open%s.\n", Measure_file);
+		return FAIL;
+	}
+
+	int scan_equal = scan_selfcheck("../Scan_files/NIDAQ_test_data", 1);
+	fprintf(f_ptr, "scan equal =%d\n", scan_equal);
+	scan("../Scan_files/Scan_all_zero", 0, 100000.0);
+
+	//row: WL[row] number (row=0~Num_of_row[col]), j: number of ExtTrig measurement within one WLpulse here == 1.
+	int row, j;
+	float NPLCycles = 0.2;  //integration time for ExtTrigger-ed measurements within a WLpulse
+	//float NPLCycles = 1.0;
+	float Isense;
+	//the DMM's internal memory can hold 512 readings at most => the maximum number of (ExtTrig) measurements before fetching to output buffer
+	float Current[512];
+	//the output buffer is formatted as "SD.DDDDDDDDSEDD,SD.DDDDDDDDSEDD,SD.DDDDDDDDSEDD,....", so 15+1(comma) = 16 characters for each reading
+	char StrCurrent[16];
+	char RdBuffer[12001]; //for multi-trigger/sample, innitiate->fetch data retrival
+
+	MM34401A_MeasCurrent_Config(_MM34401A, 10, "IMM", 0.1, 1, 1);
+
+	// scan in WL[0]=1 in column[col], pulse=0
+	char f_scan[200];
+	sprintf(f_scan, "../Scan_files/Scan_Col%02d_WL0_NOpulse", col);
+	scan(f_scan, 0, 100000.0);
+
+	for (row = 0; row < Num_of_row[col]; row++){
+		//MM34401A_MeasCurrent_Config(_MM34401A, 10, "IMM", 0.1, 1, 1);
+		fprintf(f_ptr, "WL[%d]\n", row);
+		E3646A_SetVoltage(_VDD_DIG_VDD_WL, 1, VDD_typical); //VDD_DIG=VDD_typicalV
+		E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VDD_typical); // change VDD_WL => Vgs of WL selected transisor
+		E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
+		//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+		DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+		DO_USB6008(MUX_Address_file_stress);
+		scan("../Scan_files/MUX_ON_pulse", 0, 100000.0); //Need to update!!!
+		E3646A_SetVoltage(_VSPARE_VAB, 2, VDD_typical); // VAB = VDS = VDD_typicalV
+		Isense = MM34401A_MeasCurrent(_MM34401A); //measure IDSAT + leakage current through Current Meter
+		E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
+
+		/***************BUG fixed!**************/
+		scan("../Scan_files/NOpulse", 0, 100000.0);
+		/*******NOpulse after finishing measurement, before using any injection********/
+
+		//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+		DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+
+
+		fprintf(f_ptr, "ALL_Initial_IDSAT_WL[%d]_%s=%.12f\n", row, direction_char_stress, Isense);
+		//debug: TODO these printf's waste resource/time???
+		//printf("Fresh_IDSAT_WL[%d]_%s=%.12f\n", row, direction_char_stress, Isense);
+
+		DO_USB6008(MUX_Address_file_mirror);
+		scan("../Scan_files/MUX_ON_pulse", 0, 100000.0);
+		E3646A_SetVoltage(_VSPARE_VAB, 2, VDD_typical); // VAB = VDS = VDD_typicalV
+		Isense = MM34401A_MeasCurrent(_MM34401A); //measure IDSAT + leakage current through Current Meter
+		E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
+
+		/***************BUG fixed!**************/
+		scan("../Scan_files/NOpulse", 0, 100000.0);
+		/*******NOpulse after finishing measurement, before using any injection********/
+
+		//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+		DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+
+		fprintf(f_ptr, "ALL_Initial_IDSAT_WL[%d]_%s=%.12f\n", row, direction_char_mirror, Isense);
+		//debug:
+		//printf("Fresh_IDSAT_WL[%d]_%s=%.12f\n", row, direction_char_mirror, Isense);
+
+		// shift down one row
+		scan("../Scan_files/Scan_shift_1_NOpulse", 0, 100000.0);
+	}
+	E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
+	//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+	DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+
+	int pulse = 0;                   //count the number of stress pulse cycles.
+	int Next_pulse[Num_of_row[col]]; //an array keeping track of whether each row needs to be stressed in the next pulse cycle
+	for (row = 0; row < Num_of_row[col]; row++){
+		Next_pulse[row] = 1;     // initialized to all 1's because all the rows need at least the first pulse
+	}                                // this array will be overwritten/updated as stress pulse cycles proceed.
+	int Rows_remain; //the number of rows still haven't reached the threshold
+
+	// scan in WL[0]=1 in column[col], pulse=0
+	sprintf(f_scan, "../Scan_files/Scan_Col%02d_WL0_NOpulse", col);
+	scan(f_scan, 0, 100000.0);
+	//	MM34401A_MeasCurrent_Config(_MM34401A, 10, "IMM", 0.1, 1, 1);
+	MM34410A_6_MeasCurrent_Config(_MM34410A_6, NPLCycles, "EXT", 0.0, 1, 1);
+
+	SYSTEMTIME lt;
+	GetLocalTime(&lt);
+	fprintf(f_ptr, "The local time is: %02d:%02d:%02d\n", lt.wHour, lt.wMinute, lt.wSecond);
+
+        for (pulse = 1; pulse <= Max_Num_of_Pulse; pulse++){
+		for (row = 0; row < Num_of_row[col]; row++){
+			
+			fprintf(f_ptr, "WL[%d]\n", row);
+			fprintf(f_ptr, "Pulse_Cycle=%02d, Apply_Pulse=%d\n", pulse, Next_pulse[row]);
+
+			MM34401A_MeasCurrent_Config(_MM34401A, 10, "IMM", 0.1, 1, 1);
+
+			E3646A_SetVoltage(_VDD_DIG_VDD_WL, 1, VDD_typical); //VDD_DIG=VDD_typicalV
+			E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VDD_typical); // change VDD_WL => Vgs of WL selected transisor
+			E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
+			//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+			DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+			DO_USB6008(MUX_Address_file_stress);
+			scan("../Scan_files/MUX_ON_pulse", 0, 100000.0);
+			E3646A_SetVoltage(_VSPARE_VAB, 2, VDD_typical); // VAB = VDS = VDD_typicalV
+			Isense = MM34401A_MeasCurrent(_MM34401A); //measure IDSAT + leakage current through Current Meter
+			E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
+
+			/***************BUG fixed!**************/
+			scan("../Scan_files/NOpulse", 0, 100000.0);
+			/*******NOpulse after finishing measurement, before using any injection********/
+
+			//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+			DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+
+			fprintf(f_ptr, "Before_%02dPULSE_IDSAT_WL[%d]_%s=%.12f\n", pulse, row, direction_char_stress, Isense);
+			//debug: TODO these printf's waste resource/time???
+			//printf("Fresh_IDSAT_WL[%d]_%s=%.12f\n", row, direction_char_stress, Isense);
+
+			DO_USB6008(MUX_Address_file_mirror);
+			scan("../Scan_files/MUX_ON_pulse", 0, 100000.0);
+			E3646A_SetVoltage(_VSPARE_VAB, 2, VDD_typical); // VAB = VDS = VDD_typicalV
+			Isense = MM34401A_MeasCurrent(_MM34401A); //measure IDSAT + leakage current through Current Meter
+			E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
+
+			/***************BUG fixed!**************/
+			scan("../Scan_files/NOpulse", 0, 100000.0);
+			/*******NOpulse after finishing measurement, before using any injection********/
+
+			//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+			DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+
+			fprintf(f_ptr, "Before_%02dPULSE_IDSAT_WL[%d]_%s=%.12f\n", pulse, row, direction_char_mirror, Isense);
+			//debug:
+			//printf("Fresh_IDSAT_WL[%d]_%s=%.12f\n", row, direction_char_mirror, Isense);
+
+	//		for (t = 1; t <= Num_of_Pulse; t++){
+
+			E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
+			//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+			DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+			DO_USB6008(MUX_Address_file_stress);
+
+			//scan("../Scan_files/MUX_ON", 0, 100000.0);
+
+			if(Next_pulse[row] == 1){
+				//multiple triggers, single sample
+				MM34401A_MeasCurrent_Config(_MM34401A, NPLCycles, "EXT", 0.0, 1, 1);
+				//char RdBuffer[12001];
+
+				_ibwrt(_MM34401A, "INITiate");
+				_ibwrt(_MM34410A_6, "INITiate");
+
+				E3646A_SetVoltage(_VSPARE_VAB, 2, VDS);     //VA=VDS
+				E3646A_SetVoltage(_VDD_DIG_VDD_WL, 1, VGS); //VDD_DIG=VDD_WL=VGS, avoid any un-intentional crowbar current or turn-on diodes
+				E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VGS); //VDD_WL=VGS
+
+				// 30ms initial delay is built into the beginning of the scan file to allow VDS/VDD_DIG/VDD_WL PSUs to transition->settle
+				// before toggling PULSE and trigger Isub measurment
+				//multiple triggers, single sample
+				scan(f_scan_WLpulse_ExtTrig, 0, samp_rate);
+
+				E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VDD_typical); //VDD_WL=VDD_typicalV
+				E3646A_SetVoltage(_VDD_DIG_VDD_WL, 1, VDD_typical); //VDD_DIG=VDD_typicalV
+				E3646A_SetVoltage(_VSPARE_VAB, 2, 0);
+
+				/***************BUG fixed!**************/
+				scan("../Scan_files/NOpulse", 0, 100000.0);
+				/*******NOpulse after finishing measurement, before using any injection********/
+
+				//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+				DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+
+				_ibwrt(_MM34401A, "FETCh?");
+				_ibrd(_MM34401A, RdBuffer, 12000);
+				RdBuffer[ibcntl] = '\0';         // Null terminate the ASCII string    
+				//printf("%s\n", RdBuffer);
+
+				for (j = 0; j < 1; j++){
+					//output buffer of the DMM is formatted as CSV, of all the readings fetched from its internal memory 
+					//each reading has 15 charaters, plus one comma
+					strncpy(StrCurrent, RdBuffer + j * 16, 15);
+					StrCurrent[15] = '\0';
+					sscanf(StrCurrent, "%f", &Current[j]);
+					fprintf(f_ptr, "Stress_%02dPULSE_WL[%d]_ID_program=%.12f\n", pulse, row, Current[j]);
+					//debug:
+					//printf("Time=%dms, Current=%.12f\n", 10 * j, Current[j]);
+				}
+
+				_ibwrt(_MM34410A_6, "FETCh?");
+				_ibrd(_MM34410A_6, RdBuffer, 12000);
+				RdBuffer[ibcntl] = '\0';         // Null terminate the ASCII string    
+				//printf("%s\n", RdBuffer);
+
+				for (j = 0; j < 1; j++){
+					//output buffer of the DMM is formatted as CSV, of all the readings fetched from its internal memory 
+					//each reading has 15 charaters, plus one comma
+					strncpy(StrCurrent, RdBuffer + j * 16, 15);
+					StrCurrent[15] = '\0';
+					sscanf(StrCurrent, "%f", &Current[j]);
+					fprintf(f_ptr, "Stress_%02dPULSE_WL[%d]_Isub=%.12f\n", pulse, row, Current[j]);
+					//debug:
+					//printf("Time=%dms, Current=%.12f\n", 10 * j, Current[j]);
+				}
+
+				MM34401A_MeasCurrent_Config(_MM34401A, 10, "IMM", 0.1, 1, 1);
+			}
+			/*E3646A_SetVoltage(_VDD_DIG_VDD_WL, 1, VDD_typical); //VDD_DIG=VDD_typicalV
+			E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VDD_typical); // change VDD_WL => Vgs of WL selected transisor
+			E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
+			scan("../Scan_files/MUX_OFF", 0, 100000.0);*/
+			DO_USB6008(MUX_Address_file_stress);
+			scan("../Scan_files/MUX_ON_pulse", 0, 100000.0);
+			E3646A_SetVoltage(_VSPARE_VAB, 2, VDD_typical); // VAB = VDS = VDD_typicalV
+			Isense = MM34401A_MeasCurrent(_MM34401A); //measure Ids + leakage current through Current Meter
+			E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
+
+			/***************BUG fixed!**************/
+			scan("../Scan_files/NOpulse", 0, 100000.0);
+			/*******NOpulse after finishing measurement, before using any injection********/
+
+			//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+			DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+
+			fprintf(f_ptr, "Stress_%02dPULSE_IDSAT_WL[%d]_%s=%.12f\n", pulse, row, direction_char_stress, Isense);
+			//debug:
+			//printf("Stress_%02dPULSE_IDSAT_WL[%d]_%s=%.12f\n", t, row, direction_char_stress, Isense);
+
+			DO_USB6008(MUX_Address_file_mirror);
+			scan("../Scan_files/MUX_ON_pulse", 0, 100000.0);
+			E3646A_SetVoltage(_VSPARE_VAB, 2, VDD_typical); // VAB = VDS = VDD_typicalV
+			Isense = MM34401A_MeasCurrent(_MM34401A); //measure Ids + leakage current through Current Meter
+			E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
+
+			/***************BUG fixed!**************/
+			scan("../Scan_files/NOpulse", 0, 100000.0);
+			/*******NOpulse after finishing measurement, before using any injection********/
+
+			//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+			DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+
+			fprintf(f_ptr, "Stress_%02dPULSE_IDSAT_WL[%d]_%s=%.12f\n", pulse, row, direction_char_mirror, Isense);
+			//debug:
+			//printf("Stress_%02dPULSE_IDSAT_WL[%d]_%s=%.12f\n", t, row, direction_char_mirror, Isense);
+			//}
+
+			// shift down one row
+			scan("../Scan_files/Scan_shift_1_NOpulse", 0, 100000.0);
+		}
+		E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
+		//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+		DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+
+		GetLocalTime(&lt);
+		fprintf(f_ptr, "The local time is: %02d:%02d:%02d\nRetention: short-term recovery\n", lt.wHour, lt.wMinute, lt.wSecond);
+		::Sleep(300000);
+		GetLocalTime(&lt);
+		fprintf(f_ptr, "The local time is: %02d:%02d:%02d\n", lt.wHour, lt.wMinute, lt.wSecond);
+
+		// scan in WL[0]=1 in column[col], pulse=0
+		sprintf(f_scan, "../Scan_files/Scan_Col%02d_WL0_NOpulse", col);
+		scan(f_scan, 0, 100000.0);
+
+		MM34401A_MeasCurrent_Config(_MM34401A, 10, "IMM", 0.1, 1, 1);
+		for (row = 0; row < Num_of_row[col]; row++){
+			//MM34401A_MeasCurrent_Config(_MM34401A, 10, "IMM", 0.1, 1, 1);
+			fprintf(f_ptr, "WL[%d]\n", row);
+			E3646A_SetVoltage(_VDD_DIG_VDD_WL, 1, VDD_typical); //VDD_DIG=VDD_typicalV
+			E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VDD_typical); // change VDD_WL => Vgs of WL selected transisor
+			E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
+			//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+			DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+			DO_USB6008(MUX_Address_file_stress);
+			scan("../Scan_files/MUX_ON_pulse", 0, 100000.0);
+			E3646A_SetVoltage(_VSPARE_VAB, 2, VDD_typical); // VAB = VDS = VDD_typicalV
+			Isense = MM34401A_MeasCurrent(_MM34401A); //measure IDSAT + leakage current through Current Meter
+			E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
+
+			/***************BUG fixed!**************/
+			scan("../Scan_files/NOpulse", 0, 100000.0);
+			/*******NOpulse after finishing measurement, before using any injection********/
+
+			//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+			DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+
+			fprintf(f_ptr, "ALL_Recovered_%02dPULSE_IDSAT_WL[%d]_%s=%.12f\n", pulse, row, direction_char_stress, Isense);
+			//debug: TODO these printf's waste resource/time???
+			//printf("Fresh_IDSAT_WL[%d]_%s=%.12f\n", row, direction_char_stress, Isense);
+
+			DO_USB6008(MUX_Address_file_mirror);
+			scan("../Scan_files/MUX_ON_pulse", 0, 100000.0);
+			E3646A_SetVoltage(_VSPARE_VAB, 2, VDD_typical); // VAB = VDS = VDD_typicalV
+			Isense = MM34401A_MeasCurrent(_MM34401A); //measure IDSAT + leakage current through Current Meter
+			E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
+
+			/***************BUG fixed!**************/
+			scan("../Scan_files/NOpulse", 0, 100000.0);
+			/*******NOpulse after finishing measurement, before using any injection********/
+
+			//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+			DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+
+			fprintf(f_ptr, "ALL_Recovered_%02dPULSE_IDSAT_WL[%d]_%s=%.12f\n", pulse, row, direction_char_mirror, Isense);
+			//debug:
+			//printf("Fresh_IDSAT_WL[%d]_%s=%.12f\n", row, direction_char_mirror, Isense);
+
+			if (Isense <= IDSAT_threshold){ //conpare reverse(mirror) IDSAT with the reference level threshold
+				Next_pulse[row] = 0; //if reached the threshold, no longer apply pulse to this row!
+			}
+
+			// shift down one row
+			scan("../Scan_files/Scan_shift_1_NOpulse", 0, 100000.0);
+		} 
+		E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
+		//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+		DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+
+		Rows_remain = 0;
+		for (row = 0; row < Num_of_row[col]; row++){
+			Rows_remain += Next_pulse[row];
+		}
+		fprintf(f_ptr, "\nAfter pulse cycle \d\nRows_remain=\d\n\n", pulse, Rows_remain);
+		if (Rows_remain == 0)
+			break;
+	}
+
+	scan_equal = scan_selfcheck("../Scan_files/NIDAQ_test_data", 1);
+	fprintf(f_ptr, "scan equal =%d\n", scan_equal);
+	scan("../Scan_files/Scan_all_zero", 0, 100000.0);
+
+	fprintf(f_ptr, "total pulse cycles: %d\n", pulse);
+        fprintf(f_ptr, "remaining number of rows didn't reach IDSAT=%f: %d\n", IDSAT_threshold, Rows_remain);
+
+	fclose(f_ptr);
+	return 0;
+}
+
 /*********************ADAPTED from Siming_28nm************************/
 /*****************add SLEEP and SYSTEMTIME functions for more accurate control of short-term recovery*****************/
 int stress_VG_ConstPulse(char* Measure_file, double* VDS, double* VGS, char* pulse_width_char, int chip, int col, int direction, int Num_of_Pulse){

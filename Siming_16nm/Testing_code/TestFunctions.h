@@ -121,6 +121,8 @@ int Block_FN_tunnel(char* Measure_file, double VDD_DIG, double VSS_WL, double VD
 int PBTI_VG_ConstPulse(char* Measure_file, double VDD_WL, double VSS_WL, double VDD_DIG, char* pulse_width_char, int chip, int col, int direction, int Num_of_Pulse, int Num_of_trigger);
 int Stacked_VG_ConstPulse(char* Measure_file, double VDD_WL, double VSS_WL, double VDD_DIG, double* VDS, char* pulse_width_char, int chip, int col, int direction, int Num_of_Pulse, int Num_of_trigger);
 
+int MLC_programming(char* Measure_file, double VDS, double VGS, char* pulse_width_char, int chip, int col, int direction, int Max_Num_of_Pulse, double IDSAT_threshold);
+
 //************ Erase ***************
 int Block_GateErase(char* Measure_file, double VDD_DIG, double VSS_WL, double VDD_WL, char* pulse_width_char, int Num_of_ExtTrig, int chip, int col, int direction);
 int erase_VSDB_tunneling(char* Measure_file, double VSDB, double VDD_DIG_WL, char* pulse_width_char, int chip, int col, int direction, int Num_of_Pulse);
