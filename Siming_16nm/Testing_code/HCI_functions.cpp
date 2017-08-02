@@ -2462,7 +2462,7 @@ int MLC_programming(char* Measure_file, double VDS, double VGS, char* pulse_widt
 	sprintf(f_scan_WLpulse_ExtTrig, "../Scan_files/%sPULSE_MUX_ON_%dExtTrig_1000SampRate", pulse_width_char, 1);
 
 	FILE *f_ptr;
-	if ((f_ptr = fopen(Measure_file, "w")) == NULL){
+	if ((f_ptr = fopen(Measure_file, "a")) == NULL){
 		printf("Cannot open%s.\n", Measure_file);
 		return FAIL;
 	}
@@ -2539,24 +2539,30 @@ int MLC_programming(char* Measure_file, double VDS, double VGS, char* pulse_widt
 	//scan("../Scan_files/MUX_OFF", 0, 100000.0);
 	DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
 
-	int pulse = 0;                   //count the number of stress pulse cycles.
-	int Next_pulse[Num_of_row[col]]; //an array keeping track of whether each row needs to be stressed in the next pulse cycle
+	int pulse;                   //count the number of stress pulse cycles.
+	int Next_pulse[128]; //an array keeping track of whether each row needs to be stressed in the next pulse cycle
+	//C++ syntax doesn't allow the array length to be a variable Num_of_row[col], so I have to declare the longest column length
+	for (row = 0; row < 128; row++){
+		Next_pulse[row] = 0;  //first initialize the whole array to all 0's
+	}
 	for (row = 0; row < Num_of_row[col]; row++){
-		Next_pulse[row] = 1;     // initialized to all 1's because all the rows need at least the first pulse
+		Next_pulse[row] = 1;     // the real rows initialized to all 1's because all these rows need at least the first pulse
 	}                                // this array will be overwritten/updated as stress pulse cycles proceed.
 	int Rows_remain; //the number of rows still haven't reached the threshold
 
-	// scan in WL[0]=1 in column[col], pulse=0
-	sprintf(f_scan, "../Scan_files/Scan_Col%02d_WL0_NOpulse", col);
-	scan(f_scan, 0, 100000.0);
-	//	MM34401A_MeasCurrent_Config(_MM34401A, 10, "IMM", 0.1, 1, 1);
+
 	MM34410A_6_MeasCurrent_Config(_MM34410A_6, NPLCycles, "EXT", 0.0, 1, 1);
 
-	SYSTEMTIME lt;
-	GetLocalTime(&lt);
-	fprintf(f_ptr, "The local time is: %02d:%02d:%02d\n", lt.wHour, lt.wMinute, lt.wSecond);
+    for (pulse = 1; pulse <= Max_Num_of_Pulse; pulse++){
 
-        for (pulse = 1; pulse <= Max_Num_of_Pulse; pulse++){
+		// scan in WL[0]=1 in column[col], pulse=0
+		sprintf(f_scan, "../Scan_files/Scan_Col%02d_WL0_NOpulse", col);
+		scan(f_scan, 0, 100000.0);
+
+		SYSTEMTIME lt;
+		GetLocalTime(&lt);
+		fprintf(f_ptr, "The local time is: %02d:%02d:%02d\n", lt.wHour, lt.wMinute, lt.wSecond);
+
 		for (row = 0; row < Num_of_row[col]; row++){
 			
 			fprintf(f_ptr, "WL[%d]\n", row);
@@ -2788,7 +2794,7 @@ int MLC_programming(char* Measure_file, double VDS, double VGS, char* pulse_widt
 		for (row = 0; row < Num_of_row[col]; row++){
 			Rows_remain += Next_pulse[row];
 		}
-		fprintf(f_ptr, "\nAfter pulse cycle \d\nRows_remain=\d\n\n", pulse, Rows_remain);
+		fprintf(f_ptr, "\nAfter pulse cycle %d\nRows_remain=%d\n\n", pulse, Rows_remain);
 		if (Rows_remain == 0)
 			break;
 	}
