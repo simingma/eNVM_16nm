@@ -80,14 +80,15 @@ int main(void) {
 	char Measure_file[200];
 
 
-	int col_list[2] = {27, 33};
+//	int col_list[2] = {27, 33};
+	int col_list[2] = { 28, 29 };
 
 	double VGS[128] = {1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 
 		           1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8,
 		           1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 
                            1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8};
 
-	double VDS[2][128] = {
+/*	double VDS[2][128] = {
 		             {1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8,
 			      1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 
 			      2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2,
@@ -96,6 +97,11 @@ int main(void) {
 			      1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7, 1.7,   
 			      2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 
 			      2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0}};
+*/
+	double VDS_L20[128] = { 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8,
+		1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8,
+		2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2,
+		2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2, 2.2 };
 
        for(int i=0; i<2; i++){
 	    col = col_list[i];
@@ -106,28 +112,28 @@ int main(void) {
 	    IDS_VGS(Measure_file, col, chip, 1);
 
 	    sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_40x10ms_stress_VG_ConstPulse_VAsource_VBdrain_01", chip, col);
-	    stress_VG_ConstPulse(Measure_file, VDS[i], VGS, "10ms", chip, col, 0, 40);
+	    stress_VG_ConstPulse(Measure_file, VDS_L20, VGS, "10ms", chip, col, 0, 40);
             sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_40x10ms_Ids_Vgs_VAsource_VBdrain_01", chip, col);   
 	    IDS_VGS(Measure_file, col, chip, 0);
             sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_40x10ms_Ids_Vgs_VAdrain_VGsource_01", chip, col);   
 	    IDS_VGS(Measure_file, col, chip, 1);
 	    
 	    sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_20x40ms_stress_VG_ConstPulse_VAsource_VBdrain_02", chip, col);
-	    stress_VG_ConstPulse(Measure_file, VDS[i], VGS, "40ms", chip, col, 0, 20);
+		stress_VG_ConstPulse(Measure_file, VDS_L20, VGS, "40ms", chip, col, 0, 20);
             sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_20x40ms_Ids_Vgs_VAsource_VBdrain_02", chip, col);   
 	    IDS_VGS(Measure_file, col, chip, 0);
             sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_20x40ms_Ids_Vgs_VAdrain_VGsource_02", chip, col);   
 	    IDS_VGS(Measure_file, col, chip, 1);
 	    
 	    sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_12x200ms_stress_VG_ConstPulse_VAsource_VBdrain_03", chip, col);
-	    stress_VG_ConstPulse(Measure_file, VDS[i], VGS, "200ms", chip, col, 0, 12);
+		stress_VG_ConstPulse(Measure_file, VDS_L20, VGS, "200ms", chip, col, 0, 12);
             sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_12x200ms_Ids_Vgs_VAsource_VBdrain_03", chip, col);   
 	    IDS_VGS(Measure_file, col, chip, 0);
             sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_12x200ms_Ids_Vgs_VAdrain_VGsource_03", chip, col);   
 	    IDS_VGS(Measure_file, col, chip, 1);
 
 	    sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_36x200ms_stress_VG_ConstPulse_VAsource_VBdrain_04", chip, col);
-	    stress_VG_ConstPulse(Measure_file, VDS[i], VGS, "200ms", chip, col, 0, 36);
+		stress_VG_ConstPulse(Measure_file, VDS_L20, VGS, "200ms", chip, col, 0, 36);
 	    sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_36x200ms_Ids_Vgs_VAsource_VBdrain_04", chip, col);
 	    IDS_VGS(Measure_file, col, chip, 0);
 	    sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_36x200ms_Ids_Vgs_VAdrain_VGsource_04", chip, col);
