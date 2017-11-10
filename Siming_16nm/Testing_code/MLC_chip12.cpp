@@ -143,14 +143,16 @@ int main(void) {
 
 	col = 33;
 
-	sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", chip, col);
+/*	sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", chip, col);
 	IDS_VGS(Measure_file, col, chip, 0);
 	sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource", chip, col);
 	IDS_VGS(Measure_file, col, chip, 1);
+	*/
 
 	double VDS_col33 = 2.0;
 	double VGS_col33 = 1.8;
 
+/*
 	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_programming_Chip%02d_Col%02d_2msPULSE_VG1p8_VD2p0_VAsource_VBdrain_01", chip, col);
 	MLC_programming(Measure_file, VDS_col33, VGS_col33, "2ms", chip, col, 0, 280, 0, 0.000106);
 
@@ -158,6 +160,12 @@ int main(void) {
 	IDS_VGS(Measure_file, col, chip, 0);                                       
         sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_2msPULSE_VG1p8_VD2p0_Ids_Vgs_VAdrain_VBsource_01", chip, col);   
 	IDS_VGS(Measure_file, col, chip, 1);
+	*/
+
+        sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_2msPULSE_VG1p8_VD2p0_Ids_diode_VAsource_VBdrain_01", chip, col);   
+	IDS_diode(Measure_file, col, chip, 0);                                       
+        sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_2msPULSE_VG1p8_VD2p0_Ids_diode_VAdrain_VBsource_01", chip, col);   
+	IDS_diode(Measure_file, col, chip, 1);
 
 
 	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_programming_Chip%02d_Col%02d_10msPULSE_VG1p8_VD2p0_VAsource_VBdrain_02", chip, col);
@@ -168,6 +176,11 @@ int main(void) {
         sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_10msPULSE_VG1p8_VD2p0_Ids_Vgs_VAdrain_VBsource_02", chip, col);   
 	IDS_VGS(Measure_file, col, chip, 1);
 
+        sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_10msPULSE_VG1p8_VD2p0_Ids_diode_VAsource_VBdrain_02", chip, col);   
+	IDS_diode(Measure_file, col, chip, 0);                                        
+        sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_10msPULSE_VG1p8_VD2p0_Ids_diode_VAdrain_VBsource_02", chip, col);   
+	IDS_diode(Measure_file, col, chip, 1);
+
 
 	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_programming_Chip%02d_Col%02d_40msPULSE_VG1p8_VD2p0_VAsource_VBdrain_03", chip, col);
 	MLC_programming(Measure_file, VDS_col33, VGS_col33, "40ms", chip, col, 0, 280, 0, 0.000042);
@@ -177,6 +190,12 @@ int main(void) {
         sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_40msPULSE_VG1p8_VD2p0_Ids_Vgs_VAdrain_VBsource_03", chip, col);   
 	IDS_VGS(Measure_file, col, chip, 1);
 
+        sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_40msPULSE_VG1p8_VD2p0_Ids_diode_VAsource_VBdrain_03", chip, col);   
+	IDS_diode(Measure_file, col, chip, 0);                                       
+        sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_40msPULSE_VG1p8_VD2p0_Ids_diode_VAdrain_VBsource_03", chip, col);   
+	IDS_diode(Measure_file, col, chip, 1);
+
+
 	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_programming_Chip%02d_Col%02d_200msPULSE_VG1p8_VD2p0_VAsource_VBdrain_04", chip, col);
 	MLC_programming(Measure_file, VDS_col33, VGS_col33, "200ms", chip, col, 0, 280, 0, 0.0000205);
 
@@ -184,6 +203,11 @@ int main(void) {
 	IDS_VGS(Measure_file, col, chip, 0);
 	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_200msPULSE_VG1p8_VD2p0_Ids_Vgs_VAdrain_VBsource_04", chip, col);
 	IDS_VGS(Measure_file, col, chip, 1);
+
+	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_200msPULSE_VG1p8_VD2p0_Ids_diode_VAsource_VBdrain_04", chip, col);
+	IDS_diode(Measure_file, col, chip, 0);
+	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_200msPULSE_VG1p8_VD2p0_Ids_diode_VAdrain_VBsource_04", chip, col);
+	IDS_diode(Measure_file, col, chip, 1);
 
 
 	// Turn off PSU outputs after tests are done!

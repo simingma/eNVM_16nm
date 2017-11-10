@@ -3787,6 +3787,106 @@ int stress_sweep_VGS_VDS(double pulse_width, int chip, int col, int direction){
 	return 0;
 }
 
+/******** ADAPTED from IDS_VGS, only added one line: to change VDS together with VGS: VDS=VGS=VDD_WL **********/
+/******** IDSAT of diode connected nmos (VDS=VGS=VDD_WL) during supply voltage scaling **********/
+int IDS_diode(char *f_name, int col, int chip, int direction)
+//direction = 0: VAsource, VBdrain
+//direction = 1: VAdrain, VBsource
+{
+	//	MM34401A_MeasCurrent_Config(_MM34401A, 10, "IMM", 0.1, 1, 1);
+	// 1) scan in all Zero's, measure total leakage current through a single column VA --> VB
+	// sweep VDD_WL, total leakage should not make a difference!
+	char direction_char[200];
+	char MUX_Address_file[200];
+	if (direction == 0){
+		sprintf(direction_char, "VA = source, VB = drain");
+		sprintf(MUX_Address_file, "../Scan_files/MUX_Col%02d_VAsource_VBdrain", col);
+	}
+	else{
+		sprintf(direction_char, "VA = drain, VB = source");
+		sprintf(MUX_Address_file, "../Scan_files/MUX_Col%02d_VAdrain_VBsource", col);
+	}
+	scan("../Scan_files/Scan_all_zero", 0, 100000.0);
+	double Isense;
+	FILE *f_ptr;
+	if ((f_ptr = fopen(f_name, "w")) == NULL){
+		printf("Cannot open%s.\n", f_name);
+		return FAIL;
+	}
+
+	double leakage, VDD_WL;
+	fprintf(f_ptr, "Total leakage current from column[%d], chip %d, VAB=VDS=%fV\n%s\n", col, chip, VDD_typical, direction_char);
+	//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+	DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+	E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
+	DO_USB6008(MUX_Address_file); //MUX enable embedded into mux address file, all using USB-NIDAQ
+	//scan("../Scan_files/MUX_ON", 0, 100000.0);
+
+	E3646A_SetVoltage(_VSPARE_VAB, 2, VDD_typical); // VDS = |VB - VA|= VDD_typicalV
+	MM34401A_MeasCurrent_Config(_MM34401A, 10, "IMM", 0.1, 1, 1);
+	leakage = MM34401A_MeasCurrent(_MM34401A);
+	if (leakage >= 0.00001){
+		//		printf("total subVt leakage too large! Check!\n");
+		fprintf(f_ptr, "total subVt leakage too large! Check!\n");
+		//		fclose(f_ptr);
+		//		return FAIL;
+	}
+	//debug:
+	//	printf("Leakage = %.12f\n", leakage);
+	for (VDD_WL = VDD_typical; VDD_WL >= 0.2 - 0.0001; VDD_WL -= 0.05){
+		E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VDD_WL); // change VDD_WL
+		Isense = MM34401A_MeasCurrent(_MM34401A); //measure leakage current through Current Meter
+		fprintf(f_ptr, "VDD_WL=%f  Isense=%.12f\n", VDD_WL, Isense);
+		if (fabs(Isense - leakage) >= 0.000001){
+			//			printf("total subVt leakage should not change with VDD_WL! Check!\n");
+			fprintf(f_ptr, "total subVt leakage should not change with VDD_WL! Check!\n");
+			//			fclose(f_ptr);
+			//			return FAIL;
+		}
+		//debug:
+		//		printf("VDD_WL=%f  Isense=%.12f\n", VDD_WL, Isense);
+	}
+	E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
+	//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+	DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+	E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VDD_typical);
+
+	fprintf(f_ptr, "\nIds-Vgs curves of each fresh transistor, from 0 to %d, in column[%d], chip %d\n%s\n", Num_of_row[col] - 1, col, chip, direction_char);
+	MM34401A_MeasCurrent_Config(_MM34401A, 10, "IMM", 0.1, 1, 1);
+	//MM34401A_MeasCurrent_Config(1);
+	// scan in WL[0]=1 in column[col], pulse=1
+	char f_scan[200];
+	sprintf(f_scan, "../Scan_files/Scan_Col%02d_WL0_pulse", col);
+	scan(f_scan, 0, 100000.0);
+
+	//scan("../Scan_files/MUX_ON_pulse", 0, 100000.0);
+	DO_USB6008(MUX_Address_file); //MUX enable embedded into mux address file, all using USB-NIDAQ
+	E3646A_SetVoltage(_VSPARE_VAB, 2, VDD_typical); // VDS = |VB - VA|= VDD_typicalV
+	int WL;
+	for (WL = 0; WL < Num_of_row[col]; WL++){
+		fprintf(f_ptr, "WL[%d]\n", WL);
+		for (VDD_WL = VDD_typical; VDD_WL >= 0.2 - 0.0001; VDD_WL -= 0.05){
+			//only added the following line compared to IDS_VGS function
+	                E3646A_SetVoltage(_VSPARE_VAB, 2, VDD_WL); // VDS = |VB - VA|= VDD_WL
+			//only added the above line compared to IDS_VGS function
+			E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VDD_WL); // change VDD_WL => Vgs of WL selected transisor
+			Isense = MM34401A_MeasCurrent(_MM34401A); //measure Ids + leakage current through Current Meter
+			fprintf(f_ptr, "VDD_WL=%f  Isense=%.12f  I(sense)-I(leakage)=%.12f\n", VDD_WL, Isense, Isense - leakage);
+			//CAUTIOUS: the leakage current measurment and calculations are wrong here (remnant from IDS_VGS function)
+			//if necessary, need to use the method (I_leak for a certain VDS) in IDS_VDS function. 
+		}
+		//shift scan bit to the next WL
+		scan("../Scan_files/Scan_shift_1", 0, 100000.0);
+	}
+	scan("../Scan_files/NOpulse", 0, 100000.0);
+	fclose(f_ptr);
+	E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VDD_typical);
+	E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
+	//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+	DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+	return 0;
+}
+
 /******************ADAPTED from Siming_28nm******************/
 int IDS_VGS(char *f_name, int col, int chip, int direction)
 //direction = 0: VAsource, VBdrain

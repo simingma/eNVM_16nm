@@ -101,6 +101,7 @@ int Charge_Pumping(char* Measure_file, double VD, double VB, double VS, double V
 int Charge_Pumping_ELTM(char* Measure_file, double* VDBS_list_Vr0, int Num_of_VDBS, double VDD_DIG, double VSS_WL, double VDD_WL, char* scan_file, double samp_rate, int Num_of_freq, double* pumping_freq, int Num_of_ExtTrig, int chip, int col, int direction);
 
 //************ I-V curve measurement ***************
+int IDS_diode(char *f_name, int col, int chip, int direction);
 int IDS_VGS(char *f_name, int col, int chip, int direction);
 int IDS_VDS(char* f_name, int col, int chip, int direction);
 int Drain_leakage(char* f_name, double VS, double VB, double VG, int col, int chip, int direction, int MUX_ON);
