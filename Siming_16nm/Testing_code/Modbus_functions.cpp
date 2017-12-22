@@ -201,7 +201,7 @@ int write_SP(char *Measure_file, short room_temperature, short bake_temperature,
 
     mbRead.startAddress = F4_PV;
     mbRead.errorCode = WA_readModbusDevice(portHandle, mbRead.slaveAddress, mbRead.startAddress, mbRead.data, mbRead.numPoints);      // Read from device
-    fprintf(f_ptr, "Thread #1: Reading Process Variable:");
+    fprintf(f_ptr, "Initial temperature: Reading Process Variable:");
     fclose(f_ptr);
     printResponse(Measure_file, &mbRead);
     if ((f_ptr = fopen(Measure_file, "a")) == NULL){
@@ -215,7 +215,7 @@ int write_SP(char *Measure_file, short room_temperature, short bake_temperature,
     mbRead.startAddress = F4_SETPOINT;
     mbRead.data[0] = bake_temperature; //set the lowest index of data to the bake_temperature (only reading/writing one data)
     mbRead.errorCode = WA_writeModbusDevice(portHandle, mbRead.slaveAddress, mbRead.startAddress, mbRead.data, mbRead.numPoints);      // write to device
-    fprintf(f_ptr, "Thread #1: Writing Set Point:");
+    fprintf(f_ptr, "Start heating up: Writing Set Point:");
     fclose(f_ptr);
     printResponse(Measure_file, &mbRead);
     if ((f_ptr = fopen(Measure_file, "a")) == NULL){
@@ -228,11 +228,39 @@ int write_SP(char *Measure_file, short room_temperature, short bake_temperature,
 
     ::Sleep(bake_time);
     
+    mbRead.startAddress = F4_PV;
+    mbRead.errorCode = WA_readModbusDevice(portHandle, mbRead.slaveAddress, mbRead.startAddress, mbRead.data, mbRead.numPoints);      // Read from device
+    fprintf(f_ptr, "After heating up and baking, right before cooling down: Reading Process Variable:");
+    fclose(f_ptr);
+    printResponse(Measure_file, &mbRead);
+    if ((f_ptr = fopen(Measure_file, "a")) == NULL){
+    	printf("Cannot open%s.\n", Measure_file);
+    	return FAIL;
+    }
+    GetLocalTime(&lt);
+    fprintf(f_ptr, "The local time is: %02d:%02d:%02d\n", lt.wHour, lt.wMinute, lt.wSecond);
+
 
     mbRead.startAddress = F4_SETPOINT;
     mbRead.data[0] = room_temperature; //set the lowest index of data (presumably back to before) to the room_temperature (only reading/writing one data)
     mbRead.errorCode = WA_writeModbusDevice(portHandle, mbRead.slaveAddress, mbRead.startAddress, mbRead.data, mbRead.numPoints);      // write to device
-    fprintf(f_ptr, "Thread #1: Writing Set Point:");
+    fprintf(f_ptr, "Start cooling down: Writing Set Point:");
+    fclose(f_ptr);
+    printResponse(Measure_file, &mbRead);
+    if ((f_ptr = fopen(Measure_file, "a")) == NULL){
+    	printf("Cannot open%s.\n", Measure_file);
+    	return FAIL;
+    }
+    GetLocalTime(&lt);
+    fprintf(f_ptr, "The local time is: %02d:%02d:%02d\n", lt.wHour, lt.wMinute, lt.wSecond);
+
+
+    DWORD cooldown_time = 1800000; //give the chamber 30 mins, to make sure to cool down from 125C to 21C
+    ::Sleep(cooldown_time);
+
+    mbRead.startAddress = F4_PV;
+    mbRead.errorCode = WA_readModbusDevice(portHandle, mbRead.slaveAddress, mbRead.startAddress, mbRead.data, mbRead.numPoints);      // Read from device
+    fprintf(f_ptr, "After cooling down: Reading Process Variable:");
     fclose(f_ptr);
     printResponse(Measure_file, &mbRead);
     if ((f_ptr = fopen(Measure_file, "a")) == NULL){

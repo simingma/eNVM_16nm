@@ -94,13 +94,14 @@ int main(void) {
 	_ibwrt(_VSPARE_VAB, "OUTP:STAT ON");
 
 
-	char Measure_file[200];
-	sprintf(Measure_file, "C:/GoogleDrive/working/TEST_temperature-chamber_write_SP_125C-17min_Modbus-RTU_RS-232");
-	powerOFF_bake_powerON(Measure_file, 210, 1250, 1020000);
+	///***test things out: powerOFF_bake_powerON ************/
+	//char Measure_file[200];
+	//sprintf(Measure_file, "C:/GoogleDrive/working/TEST_temperature-chamber_write_SP_125C-17min_Modbus-RTU_RS-232");
+	//powerOFF_bake_powerON(Measure_file, 210, 1250, 1020000);
 
 
 	/* (2) using the implicit timing, software on demand */
-/*	scan_selfcheck("../Scan_files/NIDAQ_test_data", 1);
+	scan_selfcheck("../Scan_files/NIDAQ_test_data", 1);
 	//fool-proof, should alway work
 
 	scan("../Scan_files/Scan_all_zero", 0, 100000.0);
@@ -112,13 +113,24 @@ int main(void) {
 
 	col = 33;
 
+	DWORD baking_times[2] = {14400000, 28800000} // {4 hours, 8 hours}
+	short room_temperature = 210;
+	short bake_temperature = 1250;
+
 	sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", chip, col);
 	IDS_VGS(Measure_file, col, chip, 0);
 	sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource", chip, col);
 	IDS_VGS(Measure_file, col, chip, 1);
+	for (int t=0; t<2; t++){
+	    sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain_bake%02d", chip, col, t+1);
+	    powerOFF_bake_powerON(Measure_file, room_temperature, bake_temperature, baking_times[t]);
+	    IDS_VGS(Measure_file, col, chip, 0);
+	    sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource_bake%02d", chip, col, t+1);
+	    IDS_VGS(Measure_file, col, chip, 1);
+	}
 
 
-	double VDS_col33 = 2.0;
+/*	double VDS_col33 = 2.0;
 	double VGS_col33 = 1.8;
 
 	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_programming_Chip%02d_Col%02d_1msPULSE_VG1p8_VD2p0_VAsource_VBdrain_01", chip, col);
