@@ -50,7 +50,7 @@ int erase_VSDB_tunneling(char* Measure_file, double VSDB, double VDD_DIG_WL, cha
 	sprintf(f_scan_WLpulse_ExtTrig, "../Scan_files/%sPULSE_MUX_ON_%dExtTrig_1000SampRate", pulse_width_char, 1);
 
 	FILE *f_ptr;
-	if ((f_ptr = fopen(Measure_file, "w")) == NULL){
+	if ((f_ptr = fopen(Measure_file, "a")) == NULL){
 		printf("Cannot open%s.\n", Measure_file);
 		return FAIL;
 	}
@@ -1507,7 +1507,7 @@ int Erase_VG_ConstPulse(char* Measure_file, double VDS, double VGS, char* pulse_
 	sprintf(f_scan_WLpulse_ExtTrig, "../Scan_files/%sPULSE_MUX_ON_%dExtTrig_1000SampRate", pulse_width_char, Num_of_Trigger);
 
 	FILE *f_ptr;
-	if ((f_ptr = fopen(Measure_file, "w")) == NULL){
+	if ((f_ptr = fopen(Measure_file, "a")) == NULL){
 		printf("Cannot open%s.\n", Measure_file);
 		return FAIL;
 	}
@@ -1782,7 +1782,7 @@ int Stacked_VG_ConstPulse(char* Measure_file, double VDD_WL, double VSS_WL, doub
 	sprintf(f_scan_WLpulse_ExtTrig, "../Scan_files/%sPULSE_MUX_ON_%dExtTrig_1000SampRate", pulse_width_char, Num_of_trigger);
 
 	FILE *f_ptr;
-	if ((f_ptr = fopen(Measure_file, "w")) == NULL){
+	if ((f_ptr = fopen(Measure_file, "a")) == NULL){
 		printf("Cannot open%s.\n", Measure_file);
 		return FAIL;
 	}
@@ -2147,7 +2147,7 @@ int PBTI_VG_ConstPulse(char* Measure_file, double VDD_WL, double VSS_WL, double 
 	sprintf(f_scan_WLpulse_ExtTrig, "../Scan_files/%sPULSE_MUX_ON_%dExtTrig_1000SampRate", pulse_width_char, Num_of_trigger);
 
 	FILE *f_ptr;
-	if ((f_ptr = fopen(Measure_file, "w")) == NULL){
+	if ((f_ptr = fopen(Measure_file, "a")) == NULL){
 		printf("Cannot open%s.\n", Measure_file);
 		return FAIL;
 	}
@@ -2886,7 +2886,7 @@ int stress_VG_ConstPulse(char* Measure_file, double* VDS, double* VGS, char* pul
 	sprintf(f_scan_WLpulse_ExtTrig, "../Scan_files/%sPULSE_MUX_ON_%dExtTrig_1000SampRate", pulse_width_char, 1);
 
 	FILE *f_ptr;
-	if ((f_ptr = fopen(Measure_file, "w")) == NULL){
+	if ((f_ptr = fopen(Measure_file, "a")) == NULL){
 		printf("Cannot open%s.\n", Measure_file);
 		return FAIL;
 	}
@@ -3231,7 +3231,7 @@ int stress_VG_RampPulse_Isub(char* Measure_file, double* VDS, double* VGS, char*
 	sprintf(f_scan_WLpulse_ExtTrig, "../Scan_files/%sPULSE_MUX_ON_%dExtTrig_1000SampRate", pulse_width_char, 1);
 
 	FILE *f_ptr;
-	if ((f_ptr = fopen(Measure_file, "w")) == NULL){
+	if ((f_ptr = fopen(Measure_file, "a")) == NULL){
 		printf("Cannot open%s.\n", Measure_file);
 		return FAIL;
 	}
@@ -3462,7 +3462,7 @@ int stress_Ext_Imeas_1by1(char* Measure_file, double VDS, double VGS, char* puls
 	scan(f_scan, 0, 100000.0);
 
 	FILE *f_ptr;
-	if ((f_ptr = fopen(Measure_file, "w")) == NULL){
+	if ((f_ptr = fopen(Measure_file, "a")) == NULL){
 		printf("Cannot open%s.\n", Measure_file);
 		return FAIL;
 	}
@@ -3809,7 +3809,7 @@ int IDS_diode(char *f_name, int col, int chip, int direction)
 	scan("../Scan_files/Scan_all_zero", 0, 100000.0);
 	double Isense;
 	FILE *f_ptr;
-	if ((f_ptr = fopen(f_name, "w")) == NULL){
+	if ((f_ptr = fopen(f_name, "a")) == NULL){
 		printf("Cannot open%s.\n", f_name);
 		return FAIL;
 	}
@@ -3908,7 +3908,7 @@ int IDS_VGS(char *f_name, int col, int chip, int direction)
 	scan("../Scan_files/Scan_all_zero", 0, 100000.0);
 	double Isense;
 	FILE *f_ptr;
-	if ((f_ptr = fopen(f_name, "w")) == NULL){
+	if ((f_ptr = fopen(f_name, "a")) == NULL){
 		printf("Cannot open%s.\n", f_name);
 		return FAIL;
 	}
@@ -4018,7 +4018,7 @@ int IDS_VDS(char* f_name, int col, int chip, int direction){
 	//	E3646A_SetVoltage(_VSPARE_VAB, 2, VDD_typical); // VDS = |VB - VA|= VDD_typicalV
 	double Isense;
 	FILE *f_ptr;
-	if ((f_ptr = fopen(f_name, "w")) == NULL){
+	if ((f_ptr = fopen(f_name, "a")) == NULL){
 		printf("Cannot open%s.\n", f_name);
 		return FAIL;
 	}
@@ -4110,7 +4110,7 @@ int Drain_leakage(char* f_name, double VS, double VB, double VG, int col, int ch
 
 	double Isense_Isub, Isense_ID, Isense_IS;
 	FILE *f_ptr;
-	if ((f_ptr = fopen(f_name, "w")) == NULL){
+	if ((f_ptr = fopen(f_name, "a")) == NULL){
 		printf("Cannot open%s.\n", f_name);
 		return FAIL;
 	}
@@ -4186,7 +4186,7 @@ int FN_Erase_leakage(char* f_name, double VSVBVD_max, double VG, double VDD_WL, 
 
 	double Isense_Isub, Isense_ID, Isense_IS;
 	FILE *f_ptr;
-	if ((f_ptr = fopen(f_name, "w")) == NULL){
+	if ((f_ptr = fopen(f_name, "a")) == NULL){
 		printf("Cannot open%s.\n", f_name);
 		return FAIL;
 	}
@@ -4263,7 +4263,7 @@ int VG_realvalue(char* f_name, double VDD_WL_max, int col, int chip, int directi
 
 	double Isense_Isub, Isense_ID, Isense_IS;
 	FILE *f_ptr;
-	if ((f_ptr = fopen(f_name, "w")) == NULL){
+	if ((f_ptr = fopen(f_name, "a")) == NULL){
 		printf("Cannot open%s.\n", f_name);
 		return FAIL;
 	}

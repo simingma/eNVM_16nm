@@ -10,9 +10,14 @@ Header File for all Basic Test Functions
 #include <assert.h>
 #include <comdef.h>
 #include <math.h>
-
 #include <time.h>
 #include <visa.h>
+
+#include <stdio.h>
+#include <windows.h>
+#include <winbase.h>
+#include "WAModbus.h"
+
 
 //***** DSA91304 VISA address and Global Variables *******
 #define DSA91304A_VISA_ADDRESS "USB0::0x0957::0x9001::MY48130009::0::INSTR"
@@ -95,6 +100,47 @@ extern int scanChainRead_Error;
 extern char outchannel_str[];  //PCI-NIDAQ
 extern char inchannel_str[];   //PCI-NIDAQ
 extern char outchannel_str_USB6008[];  //USB-NIDAQ
+
+
+//***************** Temperature chamber extra Modbus_functions.cpp *************
+//***************** majorities declared in WAModbus.H *************
+
+// Here are some possible internal data addresses you may want to use.
+// These correspond to memory locations inside the MODBUS device.
+//
+// WATLOW F4 parameter addresses
+#define F4_PV		 40101		// F4 Input Reading MODBUS address
+#define F4_SETPOINT  40301		// F4 Set Point MODBUS address
+
+
+// Structure to store setting relevant to Reading or Writing daa
+typedef struct tagModBusTag
+{
+	short slaveAddress;		// comm line address, range: 1 to 247
+	long startAddress;		// Memory address of parameter in device range:1-499999
+	short numPoints;		// # consequetive items to read or write from startAddress
+	short data[MAX_MODBUS_DATA_LENGTH-9];	// array containing data read or data to write
+	short errorCode;		// MODBUS return error code
+	short function;			// For DLL internal use only. Will be set to appropriate MODBUS function code
+}ModBusBag;
+
+
+
+//////////////////////////////
+// Communication port settings
+typedef struct tagPortSetup
+{
+	char portStr[80];		// "COM1", "COM2", or other device name.
+	long baudRate;			// 2400, 9600, 19200, etc.
+	short parity;			// 0=None, 1=Odd, 2=Even
+}PortSetup;
+
+
+void printResponse(char *Measure_file, ModBusBag * mb);
+BOOL pollProc(DWORD *parmPtr);
+BOOL startThread(void);
+int write_SP(char *Measure_file, short room_temperature, short bake_temperature, DWORD bake_time);
+
 
 //***************** Nit, Nox characterizations *************
 int Charge_Pumping(char* Measure_file, double VD, double VB, double VS, double VDD_DIG, double VSS_WL, double VDD_WL, char* scan_file, double samp_rate, int Num_of_ExtTrig, int Num_of_Sample, double Trig_Delay, int chip, int col, int direction, int Isub_Rsense);
