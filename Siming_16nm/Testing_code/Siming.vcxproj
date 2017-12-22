@@ -60,7 +60,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>NIDAQmx.lib;gpib-32.obj;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;odbc32.lib;uuid.lib;odbc32.lib;odbccp32.lib;visa32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>WAModbus.lib;NIDAQmx.lib;gpib-32.obj;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;odbc32.lib;uuid.lib;odbccp32.lib;visa32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\Program Files\IVI Foundation\VISA\Win64\Lib_x64\msc;C:\Program Files\IVI Foundation\VISA\Win64\lib\msc;C:\Program Files %28x86%29\IVI Foundation\VISA\WinNT\lib\msc;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -85,16 +85,20 @@
   <ItemGroup>
     <ClCompile Include="GpibFunctions.cpp" />
     <ClCompile Include="HCI_functions.cpp" />
-    <ClCompile Include="MLC_chip11.cpp" />
+    <ClCompile Include="MLC_chip16.cpp" />
+    <ClCompile Include="Modbus_functions.cpp" />
     <ClCompile Include="scan_selfcheck.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="UserTestFunctions.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="E:\libmodbus-3.1.4\msinttypes-master\inttypes.h" />
+    <ClInclude Include="E:\libmodbus-3.1.4\msinttypes-master\stdint.h" />
     <ClInclude Include="ni488.h" />
     <ClInclude Include="NIDAQmx.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TestFunctions.h" />
+    <ClInclude Include="WAModbus.H" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,3 +1,9 @@
+/******************************
+Functions for controlling the temperature chamber
+*******************************/
+#ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS
+#endif
 
 
 #include <stdio.h>
@@ -6,6 +12,19 @@
 #include <conio.h>
 #include <winbase.h>
 #include "WAModbus.h"
+#include "TestFunctions.h"
+
+
+///////////////////////////////////////////////////////////
+// The communication port must be referred to with a HANDLE
+HANDLE portHandle;
+
+////////////////////////////////////////////////////
+// Variables necessary for launching separate thread
+HANDLE hPollThread;
+DWORD dwThreadID = 0;
+DWORD passedParm = 13;
+BOOL pollProcComplete = FALSE;
 
 
 //////////////////////////////////////////////
@@ -16,7 +35,7 @@ void printResponse(char *Measure_file, ModBusBag * mb)
     FILE *f_ptr;
     if ((f_ptr = fopen(Measure_file, "a")) == NULL){
     	printf("Cannot open%s.\n", Measure_file);
-    	return FAIL;
+    	return;
     }
 
 	int j;
@@ -85,7 +104,7 @@ void printResponse(char *Measure_file, ModBusBag * mb)
 
 
 
-
+/*
 ////////////////////////////////////////////
 // This thread reads an F4s Process Variable 
 // and writes that value to the F4s Set Point register
@@ -116,7 +135,8 @@ BOOL pollProc(DWORD *parmPtr)
 	dwThreadID=0;
 	return TRUE;
 }
-
+*/
+/*
 BOOL startThread(void)
 {
      if (NULL == (hPollThread = CreateThread( (LPSECURITY_ATTRIBUTES) NULL, 0, (LPTHREAD_START_ROUTINE) pollProc,
@@ -127,6 +147,7 @@ BOOL startThread(void)
 
 	 return TRUE;
 }
+*/
 
 // set the Set Point to SP=bake_temperature for bake_time, then lower back to SP=room_temperature 
 // temperature in in short interger form, with one decimal infered: 
@@ -136,16 +157,6 @@ BOOL startThread(void)
 // 1 min (60 seconds) corresponds to bake_time = 60000
 int write_SP(char *Measure_file, short room_temperature, short bake_temperature, DWORD bake_time)
 {
-    ///////////////////////////////////////////////////////////
-    // The communication port must be referred to with a HANDLE
-    HANDLE portHandle;
-    
-    ////////////////////////////////////////////////////
-    // Variables necessary for launching separate thread
-    HANDLE hPollThread;
-    DWORD dwThreadID=0;
-    DWORD passedParm=13;
-    BOOL pollProcComplete=FALSE;
 
     PortSetup ps;                // Comm port setup data struct
     ModBusBag mbRead;			  // Read/Write data structs
@@ -164,7 +175,7 @@ int write_SP(char *Measure_file, short room_temperature, short bake_temperature,
          return FAIL;
     }
 
-    startThread();		// illustrate DLL multi-threading capability by starting thread procedure
+    //startThread();		// illustrate DLL multi-threading capability by starting thread procedure
 
     
      ///////////////////////////////////////
@@ -202,7 +213,7 @@ int write_SP(char *Measure_file, short room_temperature, short bake_temperature,
 
 
     mbRead.startAddress = F4_SETPOINT;
-    mbRead->data[0] = bake_temperature; //set the lowest index of data to the bake_temperature (only reading/writing one data)
+    mbRead.data[0] = bake_temperature; //set the lowest index of data to the bake_temperature (only reading/writing one data)
     mbRead.errorCode = WA_writeModbusDevice(portHandle, mbRead.slaveAddress, mbRead.startAddress, mbRead.data, mbRead.numPoints);      // write to device
     fprintf(f_ptr, "Thread #1: Writing Set Point:");
     fclose(f_ptr);
@@ -219,7 +230,7 @@ int write_SP(char *Measure_file, short room_temperature, short bake_temperature,
     
 
     mbRead.startAddress = F4_SETPOINT;
-    mbRead->data[0] = room_temperature; //set the lowest index of data (presumably back to before) to the room_temperature (only reading/writing one data)
+    mbRead.data[0] = room_temperature; //set the lowest index of data (presumably back to before) to the room_temperature (only reading/writing one data)
     mbRead.errorCode = WA_writeModbusDevice(portHandle, mbRead.slaveAddress, mbRead.startAddress, mbRead.data, mbRead.numPoints);      // write to device
     fprintf(f_ptr, "Thread #1: Writing Set Point:");
     fclose(f_ptr);
@@ -232,9 +243,9 @@ int write_SP(char *Measure_file, short room_temperature, short bake_temperature,
     fprintf(f_ptr, "The local time is: %02d:%02d:%02d\n", lt.wHour, lt.wMinute, lt.wSecond);
 
 
-    pollProcComplete=TRUE;
+    //pollProcComplete=TRUE;
 
-    while(dwThreadID);
+    //while(dwThreadID);
 
         // Close COM port here
     WA_closeModbusConnection(portHandle);

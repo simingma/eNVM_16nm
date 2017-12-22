@@ -4303,7 +4303,7 @@ int VG_realvalue(char* f_name, double VDD_WL_max, int col, int chip, int directi
 Scan Chain Load Function
 ******************************/
 
-int scan(char *fn_scanin, int compareMode, float64 samp_freq)
+int scan(char *fn_scanin, int compareMode, float samp_freq)
 {
 	// NIDAQ-6115 (PCI card) 
 	// digital output port for timing critical signals
@@ -4574,7 +4574,7 @@ Error:
 	return 0;
 }
 
-int long_scan(char *fn_scanin, float64 samp_freq)
+int long_scan(char *fn_scanin, float samp_freq)
 {
 	// NIDAQ-6115 (PCI card) 
 	// digital output port for timing critical signals

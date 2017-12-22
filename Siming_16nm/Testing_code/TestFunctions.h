@@ -105,21 +105,13 @@ extern char outchannel_str_USB6008[];  //USB-NIDAQ
 //***************** Temperature chamber extra Modbus_functions.cpp *************
 //***************** majorities declared in WAModbus.H *************
 
-// Here are some possible internal data addresses you may want to use.
-// These correspond to memory locations inside the MODBUS device.
-//
-// WATLOW F4 parameter addresses
-#define F4_PV		 40101		// F4 Input Reading MODBUS address
-#define F4_SETPOINT  40301		// F4 Set Point MODBUS address
-
-
 // Structure to store setting relevant to Reading or Writing daa
 typedef struct tagModBusTag
 {
 	short slaveAddress;		// comm line address, range: 1 to 247
 	long startAddress;		// Memory address of parameter in device range:1-499999
 	short numPoints;		// # consequetive items to read or write from startAddress
-	short data[MAX_MODBUS_DATA_LENGTH-9];	// array containing data read or data to write
+	short data[MAX_MODBUS_DATA_LENGTH - 9];	// array containing data read or data to write
 	short errorCode;		// MODBUS return error code
 	short function;			// For DLL internal use only. Will be set to appropriate MODBUS function code
 }ModBusBag;
@@ -136,9 +128,16 @@ typedef struct tagPortSetup
 }PortSetup;
 
 
+// Here are some possible internal data addresses you may want to use.
+// These correspond to memory locations inside the MODBUS device.
+//
+// WATLOW F4 parameter addresses
+#define F4_PV		 40101		// F4 Input Reading MODBUS address
+#define F4_SETPOINT  40301		// F4 Set Point MODBUS address
+
 void printResponse(char *Measure_file, ModBusBag * mb);
-BOOL pollProc(DWORD *parmPtr);
-BOOL startThread(void);
+//BOOL pollProc(DWORD *parmPtr);
+//BOOL startThread(void);
 int write_SP(char *Measure_file, short room_temperature, short bake_temperature, DWORD bake_time);
 
 
@@ -180,9 +179,9 @@ int Block_Erase(char* Measure_file, double VD, double VB, double VS, double VDD_
 int Erase_VG_ConstPulse(char* Measure_file, double VDS, double VGS, char* pulse_width_char, int chip, int col, int direction, int Num_of_Pulse, int Num_of_Trigger);
 
 //************ Scan Functions *****************
-int long_scan(char *fn_scanin, float64 samp_freq);
+int long_scan(char *fn_scanin, float samp_freq);
 int scan_selfcheck(char *fn_scanin, int compareMode);
-int scan(char *fn_scanin, int compareMode, float64 samp_freq);
+int scan(char *fn_scanin, int compareMode, float samp_freq);
 int scanInternalRead(char *fn_scanin, int *RegsOut);
 int scanFileChk(char *fn_scanin);
 

@@ -30,7 +30,10 @@
     <ClCompile Include="HCI_functions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MLC_chip11.cpp">
+    <ClCompile Include="MLC_chip16.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Modbus_functions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -45,6 +48,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\libmodbus-3.1.4\msinttypes-master\inttypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\libmodbus-3.1.4\msinttypes-master\stdint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WAModbus.H">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
