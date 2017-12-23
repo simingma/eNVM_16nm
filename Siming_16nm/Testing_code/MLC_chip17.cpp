@@ -106,22 +106,22 @@ int main(void) {
 
 	scan("../Scan_files/Scan_all_zero", 0, 100000.0);
 
-	int chip = 16;
+	int chip = 17;
 	int col;
 	char Measure_file[200];
 
 
 	col = 33;
 
-	DWORD baking_times[2] = {14400000, 28800000}; // {4 hours, 8 hours}
+	DWORD baking_times[1] = {14400000}; // {4 hours}
 	short room_temperature = 210;
-	short bake_temperature = 1250;
+	short bake_temperature = 850;
 
-	sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", chip, col);
+/*	sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", chip, col);
 	IDS_VGS(Measure_file, col, chip, 0);
 	sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource", chip, col);
-	IDS_VGS(Measure_file, col, chip, 1);
-	for (int t=0; t<2; t++){
+	IDS_VGS(Measure_file, col, chip, 1); */
+	for (int t=0; t<1; t++){
 	    sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain_bake%02d", chip, col, t+1);
 	    powerOFF_bake_powerON(Measure_file, room_temperature, bake_temperature, baking_times[t]);
 	    IDS_VGS(Measure_file, col, chip, 0);
