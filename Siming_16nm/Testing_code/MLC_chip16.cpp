@@ -117,13 +117,13 @@ int main(void) {
 	short room_temperature = 210;
 	short bake_temperature = 1250;
 
-	sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", chip, col);
+/*	sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", chip, col);
 	IDS_VGS(Measure_file, col, chip, 0);
 	sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource", chip, col);
-	IDS_VGS(Measure_file, col, chip, 1);
-	for (int t=0; t<2; t++){
+	IDS_VGS(Measure_file, col, chip, 1);*/
+	for (int t=1; t<2; t++){
 	    sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain_bake%02d", chip, col, t+1);
-	    powerOFF_bake_powerON(Measure_file, room_temperature, bake_temperature, baking_times[t]);
+//	    powerOFF_bake_powerON(Measure_file, room_temperature, bake_temperature, baking_times[t]);
 	    IDS_VGS(Measure_file, col, chip, 0);
 	    sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource_bake%02d", chip, col, t+1);
 	    IDS_VGS(Measure_file, col, chip, 1);
