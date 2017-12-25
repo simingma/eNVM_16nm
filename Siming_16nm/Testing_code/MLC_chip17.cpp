@@ -113,8 +113,8 @@ int main(void) {
 
 	col = 33;
 
-	//DWORD baking_times[1] = {14400000}; // {4 hours}
-	DWORD baking_times[7] = { 3600000,   7200000,  10800000,  14400000,  28800000,  57600000, 129600000}; // {1, 2, 3, 4, 8, 16, 36} hours
+	DWORD baking_times[2] = {14400000, 14400000}; // {4 hours}
+//	DWORD baking_times[7] = { 3600000,   7200000,  10800000,  14400000,  28800000,  57600000, 129600000}; // {1, 2, 3, 4, 8, 16, 36} hours
 	//cummulative = {1, 3, 6, 10, 18, 34, 70}
 	short room_temperature = 210;
 	short bake_temperature = 850;
@@ -122,15 +122,15 @@ int main(void) {
 /*	sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", chip, col);
 	IDS_VGS(Measure_file, col, chip, 0);
 	sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource", chip, col);
-	IDS_VGS(Measure_file, col, chip, 1); 
-	for (int t=0; t<1; t++){
+	IDS_VGS(Measure_file, col, chip, 1); */
+	for (int t=1; t<2; t++){
 	    sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain_bake%02d", chip, col, t+1);
-	    powerOFF_bake_powerON(Measure_file, room_temperature, bake_temperature, baking_times[t]);
+//	    powerOFF_bake_powerON(Measure_file, room_temperature, bake_temperature, baking_times[t]);
 	    IDS_VGS(Measure_file, col, chip, 0);
 	    sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource_bake%02d", chip, col, t+1);
 	    IDS_VGS(Measure_file, col, chip, 1);
 	}
-*/
+	
 
 	double VDS_col33 = 2.0;
 	double VGS_col33 = 1.8;
