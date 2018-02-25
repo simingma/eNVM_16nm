@@ -151,7 +151,7 @@ int main(void) {
 	    IDS_VGS(Measure_file, col, chip, 1);
 	}
 	*/
-	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_1msPULSE_VG1p8_VD2p0_Ids_Vgs_VAsource_VBdrain_01_85C_bake07_tighen-connections", chip, col);
+	/*sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_1msPULSE_VG1p8_VD2p0_Ids_Vgs_VAsource_VBdrain_01_85C_bake07_tighen-connections", chip, col);
 	IDS_VGS(Measure_file, col, chip, 0);
 	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_1msPULSE_VG1p8_VD2p0_Ids_Vgs_VAdrain_VBsource_01_85C_bake07_tighen-connections", chip, col);
 	IDS_VGS(Measure_file, col, chip, 1);
