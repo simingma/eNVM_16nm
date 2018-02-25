@@ -252,7 +252,7 @@ int main(void) {
 	}
 	*/
 
-	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_VG1p8_VD2p0_Ids_Vgs_VAsource_VBdrain_07_36days-RoomTemp", chip, col);
+/*	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_VG1p8_VD2p0_Ids_Vgs_VAsource_VBdrain_07_36days-RoomTemp", chip, col);
 	IDS_VGS(Measure_file, col, chip, 0);
 	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_VG1p8_VD2p0_Ids_Vgs_VAdrain_VBsource_07_36days-RoomTemp", chip, col);
 	IDS_VGS(Measure_file, col, chip, 1);
@@ -267,8 +267,42 @@ int main(void) {
         Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
 	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_VsVb0_Chip%02d_Col%02d_VAdrain_VBsource", chip, col);
         Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);
+*/
 
+/*	double VS = 0;
+	double VB = 1.0;
+	double VG = 0;
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb1p0_Chip%02d_Col%02d_VAsource_VBdrain", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb1p0_Chip%02d_Col%02d_VAdrain_VBsource", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);
+	*/
 
+/*	double VS = 0;
+	double VB = 1.2;
+	double VG = 0;
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb1p2_Chip%02d_Col%02d_VAsource_VBdrain", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb1p2_Chip%02d_Col%02d_VAdrain_VBsource", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);*/
+
+ /*   sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_AfterSweep_VD2p4_VB0-1p0-1p2_Vg0_Vs0", chip, col);
+    ALL_IDSAT(Measure_file, chip, col, 0);
+	double VS = 0;
+	double VB = 1.2;
+	double VG = 0;
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb1p2_Chip%02d_Col%02d_VAsource_VBdrain_1min-VD2p4", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb1p2_Chip%02d_Col%02d_VAdrain_VBsource_1min-VD2p4", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);
+
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Sweep-to-VD2p4-1min-HOLD_VB1p2_Vg0_Vs0", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);
+	*/
+	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_VG1p8_VD2p0_Ids_Vgs_VAsource_VBdrain_07_36days-RoomTemp_Sweep-to-VD2p4-1min-HOLD_VB1p2_Vg0_Vs0", chip, col);
+	IDS_VGS(Measure_file, col, chip, 0);
+	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_VG1p8_VD2p0_Ids_Vgs_VAdrain_VBsource_07_36days-RoomTemp_Sweep-to-VD2p4-1min-HOLD_VB1p2_Vg0_Vs0", chip, col);
+	IDS_VGS(Measure_file, col, chip, 1);
 
 	// Turn off PSU outputs after tests are done!
 	_ibwrt(_VDD_DIG_VDD_WL, "OUTP:STAT OFF");
