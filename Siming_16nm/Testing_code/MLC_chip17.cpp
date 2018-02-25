@@ -123,7 +123,7 @@ int main(void) {
 	IDS_VGS(Measure_file, col, chip, 0);
 	sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource", chip, col);
 	IDS_VGS(Measure_file, col, chip, 1); */
-	for (int t=1; t<2; t++){
+/*	for (int t=1; t<2; t++){
 	    sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain_bake%02d", chip, col, t+1);
 //	    powerOFF_bake_powerON(Measure_file, room_temperature, bake_temperature, baking_times[t]);
 	    IDS_VGS(Measure_file, col, chip, 0);
@@ -245,6 +245,23 @@ int main(void) {
 	    sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_729msPULSE_VG1p8_VD2p0_Ids_Vgs_VAdrain_VBsource_07_85C_bake%02d", chip, col, t+1);
 	    IDS_VGS(Measure_file, col, chip, 1);
 	}
+	*/
+
+	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_VG1p8_VD2p0_Ids_Vgs_VAsource_VBdrain_07_36days-RoomTemp", chip, col);
+	IDS_VGS(Measure_file, col, chip, 0);
+	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_VG1p8_VD2p0_Ids_Vgs_VAdrain_VBsource_07_36days-RoomTemp", chip, col);
+	IDS_VGS(Measure_file, col, chip, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_36days-RoomTemp", chip, col);
+        ALL_IDSAT(Measure_file, chip, col, 0);
+
+
+	double VS = 0;
+	double VB = 0;
+	double VG = 0;
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_VsVb0_Chip%02d_Col%02d_VAsource_VBdrain", chip, col);
+        Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_VsVb0_Chip%02d_Col%02d_VAdrain_VBsource", chip, col);
+        Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);
 
 
 

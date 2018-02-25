@@ -4078,7 +4078,8 @@ int IDS_VDS(char* f_name, int col, int chip, int direction){
 /******************Add DMM for Is measurement****************/
 int Drain_leakage(char* f_name, double VS, double VB, double VG, int col, int chip, int direction, int MUX_ON){
 
-	double VD_max = 2.8;
+	double VD_max = 2.4;
+	//double VD_max = 2.8;
 	// 1) scan in all Zero's, measure total leakage current through a single column VA --> VB
 	// reduce VAB=VDS, total leakage should decrease
 	char direction_char[200];

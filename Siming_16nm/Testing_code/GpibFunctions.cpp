@@ -58,7 +58,7 @@ int   BoardIndex = 0;			/* Interface Index (GPIB0=0,GPIB1=1,etc.)  */
 int   MM34401A_present = 1;
 
 //****** ELTM6514 Enable *********
-int   ELTM6514_present = 1;
+int   ELTM6514_present = 0; //until ask Jim for borrowing the elctrometer again :)
 
 //****** Write to Device (Send Command)*********
 void _ibwrt(int DeviceId, char *command) {

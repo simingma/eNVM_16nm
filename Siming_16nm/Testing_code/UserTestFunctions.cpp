@@ -2205,9 +2205,9 @@ void MM34410A_6_MeasCurrent_Config(int Device, float NPLCycles, char* TrigSource
 	_ibwrt(Device, "CONFigure:CURRent:DC MIN, MIN");
 	//_ibwrt(_MM34401A, "FUNCtion \"CURRent:DC\"");
 //	_ibwrt(Device, "CURRent:DC:RANGe 0.1"); //100mA range
-//	_ibwrt(Device, "CURRent:DC:RANGe 0.01"); //10mA range
+	_ibwrt(Device, "CURRent:DC:RANGe 0.01"); //10mA range
 //	_ibwrt(Device, "CURRent:DC:RANGe 0.001"); //1mA range (larger sense resistor (thus burden voltage) than  100uA and 10mA ranges!!!)
-	_ibwrt(Device, "CURRent:DC:RANGe 0.0001"); //100uA range
+	//_ibwrt(Device, "CURRent:DC:RANGe 0.0001"); //100uA range
 	_ibwrt(Device, "CURRent:DC:RESolution MINimum"); //100pA resolution
 	char Command_NPLC[100];
 	sprintf(Command_NPLC, "CURRent:DC:NPLCycles %f", NPLCycles);
