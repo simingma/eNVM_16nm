@@ -4079,6 +4079,7 @@ int IDS_VDS(char* f_name, int col, int chip, int direction){
 int Drain_leakage(char* f_name, double VS, double VB, double VG, int col, int chip, int direction, int MUX_ON){
 
 	double VD_max = 2.4;
+//	double VD_max = 1.4;
 	//double VD_max = 2.8;
 	// 1) scan in all Zero's, measure total leakage current through a single column VA --> VB
 	// reduce VAB=VDS, total leakage should decrease
@@ -4093,7 +4094,7 @@ int Drain_leakage(char* f_name, double VS, double VB, double VG, int col, int ch
 		sprintf(MUX_Address_file, "../Scan_files/MUX_Col%02d_VAdrain_VBsource", col);
 	}
 
-	E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VDD_typical);
+//	E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VDD_typical);
 	E3646A_SetVoltage(_VSS_WL_VSS_PW, 1, 0);
 	scan("../Scan_files/Scan_all_zero", 0, 100000.0);
 	E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
@@ -4140,10 +4141,12 @@ int Drain_leakage(char* f_name, double VS, double VB, double VG, int col, int ch
 		fprintf(f_ptr, "VAB=%f  Isub=%.12f\n", VAB, Isense_Isub);
 		fprintf(f_ptr, "VAB=%f  ID=%.12f\n", VAB, Isense_ID);
 		fprintf(f_ptr, "VAB=%f  IS=%.12f\n", VAB, Isense_IS);
-		if (VAB > VD_max - 0.1 / 2.0){
+//		fprintf(f_ptr, "VAB=%f  I_VDD_WL=%.12f\n", VAB, Isense_IS);
+/*		if (VAB > VD_max - 0.1 / 2.0){
 			::Sleep(60000); //hold 1min at VD_max = 2.4V
 			//Temperory coding, need more elegant program later!
 		}
+		*/
 	}
 	E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
 	E3646A_SetVoltage(_VSPARE_VAB, 1, 0); //VSPARE=VS
