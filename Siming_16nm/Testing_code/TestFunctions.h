@@ -149,6 +149,7 @@ int Charge_Pumping_ELTM(char* Measure_file, double* VDBS_list_Vr0, int Num_of_VD
 int IDS_diode(char *f_name, int col, int chip, int direction);
 int IDS_VGS(char *f_name, int col, int chip, int direction);
 int IDS_VDS(char* f_name, int col, int chip, int direction);
+int Col_punchthrough(char* f_name, double VS, double VB, double VG, int col, int chip, int direction, int MUX_ON);
 int Drain_leakage(char* f_name, double VS, double VB, double VG, int col, int chip, int direction, int MUX_ON);
 int FN_Erase_leakage(char* f_name, double VSVBVD_max, double VG, double VDD_WL, int col, int chip, int direction, int MUX_ON);
 int VG_realvalue(char* f_name, double VDD_WL_max, int col, int chip, int direction);

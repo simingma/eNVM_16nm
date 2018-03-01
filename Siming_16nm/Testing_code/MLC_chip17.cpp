@@ -413,10 +413,19 @@ int main(void) {
 
 /*	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Sweep-to-VD2p4_Vg0_Vs0_VDD_WL-0p8-0p6-0p3-0_VB1p4-CC", chip, col);
 	ALL_IDSAT(Measure_file, chip, col, 0);*/
-	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_BJT_Sweep-to-VD2p4_Vg0_Vs0_VDD_WL-0p8-0p6-0p3-0_VB1p4-CC_before-punchthough-VG", chip, col);
-	IDS_VGS(Measure_file, col, chip, 0);
-	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_BJT_Sweep-to-VD2p4_Vg0_Vs0_VDD_WL-0p8-0p6-0p3-0_VB1p4-CC_before-punchthough-VG", chip, col);
-	IDS_VGS(Measure_file, col, chip, 1);
+	//sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_BJT_Sweep-to-VD2p4_Vg0_Vs0_VDD_WL-0p8-0p6-0p3-0_VB1p4-CC_before-punchthough-VG", chip, col);
+	//IDS_VGS(Measure_file, col, chip, 0);
+	//sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_BJT_Sweep-to-VD2p4_Vg0_Vs0_VDD_WL-0p8-0p6-0p3-0_VB1p4-CC_before-punchthough-VG", chip, col);
+	//IDS_VGS(Measure_file, col, chip, 1);
+
+	double VS = 0;
+	double VB = 0;
+	double VG = 0.3;
+	sprintf(Measure_file, "C:/GoogleDrive/working/Punchthrough_Current_Components_VDD_IO_2p4_VDD_WL-0p3_Vg0p3_Vs0_Vb0_Chip%02d_Col%02d_VAsource_VBdrain", chip, col);
+	Col_punchthrough(Measure_file, VS, VB, VG, col, chip, 0, 1);                             
+	sprintf(Measure_file, "C:/GoogleDrive/working/Punchthrough_Current_Components_VDD_IO_2p4_VDD_WL-0p3_Vg0p3_Vs0_Vb0_Chip%02d_Col%02d_VAdrain_VBsource", chip, col);
+	Col_punchthrough(Measure_file, VS, VB, VG, col, chip, 1, 1);
+
 
 	// Turn off PSU outputs after tests are done!
 	_ibwrt(_VDD_DIG_VDD_WL, "OUTP:STAT OFF");

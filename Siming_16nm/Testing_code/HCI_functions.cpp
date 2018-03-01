@@ -4074,6 +4074,97 @@ int IDS_VDS(char* f_name, int col, int chip, int direction){
 	return 0;
 }
 
+/******************ADAPTED from Drain_leakage******************/
+/******************Add scan-in allWL of a column for column-wise punchthrough in "weak-inversion"****************/
+int Col_punchthrough(char* f_name, double VS, double VB, double VG, int col, int chip, int direction, int MUX_ON){
+
+	double VD_max = 2.4;
+//	double VD_max = 1.4;
+	//double VD_max = 2.8;
+	// 1) scan in all Zero's, measure total leakage current through a single column VA --> VB
+	// reduce VAB=VDS, total leakage should decrease
+	char direction_char[200];
+	char MUX_Address_file[200];
+	if (direction == 0){
+		sprintf(direction_char, "VA = source, VB = drain");
+		sprintf(MUX_Address_file, "../Scan_files/MUX_Col%02d_VAsource_VBdrain", col);
+	}
+	else{
+		sprintf(direction_char, "VA = drain, VB = source");
+		sprintf(MUX_Address_file, "../Scan_files/MUX_Col%02d_VAdrain_VBsource", col);
+	}
+
+	scan("../Scan_files/Scan_all_zero", 0, 100000.0);
+	E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
+	DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled, POLARITY[1:2]=0
+	//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+	if (MUX_ON == 1){
+		DO_USB6008(MUX_Address_file);
+		//scan("../Scan_files/MUX_ON", 0, 100000.0);
+	}
+	// otherwise (MUX_ON == 0): keep mux disconnected, 
+	// to measure current components (Is, Id, Isub) at various (VS, VD, VB) voltages
+	// without any column being connected to PSU+ and PSU-
+	// used to cancel out these currents when plotting data
+	// also to moniter whether these current components change overtime due to degradation
+
+	double Isense_Isub, Isense_ID, Isense_IS;
+	FILE *f_ptr;
+	if ((f_ptr = fopen(f_name, "a")) == NULL){
+		printf("Cannot open%s.\n", f_name);
+		return FAIL;
+	}
+
+	if (MUX_ON == 1){
+		fprintf(f_ptr, "Total leakage current from column[%d], chip %d, Vg=%f, Vs=%f, Vb=%f, sweep VAB=Vd\n%s\n", col, chip, VG, VS, VB, direction_char);
+		fprintf(f_ptr, "Total Leakage through column[%d]:\n", col);
+	}
+	if (MUX_ON == 0){
+		fprintf(f_ptr, "Total leakage current when MUX_OFF, chip %d, Vg=%f, Vs=%f, Vb=%f, sweep VAB=Vd\n%s\n", chip, VG, VS, VB, direction_char);
+	}
+	float VAB;
+
+	char f_scan[200];
+	sprintf(f_scan, "../Scan_files/Scan_Col%02d_allWL_Pulse", col);
+	scan(f_scan, 0, 100000.0);
+	E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VG); //VDD_WL = VG
+	E3646A_SetVoltage(_VDD_DIG_VDD_WL, 1, VG); //VDD_DIG = VG
+	E3646A_SetVoltage(_VSS_WL_VSS_PW, 1, 0);
+	E3646A_SetVoltage(_VSPARE_VAB, 1, VS); //VSPARE=VS
+	E3646A_SetVoltage(_VSS_WL_VSS_PW, 2, VB);    //VSS_PW=VB
+
+	MM34401A_MeasCurrent_Config(_MM34401A, 10, "IMM", 0.1, 1, 1);
+	MM34410A_6_MeasCurrent_Config(_MM34410A_6, 10, "IMM", 0.1, 1, 1);
+	MM34401A_MeasCurrent_Config(_MM34401A_7, 10, "IMM", 0.1, 1, 1);
+
+	for (VAB = 0; VAB <= VD_max + 0.00001; VAB += 0.1){
+		E3646A_SetVoltage(_VSPARE_VAB, 2, VAB);
+		Isense_Isub = MM34401A_MeasCurrent(_MM34410A_6); //measure substrate current through Current Meter
+		Isense_ID = MM34401A_MeasCurrent(_MM34401A); //measure Drain side leakage current through Current Meter
+		Isense_IS = MM34401A_MeasCurrent(_MM34401A_7); //measure Source side leakage current through Current Meter
+		fprintf(f_ptr, "VAB=%f  Isub=%.12f\n", VAB, Isense_Isub);
+		fprintf(f_ptr, "VAB=%f  ID=%.12f\n", VAB, Isense_ID);
+		fprintf(f_ptr, "VAB=%f  IS=%.12f\n", VAB, Isense_IS);
+//		fprintf(f_ptr, "VAB=%f  I_VDD_WL=%.12f\n", VAB, Isense_IS);
+/*		if (VAB > VD_max - 0.1 / 2.0){
+			::Sleep(60000); //hold 1min at VD_max = 2.4V
+			//Temperory coding, need more elegant program later!
+		}
+		*/
+	}
+	scan("../Scan_files/NOpulse", 0, 100000.0);
+	E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
+	E3646A_SetVoltage(_VSPARE_VAB, 1, 0); //VSPARE=VS
+	E3646A_SetVoltage(_VSS_WL_VSS_PW, 2, 0);    //VSS_PW=VB
+	E3646A_SetVoltage(_VDD_DIG_VDD_WL, 1, VDD_typical); 
+	E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VDD_typical); 
+	DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled, POLARITY[1:2]=0
+	//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+	fclose(f_ptr);
+	return 0;
+}
+
+
 /******************ADAPTED from Siming_28nm******************/
 /******************Add DMM for Is measurement****************/
 int Drain_leakage(char* f_name, double VS, double VB, double VG, int col, int chip, int direction, int MUX_ON){
