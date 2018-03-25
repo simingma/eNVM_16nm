@@ -68,11 +68,12 @@ int main(void) {
 	E3646A_SetVoltage_CurrentLimit(_VSS_WL_VSS_PW, 1, 0, 0.2);    //VSS_WL=0V, 12mA limit
 
 	//ATTENTION! might need to increase the current limit on VSS_PW for erasing!!!
-	E3646A_SetVoltage_CurrentLimit(_VSS_WL_VSS_PW, 2, 0, 0.03);    //VSS_PW=0V, 30mA limit
-	//E3646A_SetVoltage_CurrentLimit(_VSS_WL_VSS_PW, 2, 0, 0.012);    //VSS_PW=0V, 12mA limit
+	//E3646A_SetVoltage_CurrentLimit(_VSS_WL_VSS_PW, 2, 0, 0.03);    //VSS_PW=0V, 30mA limit
+	E3646A_SetVoltage_CurrentLimit(_VSS_WL_VSS_PW, 2, 0, 0.07);    //VSS_PW=0V, 12mA limit
 
 	// double VALUE_VDD_IO = 1.8;
 	double VALUE_VDD_IO = 2.4;
+	//double VALUE_VDD_IO = 2.8;
 	//	E3646A_SetVoltage_CurrentLimit(_VDD_IO_V_NIDAQ, 1, 1.8, 0.01); //VDD_IO=1.8V, 10mA limit
 	E3646A_SetVoltage_CurrentLimit(_VDD_IO_V_NIDAQ, 1, VALUE_VDD_IO, 0.05); //VDD_IO=2.4V, VAB to VDD_IO (ESD clamp) diode 0.6~0.7V turn on
 	//ATTENTION!
@@ -81,11 +82,11 @@ int main(void) {
 	//      E3646A_SetVoltage_CurrentLimit(_VDD_IO_V_NIDAQ, 2, 5.0, 0.02); //V_NIDAQ=5V, 10mA limit 
 	// limit quiescent DC current on V_NIDAQ!!!
 	//_VSPARE is used for VS source terminal ("PSU_NEG")
-	E3646A_SetVoltage_CurrentLimit(_VSPARE_VAB, 1, 0, 0.02);
-	//E3646A_SetVoltage_CurrentLimit(_VSPARE_VAB, 1, 0, 0.012);
+//	E3646A_SetVoltage_CurrentLimit(_VSPARE_VAB, 1, 0, 0.02);
+	E3646A_SetVoltage_CurrentLimit(_VSPARE_VAB, 1, 0, 0.05);
 	//the positive output of VAB connects to the VD drain terminal ("PSU_POS"), while its negative output is grounded
-	E3646A_SetVoltage_CurrentLimit(_VSPARE_VAB, 2, 0.0, 0.02);
-	//E3646A_SetVoltage_CurrentLimit(_VSPARE_VAB, 2, 0.0, 0.012);     // 12mA limit, same as DMM range  
+//	E3646A_SetVoltage_CurrentLimit(_VSPARE_VAB, 2, 0.0, 0.02);
+	E3646A_SetVoltage_CurrentLimit(_VSPARE_VAB, 2, 0.0, 0.05);     // 12mA limit, same as DMM range  
 	// *** configure |VB - VA|=0V before turning on PSU output!***
 	// Turn on PSU outputs:
 	_ibwrt(_VDD_DIG_VDD_WL, "OUTP:STAT ON");
@@ -114,10 +115,10 @@ int main(void) {
 	col = 33;
 
 //	DWORD baking_times[2] = {14400000, 14400000}; // {4 hours}
-	DWORD baking_times[7] = { 3600000,   7200000,  10800000,  14400000,  28800000,  57600000, 129600000}; // {1, 2, 3, 4, 8, 16, 36} hours
+/*	DWORD baking_times[7] = { 3600000,   7200000,  10800000,  14400000,  28800000,  57600000, 129600000}; // {1, 2, 3, 4, 8, 16, 36} hours
 	//cummulative = {1, 3, 6, 10, 18, 34, 70}
 	short room_temperature = 210;
-	short bake_temperature = 850;
+	short bake_temperature = 850;*/
 
 /*	sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", chip, col);
 	IDS_VGS(Measure_file, col, chip, 0);
@@ -418,13 +419,310 @@ int main(void) {
 	//sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_BJT_Sweep-to-VD2p4_Vg0_Vs0_VDD_WL-0p8-0p6-0p3-0_VB1p4-CC_before-punchthough-VG", chip, col);
 	//IDS_VGS(Measure_file, col, chip, 1);
 
-	double VS = 0;
+/*	double VS = 0;
 	double VB = 0;
 	double VG = 0.3;
 	sprintf(Measure_file, "C:/GoogleDrive/working/Punchthrough_Current_Components_VDD_IO_2p4_VDD_WL-0p3_Vg0p3_Vs0_Vb0_Chip%02d_Col%02d_VAsource_VBdrain", chip, col);
 	Col_punchthrough(Measure_file, VS, VB, VG, col, chip, 0, 1);                             
 	sprintf(Measure_file, "C:/GoogleDrive/working/Punchthrough_Current_Components_VDD_IO_2p4_VDD_WL-0p3_Vg0p3_Vs0_Vb0_Chip%02d_Col%02d_VAdrain_VBsource", chip, col);
+	Col_punchthrough(Measure_file, VS, VB, VG, col, chip, 1, 1);*/
+
+/*	double VS = 0;
+	double VB = 0;
+	double VG = 0.6;
+	sprintf(Measure_file, "C:/GoogleDrive/working/Punchthrough_Current_Components_VDD_IO_2p4_VDD_WL-0p6_Vg0p6_Vs0_Vb0_Chip%02d_Col%02d_VAsource_VBdrain", chip, col);
+	Col_punchthrough(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Punchthrough_Current_Components_VDD_IO_2p4_VDD_WL-0p6_Vg0p6_Vs0_Vb0_Chip%02d_Col%02d_VAdrain_VBsource", chip, col);
 	Col_punchthrough(Measure_file, VS, VB, VG, col, chip, 1, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Col_punchthrough_VG0p3-0p6", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);*/
+
+/*	double VS = 0;
+	double VB = 0;
+	double VG = 1.8;
+	sprintf(Measure_file, "C:/GoogleDrive/working/SweepVD-1p3_VDD_IO_2p4_VDD_WL-1p8_Vg1p8_Vs0_Vb0_Chip%02d_Col%02d_VAsource_VBdrain", chip, col);
+	Col_punchthrough(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/SweepVD-1p3_VDD_IO_2p4_VDD_WL-1p8_Vg1p8_Vs0_Vb0_Chip%02d_Col%02d_VAdrain_VBsource", chip, col);
+	Col_punchthrough(Measure_file, VS, VB, VG, col, chip, 1, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_VG1p8_Vs0_Vb0_SweepVD-1p3", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);*/
+
+/*	double VS = 0;
+	double VB = 0;
+	double VG = 0.6;
+	sprintf(Measure_file, "C:/GoogleDrive/working/Punchthrough_Current_Components_VDD_IO_2p4_VDD_WL-0p6_Vg0p6_Vs0_Vb0_Chip%02d_Col%02d_VAsource_VBdrain_SweepVD2p4-1min-HOLD", chip, col);
+	Col_punchthrough(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Punchthrough_Current_Components_VDD_IO_2p4_VDD_WL-0p6_Vg0p6_Vs0_Vb0_Chip%02d_Col%02d_VAdrain_VBsource_SweepVD2p4-1min-HOLD", chip, col);
+	Col_punchthrough(Measure_file, VS, VB, VG, col, chip, 1, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Col_punchthrough_VG0p6_SweepVD-1min-HOLD", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);*/
+
+/*	double VS = 0;
+	double VB = 1.6;
+	double VG = 0;
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb1p6_VDD_WL-0p8_Chip%02d_Col%02d_VAsource_VBdrain_SweepVD2p4-1min-HOLD", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb1p6_VDD_WL-0p8_Chip%02d_Col%02d_VAdrain_VBsource_SweepVD2p4-1min-HOLD", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1); 
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Col_Vg0_Vs0_Vb1p6_VDD_WL-0p8_SweepVD2p4-1min-HOLD", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);*/
+
+/*	double VS = 0;
+	double VB = 1.6;
+	double VG = 0;
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb1p6_VDD_WL-0p8_Chip%02d_Col%02d_VAsource_VBdrain_SweepVD2p4-10min-HOLD", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb1p6_VDD_WL-0p8_Chip%02d_Col%02d_VAdrain_VBsource_SweepVD2p4-10min-HOLD", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Col_Vg0_Vs0_Vb1p6_VDD_WL-0p8_SweepVD2p4-10min-HOLD", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);*/
+
+/*	double VS = 0;
+	double VB = 1.6;
+	double VG = 0;
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb1p6_VDD_WL-0p8_Chip%02d_Col%02d_VAsource_VBdrain_SweepVD2p4-100min-HOLD", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb1p6_VDD_WL-0p8_Chip%02d_Col%02d_VAdrain_VBsource_SweepVD2p4-100min-HOLD", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Vg0_Vs0_Vb1p6_VDD_WL-0p8_SweepVD2p4-100min-HOLD-both-directions", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);
+	sprintf(Measure_file, "C:/GoogleDrive/working/IDS_VGS_VAsource_VBdrain_Chip%02d_Col%02d_BJT_Vg0_Vs0_Vb1p6_VDD_WL-0p8_SweepVD2p4-100min-HOLD-both-directions", chip, col);
+	IDS_VGS(Measure_file, col, chip, 0);
+	sprintf(Measure_file, "C:/GoogleDrive/working/IDS_VGS_VAdrain_VBsource_Chip%02d_Col%02d_BJT_Vg0_Vs0_Vb1p6_VDD_WL-0p8_SweepVD2p4-100min-HOLD-both-directions", chip, col);
+	IDS_VGS(Measure_file, col, chip, 1);
+
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 1, 1.6, 1.2); //VDD_DIG=VDD_WL=1.6
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 2, 1.6, 0.2); //VDD_WL=1.6
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb1p6_VDD_WL-1p6_Chip%02d_Col%02d_VAsource_VBdrain_SweepVD2p4_5ohm-VS-PSU_I_VDD_WL", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb1p6_VDD_WL-1p6_Chip%02d_Col%02d_VAdrain_VBsource_SweepVD2p4_5ohm-VS-PSU_I_VDD_WL", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Vg0_Vs0_Vb1p6_VDD_WL-1p6_SweepVD2p4-5ohm-VS-PSU", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);*/
+
+/*	double VS = 0;
+	double VB = 2.4;
+	double VG = 0;
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 1, 1.8, 1.2); //VDD_DIG=VDD_WL=1.6
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 2, 1.8, 0.2); //VDD_WL=1.6
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb2p4_VDD_WL-1p8_Chip%02d_Col%02d_VAsource_VBdrain_SweepVD2p4_1ohm-VS-PSU_I_VDD_WL", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb2p4_VDD_WL-1p8_Chip%02d_Col%02d_VAdrain_VBsource_SweepVD2p4_1ohm-VS-PSU_I_VDD_WL", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);*/
+
+/*	double VS = 0;
+	double VB = 1.8;
+	double VG = 0;
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 1, 1.8, 1.2); //VDD_DIG=VDD_WL=1.6
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 2, 1.8, 0.2); //VDD_WL=1.6
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb1p8_VDD_WL-1p8_Chip%02d_Col%02d_VAsource_VBdrain_SweepVD2p4_1ohm-VS-PSU", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb1p8_VDD_WL-1p8_Chip%02d_Col%02d_VAdrain_VBsource_SweepVD2p4_1ohm-VS-PSU", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);
+
+	VB = 2.0;
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 1, 1.8, 1.2); //VDD_DIG=VDD_WL=1.6
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 2, 1.8, 0.2); //VDD_WL=1.6
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb2p0_VDD_WL-1p8_Chip%02d_Col%02d_VAsource_VBdrain_SweepVD2p4_1ohm-VS-PSU", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb2p0_VDD_WL-1p8_Chip%02d_Col%02d_VAdrain_VBsource_SweepVD2p4_1ohm-VS-PSU", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);
+
+	VB = 2.2;
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 1, 1.8, 1.2); //VDD_DIG=VDD_WL=1.6
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 2, 1.8, 0.2); //VDD_WL=1.6
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb2p2_VDD_WL-1p8_Chip%02d_Col%02d_VAsource_VBdrain_SweepVD2p4_1ohm-VS-PSU", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb2p2_VDD_WL-1p8_Chip%02d_Col%02d_VAdrain_VBsource_SweepVD2p4_1ohm-VS-PSU", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);
+
+	VB = 2.4;
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 1, 1.8, 1.2); //VDD_DIG=VDD_WL=1.6
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 2, 1.8, 0.2); //VDD_WL=1.6
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb2p4_VDD_WL-1p8_Chip%02d_Col%02d_VAsource_VBdrain_SweepVD2p4_1ohm-VS-PSU", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb2p4_VDD_WL-1p8_Chip%02d_Col%02d_VAdrain_VBsource_SweepVD2p4_1ohm-VS-PSU", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);
+
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Vg0_Vs0_Vb1p8-2p4_VDD_WL-1p8_SweepVD2p4-1ohm-VS-PSU", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);*/
+
+/*	double VS = 0;
+	double VB = 2.4;
+	double VG = 0;
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 1, 1.8, 1.2); //VDD_DIG=VDD_WL=1.6
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 2, 1.8, 0.2); //VDD_WL=1.6
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb2p4_VDD_WL-1p8_Chip%02d_Col%02d_VAsource_VBdrain_SweepVD2p4-10min-HOLD_1ohm-VS-PSU", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb2p4_VDD_WL-1p8_Chip%02d_Col%02d_VAdrain_VBsource_SweepVD2p4-10min-HOLD_1ohm-VS-PSU", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Vg0_Vs0_Vb1p8-2p4_VDD_WL-1p8_SweepVD2p4-10min-HOLD_1ohm-VS-PSU", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);
+	sprintf(Measure_file, "C:/GoogleDrive/working/IDS_VGS_VAsource_VBdrain_Chip%02d_Col%02d_BJT_Vg0_Vs0_Vb2p4_VDD_WL-1p8_SweepVD2p4-10min-HOLD-both-directions_1ohm-VS-PSU", chip, col);
+	IDS_VGS(Measure_file, col, chip, 0);
+	sprintf(Measure_file, "C:/GoogleDrive/working/IDS_VGS_VAdrain_VBsource_Chip%02d_Col%02d_BJT_Vg0_Vs0_Vb2p4_VDD_WL-1p8_SweepVD2p4-10min-HOLD-both-directions_1ohm-VS-PSU", chip, col);
+	IDS_VGS(Measure_file, col, chip, 1);*/
+
+/*	double VS = 0;
+	double VB = 0;
+	double VG = 0.6;
+	sprintf(Measure_file, "C:/GoogleDrive/working/2nd_Punchthrough_Current_Components_VDD_IO_2p4_VDD_WL-0p6_Vg0p6_Vs0_Vb0_Chip%02d_Col%02d_VAsource_VBdrain_SweepVD2p4-1min-HOLD", chip, col);
+	Col_punchthrough(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/2nd_Punchthrough_Current_Components_VDD_IO_2p4_VDD_WL-0p6_Vg0p6_Vs0_Vb0_Chip%02d_Col%02d_VAdrain_VBsource_SweepVD2p4-1min-HOLD", chip, col);
+	Col_punchthrough(Measure_file, VS, VB, VG, col, chip, 1, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Col_2nd_punchthrough_VG0p6_SweepVD-1min-HOLD", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);*/
+
+/*	double VS = 0;
+	double VB = 0;
+	double VG = 0.5;
+	sprintf(Measure_file, "C:/GoogleDrive/working/Punchthrough_Current_Components_VDD_IO_2p4_VDD_WL-0p5_Vg0p5_Vs0_Vb0_Chip%02d_Col%02d_VAsource_VBdrain_SweepVD2p4-1min-HOLD", chip, col);
+	Col_punchthrough(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Punchthrough_Current_Components_VDD_IO_2p4_VDD_WL-0p5_Vg0p5_Vs0_Vb0_Chip%02d_Col%02d_VAdrain_VBsource_SweepVD2p4-1min-HOLD", chip, col);
+	Col_punchthrough(Measure_file, VS, VB, VG, col, chip, 1, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Col_punchthrough_VG0p5_SweepVD2p4-1min-HOLD", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);*/
+
+/*	double VS = 0;
+	double VB = 0;
+	double VG = 0.4;
+	sprintf(Measure_file, "C:/GoogleDrive/working/Punchthrough_Current_Components_VDD_IO_2p4_VDD_WL-0p4_Vg0p4_Vs0_Vb0_Chip%02d_Col%02d_VAsource_VBdrain_SweepVD2p4-1min-HOLD", chip, col);
+	Col_punchthrough(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Punchthrough_Current_Components_VDD_IO_2p4_VDD_WL-0p4_Vg0p4_Vs0_Vb0_Chip%02d_Col%02d_VAdrain_VBsource_SweepVD2p4-1min-HOLD", chip, col);
+	Col_punchthrough(Measure_file, VS, VB, VG, col, chip, 1, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Col_punchthrough_VG0p4_SweepVD2p4-1min-HOLD", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);*/
+
+/*	double VS = 0;
+	double VB = 2.4;
+	double VG = 0;
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 1, 1.8, 1.2); //VDD_DIG=VDD_WL=1.6
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 2, 1.8, 0.2); //VDD_WL=1.6
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb2p4_VDD_WL-1p8_After-punchthrough_Chip%02d_Col%02d_VAsource_VBdrain_SweepVD2p4-1min-HOLD_1ohm-VS-PSU", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb2p4_VDD_WL-1p8_After-punchthrough_Chip%02d_Col%02d_VAdrain_VBsource_SweepVD2p4-1min-HOLD_1ohm-VS-PSU", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Vg0_Vs0_Vb2p4_VDD_WL-1p8_After-punchthrough_SweepVD2p4-1min-HOLD_1ohm-VS-PSU", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);*/
+
+	/*double VS = 0;
+	double VB = 2.4;
+	double VG = 0;
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 1, 1.8, 1.2); //VDD_DIG=VDD_WL=1.6
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 2, 1.8, 0.2); //VDD_WL=1.6
+	sprintf(Measure_file, "C:/GoogleDrive/working/PN-junctions-VBS-VBD-2p4V_VDD_IO_2p4_Vg0_Vb2p4_Vs-Vd-0V_VDD_WL-1p8_After-punchthrough_Chip%02d_Col%02d_VAsource_VBdrain_1min-HOLD_1ohm-VS-PSU", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/PN-junctions-VBS-VBD-2p4V_VDD_IO_2p4_Vg0_Vb2p4_Vs-Vd-0V_VDD_WL-1p8_After-punchthrough_Chip%02d_Col%02d_VAdrain_VBsource_1min-HOLD_1ohm-VS-PSU", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Vg0_Vs-Vd-0V_Vb2p4_PN-junctions-VBS-VBD-2p4V_VDD_WL-1p8_After-punchthrough_1min-HOLD_1ohm-VS-PSU", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);*/
+
+/*	double VS = 0;
+	double VB = 2.4;
+	double VG = 0;
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 1, 1.8, 1.2); //VDD_DIG=VDD_WL=1.6
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 2, 1.8, 0.2); //VDD_WL=1.6
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p8_Vg0_Vs0_Vb2p4_VDD_WL-1p8_After-PN-junctions-1min_Chip%02d_Col%02d_VAsource_VBdrain_SweepVD2p8-1min-HOLD_1ohm-VS-PSU", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p8_Vg0_Vs0_Vb2p4_VDD_WL-1p8_After-PN-junctions-1min_Chip%02d_Col%02d_VAdrain_VBsource_SweepVD2p8-1min-HOLD_1ohm-VS-PSU", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Vg0_Vs0_Vb2p4_VDD_WL-1p8_After-PN-junctions-1min_SweepVD2p8-1min-HOLD_1ohm-VS-PSU", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);*/
+
+/*	double VS = 0;
+	double VB = 2.4;
+	double VG = 0;
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 1, 1.8, 1.2); //VDD_DIG=VDD_WL=1.6
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 2, 1.8, 0.2); //VDD_WL=1.6
+	sprintf(Measure_file, "C:/GoogleDrive/working/PN-junctions-VBS-VBD-2p4V_VDD_IO_2p8_Vg0_Vb2p4_Vs-Vd-0V_VDD_WL-1p8_After-BJT-VD2p8_Chip%02d_Col%02d_VAsource_VBdrain_1min-HOLD_1ohm-VS-PSU", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/PN-junctions-VBS-VBD-2p4V_VDD_IO_2p8_Vg0_Vb2p4_Vs-Vd-0V_VDD_WL-1p8_After-BJT-VD2p8_Chip%02d_Col%02d_VAdrain_VBsource_1min-HOLD_1ohm-VS-PSU", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Vg0_Vs-Vd-0V_Vb2p4_PN-junctions-VBS-VBD-2p4V_VDD_WL-1p8_After-BJT-VD2p8_1min-HOLD_1ohm-VS-PSU", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);*/
+
+/*	double VS = 0;
+	double VB = 2.4;
+	double VG = 0;
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 1, 1.8, 1.2); //VDD_DIG=VDD_WL=1.6
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 2, 1.8, 0.2); //VDD_WL=1.6
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb2p4_VDD_WL-1p8_After-PN-junctions-1min_Chip%02d_Col%02d_VAsource_VBdrain_SweepVD2p4-10min-HOLD_1ohm-VS-PSU", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb2p4_VDD_WL-1p8_After-PN-junctions-1min_Chip%02d_Col%02d_VAdrain_VBsource_SweepVD2p4-10min-HOLD_1ohm-VS-PSU", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Vg0_Vs0_Vb2p4_VDD_WL-1p8_After-PN-junctions-1min_SweepVD2p4-10min-HOLD_1ohm-VS-PSU", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);
+	sprintf(Measure_file, "C:/GoogleDrive/working/IDS_VGS_VAsource_VBdrain_Chip%02d_Col%02d_BJT_Vg0_Vs0_Vb2p4_VDD_WL-1p8_After-PN-junctions-1min_SweepVD2p4-10min-HOLD-both-directions_1ohm-VS-PSU", chip, col);
+	IDS_VGS(Measure_file, col, chip, 0);
+	sprintf(Measure_file, "C:/GoogleDrive/working/IDS_VGS_VAdrain_VBsource_Chip%02d_Col%02d_BJT_Vg0_Vs0_Vb2p4_VDD_WL-1p8_After-PN-junctions-1min_SweepVD2p4-10min-HOLD-both-directions_1ohm-VS-PSU", chip, col);
+	IDS_VGS(Measure_file, col, chip, 1);
+
+
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 1, 1.8, 1.2); //VDD_DIG=VDD_WL=1.6
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 2, 1.8, 0.2); //VDD_WL=1.6
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb2p4_VDD_WL-1p8_Chip%02d_Col%02d_VAsource_VBdrain_SweepVD2p4-6hours-HOLD_1ohm-VS-PSU", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Vg0_Vs0_Vb2p4_VDD_WL-1p8_SweepVD2p4-6hours-HOLD-VAsource_VBdrain_1ohm-VS-PSU", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);
+	sprintf(Measure_file, "C:/GoogleDrive/working/IDS_VGS_VAsource_VBdrain_Chip%02d_Col%02d_BJT_Vg0_Vs0_Vb2p4_VDD_WL-1p8_After-PN-junctions-1min_SweepVD2p4-6hours-HOLD-VAsource_VBdrain_1ohm-VS-PSU", chip, col);
+	IDS_VGS(Measure_file, col, chip, 0);
+	sprintf(Measure_file, "C:/GoogleDrive/working/IDS_VGS_VAdrain_VBsource_Chip%02d_Col%02d_BJT_Vg0_Vs0_Vb2p4_VDD_WL-1p8_After-PN-junctions-1min_SweepVD2p4-6hours-HOLD-VAsource_VBdrain_1ohm-VS-PSU", chip, col);
+	IDS_VGS(Measure_file, col, chip, 1);
+
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb2p4_VDD_WL-1p8_Chip%02d_Col%02d_VAdrain_VBsource_SweepVD2p4-6hours-HOLD_1ohm-VS-PSU", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Vg0_Vs0_Vb2p4_VDD_WL-1p8_SweepVD2p4-6hours-HOLD-VAdrain_VBsource_1ohm-VS-PSU", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);
+	sprintf(Measure_file, "C:/GoogleDrive/working/IDS_VGS_VAsource_VBdrain_Chip%02d_Col%02d_BJT_Vg0_Vs0_Vb2p4_VDD_WL-1p8_After-PN-junctions-1min_SweepVD2p4-6hours-HOLD-VAdrain_VBsource_1ohm-VS-PSU", chip, col);
+	IDS_VGS(Measure_file, col, chip, 0);
+	sprintf(Measure_file, "C:/GoogleDrive/working/IDS_VGS_VAdrain_VBsource_Chip%02d_Col%02d_BJT_Vg0_Vs0_Vb2p4_VDD_WL-1p8_After-PN-junctions-1min_SweepVD2p4-6hours-HOLD-VAdrain_VBsource_1ohm-VS-PSU", chip, col);
+	IDS_VGS(Measure_file, col, chip, 1);*/
+
+/*	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_programming_Chip%02d_Col%02d_729msPULSE_VG1p8_VD2p0_VAsource_VBdrain_07_Erase-Cycle-1", chip, col);
+	MLC_programming(Measure_file, VDS_col33, VGS_col33, "729ms", chip, col, 0, 280, 0, 0.000020);
+
+	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_729msPULSE_VG1p8_VD2p0_Ids_Vgs_VAsource_VBdrain_07_Erase-Cycle-1", chip, col);
+	IDS_VGS(Measure_file, col, chip, 0);
+	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_Chip%02d_Col%02d_729msPULSE_VG1p8_VD2p0_Ids_Vgs_VAdrain_VBsource_07_Erase-Cycle-1", chip, col);
+	IDS_VGS(Measure_file, col, chip, 1);*/
+
+/*	double VS = 0;
+	double VB = 2.4;
+	double VG = 0;
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 1, 1.8, 1.2); //VDD_DIG=VDD_WL=1.6
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 2, 1.8, 0.2); //VDD_WL=1.6
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb2p4_VDD_WL-1p8_Chip%02d_Col%02d_VAsource_VBdrain_SweepVD2p4-1min-HOLD_1ohm-VS-PSU_Erase-Cycle-1", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb2p4_VDD_WL-1p8_Chip%02d_Col%02d_VAdrain_VBsource_SweepVD2p4-1min-HOLD_1ohm-VS-PSU_Erase-Cycle-1", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Vg0_Vs0_Vb2p4_VDD_WL-1p8_SweepVD2p4-1min-HOLD-both-directions_1ohm-VS-PSU_Erase-Cycle-1", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);*/
+
+/*	double VS = 0;
+	double VB = 2.4;
+	double VG = 0;
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 1, 1.8, 1.2); //VDD_DIG=VDD_WL=1.6
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 2, 1.8, 0.2); //VDD_WL=1.6
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb2p4_VDD_WL-1p8_Chip%02d_Col%02d_VAsource_VBdrain_SweepVD2p4-10min-HOLD_1ohm-VS-PSU_Erase-Cycle-1", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Current_Components_VDD_IO_2p4_Vg0_Vs0_Vb2p4_VDD_WL-1p8_Chip%02d_Col%02d_VAdrain_VBsource_SweepVD2p4-10min-HOLD_1ohm-VS-PSU_Erase-Cycle-1", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Vg0_Vs0_Vb2p4_VDD_WL-1p8_SweepVD2p4-10min-HOLD-both-directions_1ohm-VS-PSU_Erase-Cycle-1", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);
+	*/
+
+	double VS = 0;
+	double VB = 2.4;
+	double VG = 0;
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 1, 1.8, 1.2); //VDD_DIG=VDD_WL=1.6
+	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 2, 1.8, 0.2); //VDD_WL=1.6
+	sprintf(Measure_file, "C:/GoogleDrive/working/PN-junctions-VBS-VBD-2p4V_VDD_IO_2p4_Vg0_Vb2p4_Vs-Vd-0V_VDD_WL-1p8_After-BJT-11min_Chip%02d_Col%02d_VAsource_VBdrain_10min-HOLD_1ohm-VS-PSU_Erase-Cycle-1", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 0, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/PN-junctions-VBS-VBD-2p4V_VDD_IO_2p4_Vg0_Vb2p4_Vs-Vd-0V_VDD_WL-1p8_After-BJT-11min_Chip%02d_Col%02d_VAdrain_VBsource_10min-HOLD_1ohm-VS-PSU_Erase-Cycle-1", chip, col);
+	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);
+	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Vg0_Vs-Vd-0V_Vb2p4_PN-junctions-VBS-VBD-2p4V_VDD_WL-1p8_After-BJT-11min_10min-HOLD_1ohm-VS-PSU_Erase-Cycle-1", chip, col);
+	ALL_IDSAT(Measure_file, chip, col, 0);
+
 
 
 	// Turn off PSU outputs after tests are done!
