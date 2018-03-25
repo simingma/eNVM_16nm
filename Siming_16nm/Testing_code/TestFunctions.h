@@ -164,6 +164,7 @@ int stress_sweep_VGS_VDS(double pulse_width, int chip, int col, int direction);
 int stress_Ext_Imeas_1by1(char* Measure_file, double VDS, double VGS, char* pulse_width_char, int Num_of_ExtTrig, int chip, int col, int direction, int Num_of_Pulse);
 int stress_VG_RampPulse_Isub(char* Measure_file, double* VDS, double* VGS, char* pulse_width_char, int chip, int col, int direction, int Num_of_Pulse);
 int stress_VG_ConstPulse(char* Measure_file, double* VDS, double* VGS, char* pulse_width_char, int chip, int col, int direction, int Num_of_Pulse);
+int us_stress_VG_ConstPulse(char* Measure_file, double* VDS, double* VGS, char* pulse_width_char, int is_us, int ExtTrig, int chip, int col, int direction, int Num_of_Pulse);
 int Block_FN_tunnel(char* Measure_file, double VDD_DIG, double VSS_WL, double VDD_WL, char* pulse_width_char, int Num_of_ExtTrig, int chip, int col, int direction);
 int PBTI_VG_ConstPulse(char* Measure_file, double VDD_WL, double VSS_WL, double VDD_DIG, char* pulse_width_char, int chip, int col, int direction, int Num_of_Pulse, int Num_of_trigger);
 int Stacked_VG_ConstPulse(char* Measure_file, double VDD_WL, double VSS_WL, double VDD_DIG, double* VDS, char* pulse_width_char, int chip, int col, int direction, int Num_of_Pulse, int Num_of_trigger);

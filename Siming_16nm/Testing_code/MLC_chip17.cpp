@@ -711,7 +711,7 @@ int main(void) {
 	ALL_IDSAT(Measure_file, chip, col, 0);
 	*/
 
-	double VS = 0;
+	/*double VS = 0;
 	double VB = 2.4;
 	double VG = 0;
 	E3646A_SetVoltage_CurrentLimit(_VDD_DIG_VDD_WL, 1, 1.8, 1.2); //VDD_DIG=VDD_WL=1.6
@@ -721,7 +721,42 @@ int main(void) {
 	sprintf(Measure_file, "C:/GoogleDrive/working/PN-junctions-VBS-VBD-2p4V_VDD_IO_2p4_Vg0_Vb2p4_Vs-Vd-0V_VDD_WL-1p8_After-BJT-11min_Chip%02d_Col%02d_VAdrain_VBsource_10min-HOLD_1ohm-VS-PSU_Erase-Cycle-1", chip, col);
 	Drain_leakage(Measure_file, VS, VB, VG, col, chip, 1, 1);
 	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Vg0_Vs-Vd-0V_Vb2p4_PN-junctions-VBS-VBD-2p4V_VDD_WL-1p8_After-BJT-11min_10min-HOLD_1ohm-VS-PSU_Erase-Cycle-1", chip, col);
-	ALL_IDSAT(Measure_file, chip, col, 0);
+	ALL_IDSAT(Measure_file, chip, col, 0);*/
+	
+	col = 30;
+	double VGS_col30[32] = {1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 
+				1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8};
+
+	double VDS_col30[32] = {2.3, 2.3, 2.3, 2.3, 2.3, 2.3, 2.3, 2.3, 2.3, 2.3, 2.3, 2.3, 2.3, 2.3, 2.3, 2.3, 	
+				2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6};
+
+	sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", chip, col);
+	IDS_VGS(Measure_file, col, chip, 0);
+	sprintf(Measure_file, "C:/GoogleDrive/working/Fresh_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource", chip, col);
+	IDS_VGS(Measure_file, col, chip, 1);
+
+
+	sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_50x100us_stress_VG_ConstPulse_VGS1p8_row-0to15-VDS2p3_row-16to31-VDS2p6_VAsource_VBdrain_01", chip, col);
+	us_stress_VG_ConstPulse(Measure_file, VDS_col30, VGS_col30, "100us", 1, 0, chip, col, 0, 50);
+        sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_50x100us_Ids_Vgs_VAsource_VBdrain_01", chip, col);   
+	IDS_VGS(Measure_file, col, chip, 0);
+        sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_50x100us_Ids_Vgs_VAdrain_VGsource_01", chip, col);   
+	IDS_VGS(Measure_file, col, chip, 1);
+	
+	sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_50x1ms_stress_VG_ConstPulse_VGS1p8_row-0to15-VDS2p3_row-16to31-VDS2p6_VAsource_VBdrain_02", chip, col);
+	us_stress_VG_ConstPulse(Measure_file, VDS_col30, VGS_col30, "1ms", 0, 0, chip, col, 0, 50);
+        sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_50x1ms_Ids_Vgs_VAsource_VBdrain_02", chip, col);   
+	IDS_VGS(Measure_file, col, chip, 0);
+        sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_50x1ms_Ids_Vgs_VAdrain_VGsource_02", chip, col);   
+	IDS_VGS(Measure_file, col, chip, 1);
+	
+	sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_50x10ms_stress_VG_ConstPulse_VGS1p8_row-0to15-VDS2p3_row-16to31-VDS2p6_VAsource_VBdrain_03", chip, col);
+	us_stress_VG_ConstPulse(Measure_file, VDS_col30, VGS_col30, "10ms", 0, 1, chip, col, 0, 50);
+        sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_50x10ms_Ids_Vgs_VAsource_VBdrain_03", chip, col);   
+	IDS_VGS(Measure_file, col, chip, 0);
+        sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_50x10ms_Ids_Vgs_VAdrain_VGsource_03", chip, col);   
+	IDS_VGS(Measure_file, col, chip, 1);
+
 
 
 
