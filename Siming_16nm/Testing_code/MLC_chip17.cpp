@@ -761,12 +761,12 @@ int main(void) {
 /***************** (1) probe 100us pulse width (-> WL -> VG) from the faster NIDAQ ******************/
 	scan("../Scan_files/Scan_all_zero", 0, 100000.0);
 	DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
-	scan("../Scan_files/100usPULSE_MUX_ON_1ExtTrig_100000SampRate", 0, 100000.0);
+//	scan("../Scan_files/100usPULSE_MUX_ON_1ExtTrig_100000SampRate", 0, 100000.0);
 	
 /********* (2) probe VS/VD of col[] controlled by the slower NIDAQ (USB6008) (still much faster than PSU ramping up/down) *****
 first: MUX_OFF, PSU output on (>30ms settling), and then the USB6008 turns on MUX (enable control signals) with the correct address ************/
 	int col_probable[] = {20, 26};
-	for (int i=0; i<2; i++){
+	for (int i=1; i<2; i++){
 	    col = col_probable[i];
 	    char MUX_Address_file_stress[200], MUX_Address_file_mirror[200];
 
@@ -775,8 +775,10 @@ first: MUX_OFF, PSU output on (>30ms settling), and then the USB6008 turns on MU
 
 	    E3646A_SetVoltage(_VSPARE_VAB, 2, VDD_typical);
 	    DO_USB6008(MUX_Address_file_stress); //feed address while enableing MUX
+		::Sleep(1);
 	    DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
 	    DO_USB6008(MUX_Address_file_mirror); //feed address while enableing MUX
+		::Sleep(1);
 	    DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
 	    E3646A_SetVoltage(_VSPARE_VAB, 2, 0);
 	}
