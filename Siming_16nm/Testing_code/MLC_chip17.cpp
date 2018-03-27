@@ -723,7 +723,7 @@ int main(void) {
 	sprintf(Measure_file, "C:/GoogleDrive/working/ALL_IDSAT_Chip%02d_Col%02d_Vg0_Vs-Vd-0V_Vb2p4_PN-junctions-VBS-VBD-2p4V_VDD_WL-1p8_After-BJT-11min_10min-HOLD_1ohm-VS-PSU_Erase-Cycle-1", chip, col);
 	ALL_IDSAT(Measure_file, chip, col, 0);*/
 	
-	col = 30;
+/*	col = 30;
 	double VGS_col30[32] = {1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 
 				1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8};
 
@@ -755,8 +755,32 @@ int main(void) {
         sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_50x10ms_Ids_Vgs_VAsource_VBdrain_03", chip, col);   
 	IDS_VGS(Measure_file, col, chip, 0);
         sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_HCI_50x10ms_Ids_Vgs_VAdrain_VGsource_03", chip, col);   
-	IDS_VGS(Measure_file, col, chip, 1);
+	IDS_VGS(Measure_file, col, chip, 1);*/
 
+/********************************** test things out! ********************************/
+/***************** (1) probe 100us pulse width (-> WL -> VG) from the faster NIDAQ ******************/
+	scan("../Scan_files/Scan_all_zero", 0, 100000.0);
+	DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+	scan("../Scan_files/100usPULSE_MUX_ON_1ExtTrig_100000SampRate", 0, 100000.0);
+	
+/********* (2) probe VS/VD of col[] controlled by the slower NIDAQ (USB6008) (still much faster than PSU ramping up/down) *****
+first: MUX_OFF, PSU output on (>30ms settling), and then the USB6008 turns on MUX (enable control signals) with the correct address ************/
+	int col_probable[] = {20, 26};
+	for (int i=0; i<2; i++){
+	    col = col_probable[i];
+	    char MUX_Address_file_stress[200], MUX_Address_file_mirror[200];
+
+	    sprintf(MUX_Address_file_stress, "../Scan_files/MUX_Col%02d_VAsource_VBdrain", col);
+	    sprintf(MUX_Address_file_mirror, "../Scan_files/MUX_Col%02d_VAdrain_VBsource", col);
+
+	    E3646A_SetVoltage(_VSPARE_VAB, 2, VDD_typical);
+	    DO_USB6008(MUX_Address_file_stress); //feed address while enableing MUX
+	    DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+	    DO_USB6008(MUX_Address_file_mirror); //feed address while enableing MUX
+	    DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+	    E3646A_SetVoltage(_VSPARE_VAB, 2, 0);
+	}
+	
 
 
 
