@@ -2877,19 +2877,18 @@ int us_stress_VG_ConstPulse(char* Measure_file, double* VDS, double* VGS, char* 
 		sprintf(MUX_Address_file_mirror, "../Scan_files/MUX_Col%02d_VAsource_VBdrain", col);
 	}
 
-
+	char f_scan_WLpulse_ExtTrig[200];
+	double samp_rate;
 	if(is_us == 0){ 
-	    double samp_rate = 1000.0; // sampling rate = 1000 (1ms) is required to use these scan files with pulse >= 1ms!!!
+	    samp_rate = 1000.0; // sampling rate = 1000 (1ms) is required to use these scan files with pulse >= 1ms!!!
 	    /*	"char* pulse_width_char" is used for naming the "WL PULSE scan file"
 	    all these "WL PULSE + ExtTrigger files" need to use 1000.0 sampling rate, to guarantee 10ms between ExtTrig;
 	    the "total number of triggers" = "WL PULSE width" / 10ms */
-	    char f_scan_WLpulse_ExtTrig[200];
 	    sprintf(f_scan_WLpulse_ExtTrig, "../Scan_files/%sPULSE_MUX_ON_%dExtTrig_1000SampRate", pulse_width_char, 1);
 	}
 
 	if(is_us == 1){ //if pulse length is in micro-second range, using samp_rate=100000 (10us)
-	    double samp_rate = 100000.0; // sampling rate = 100000 (10us) when using scan files with pulse in us!!!
-	    char f_scan_WLpulse_ExtTrig[200];
+	    samp_rate = 100000.0; // sampling rate = 100000 (10us) when using scan files with pulse in us!!!
 	    sprintf(f_scan_WLpulse_ExtTrig, "../Scan_files/%sPULSE_MUX_ON_%dExtTrig_100000SampRate", pulse_width_char, 1);
 	}
 
