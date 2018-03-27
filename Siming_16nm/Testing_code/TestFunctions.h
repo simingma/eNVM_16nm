@@ -157,6 +157,7 @@ int ALL_IDSAT(char* Measure_file, int chip, int col, int direction);
 
 //************ MUX address selection ***************
 int DO_USB6008(char *fn_scanin);
+int MUX_Delay_DO_USB6008(char *fn_scanin, int Delay_ms);
 
 //************ Carrier injection ***************
 int stress_checkerboard(int even_odd, double VDS, double VGS, double pulse_width, int chip, int col, int direction);

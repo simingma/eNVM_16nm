@@ -770,7 +770,7 @@ first: MUX_OFF, PSU output on (>30ms settling), and then the USB6008 turns on MU
 	    col = col_probable[i];
 	    char MUX_Address_file_stress[200], MUX_Address_file_mirror[200];
 
-	    sprintf(MUX_Address_file_stress, "../Scan_files/MUX_Col%02d_VAsource_VBdrain", col);
+/*	    sprintf(MUX_Address_file_stress, "../Scan_files/MUX_Col%02d_VAsource_VBdrain", col);
 	    sprintf(MUX_Address_file_mirror, "../Scan_files/MUX_Col%02d_VAdrain_VBsource", col);
 
 	    E3646A_SetVoltage(_VSPARE_VAB, 2, VDD_typical);
@@ -780,6 +780,13 @@ first: MUX_OFF, PSU output on (>30ms settling), and then the USB6008 turns on MU
 	    DO_USB6008(MUX_Address_file_mirror); //feed address while enableing MUX
 		::Sleep(1);
 	    DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+	    E3646A_SetVoltage(_VSPARE_VAB, 2, 0);*/
+
+	    sprintf(MUX_Address_file_stress, "../Scan_files/1ms_MUX_Col%02d_VAsource_VBdrain", col);
+	    sprintf(MUX_Address_file_mirror, "../Scan_files/1ms_MUX_Col%02d_VAdrain_VBsource", col);
+	    E3646A_SetVoltage(_VSPARE_VAB, 2, VDD_typical);
+	    MUX_Delay_DO_USB6008(MUX_Address_file_stress, 1); //feed address while enableing MUX for 1ms then disable MUX
+	    MUX_Delay_DO_USB6008(MUX_Address_file_mirror, 1); //feed address while enableing MUX for 1ms then disable MUX
 	    E3646A_SetVoltage(_VSPARE_VAB, 2, 0);
 	}
 	

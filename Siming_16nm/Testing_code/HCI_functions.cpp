@@ -5366,6 +5366,132 @@ Error:
 	return 0;
 }
 
+/*********************** copy and adapted from DO_USB6008 
+ * add a delay (in ms) in between mux enable and mux disable
+ * only intended for controling the VS/VD connecting time more accurately using USB6008 while PSU output is already enabled *****/
+int MUX_Delay_DO_USB6008(char *fn_scanin, int Delay_ms)
+{
+	//NIDAQ-USB6008, digital output port: "dev2/port0/line0:7"
+	//generate timing non-critical signals, including MUX addresses A[0:4]
+	// line0, line1, line2, line3, line4,          line5,           line6,         line7,       line8,        line9
+	//  A0,    A1,    A2,     A3,   A4,     /EN0=/WR0=/CS0, /EN1=/WR1=/CS1, /EN2=/WR2=/CS2, /EN3=/WR3=/CS3, POLARITY {=0 for write, =1 for erase)
+	// (Due to NIDAQ hardware limitation?) use on-demand timing one-sample a time ("implicit timing", software controlled immediate output)
+
+#define DAQmxErrChk(functionCall) if( DAQmxFailed(error=(functionCall)) ) goto Error; else
+	// Variables for Error Buffer
+	int32 error = 0;
+	char errBuff[2048] = { '\0' };
+
+
+	//Variables for Processing of Input lines (output to chip)
+	TaskHandle taskHandleScanin = 0;
+
+	uInt8 scaninData[MAX_LINES][NUM_OUTPUT_USB6008];
+
+	int total_lines_read = 0;
+
+	int linecount = 0;
+
+	/*********************************************/
+	//  FILE I/O Intialization
+	/*********************************************/
+
+	//file IO variables
+	FILE *fptr_scanin;
+
+	if ((fptr_scanin = fopen(fn_scanin, "r")) == NULL){
+		printf("Cannot open%s.\n", fn_scanin);
+		return FAIL;
+	}
+
+	//printf("DEBUG:scanin file found\n");
+
+	/*********************************************/
+	// READ vectors from input file
+	/*********************************************/
+	int input_char;
+
+	scanChainRead_Error = 0;
+
+	//loop for each line of file I/O
+	while (((input_char = fgetc(fptr_scanin)) != EOF) && (linecount < MAX_LINES)) {
+		//loop to read an input line
+		int inputcnt = 0;
+		while (input_char != '\n'){
+			if (input_char == '1'){
+				scaninData[linecount][inputcnt] = 1;
+				inputcnt++;
+			}
+			else if ((input_char == '0') | (input_char == 'x') |
+				(input_char == 'X') | (input_char == 'z') |
+				(input_char == 'Z')){
+				scaninData[linecount][inputcnt] = 0;
+				inputcnt++;
+			}
+
+			if ((input_char = fgetc(fptr_scanin)) == EOF)
+				break;
+		}
+
+		if (inputcnt != NUM_OUTPUT_USB6008){
+			printf("Input line %d was not formatted correctly, received %d input characters\n", linecount, inputcnt);
+			printf("Data: ");
+			for (int i = 0; i<NUM_OUTPUT_USB6008; i++)
+				printf("%d ", scaninData[linecount][i]);
+			printf("\n");
+			scanChainRead_Error = 1;
+		}
+		linecount++;
+		//printf("DEBUG: Read line %d\n", linecount);
+	}
+	fclose(fptr_scanin);
+	total_lines_read = linecount;
+	//printf("DEBUG: Finished Reading input file\n");
+
+	/*********************************************/
+	// DAQmx Configure Code
+	/*********************************************/
+	DAQmxErrChk(DAQmxCreateTask("OutputTask", &taskHandleScanin));
+	DAQmxErrChk(DAQmxCreateDOChan(taskHandleScanin, outchannel_str_USB6008, "outchannel", DAQmx_Val_ChanForAllLines));
+	DAQmxCfgImplicitTiming(taskHandleScanin, DAQmx_Val_FiniteSamps, 1);
+
+	/*********************************************/
+	// DAQmx Start Code
+	/*********************************************/
+	//	DAQmxErrChk (DAQmxStartTask(taskHandleScanin));
+	//	DAQmxErrChk (DAQmxStartTask(taskHandleScanout));
+
+	/*********************************************/
+	// DAQmx Read and Write Code - Loop
+	/*********************************************/
+	for (linecount = 0; linecount < total_lines_read; linecount++){
+		//Write Code
+		DAQmxErrChk(DAQmxWriteDigitalLines(taskHandleScanin, 1, 1, 10.0, DAQmx_Val_GroupByChannel, scaninData[linecount], NULL, NULL));
+		::Sleep(Delay_ms); //add this delay in between the 1st and 2nd lines (intended for a 2-line scan file)
+	}
+	/*******************************************/
+	// Output
+	/*******************************************/
+	//printf("SCAN OKAY\n");
+
+Error:
+	if (DAQmxFailed(error))
+		DAQmxGetExtendedErrorInfo(errBuff, 2048);
+	if (taskHandleScanin != 0) {
+		/*********************************************/
+		// DAQmx Stop Code
+		/*********************************************/
+		DAQmxStopTask(taskHandleScanin);
+		DAQmxClearTask(taskHandleScanin);
+	}
+	// Andrew added following section for taskHandleScanout
+
+	if (DAQmxFailed(error))
+		printf("DAQmx Error: %s\n", errBuff);
+	fclose(fptr_scanin);
+	return 0;
+}
+
 int DO_USB6008(char *fn_scanin)
 {
 	//NIDAQ-USB6008, digital output port: "dev2/port0/line0:7"
