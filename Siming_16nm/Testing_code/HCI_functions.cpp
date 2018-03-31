@@ -5467,7 +5467,7 @@ int MUX_Delay_DO_USB6008(char *fn_scanin, int Delay_ms)
 	for (linecount = 0; linecount < total_lines_read; linecount++){
 		//Write Code
 		DAQmxErrChk(DAQmxWriteDigitalLines(taskHandleScanin, 1, 1, 10.0, DAQmx_Val_GroupByChannel, scaninData[linecount], NULL, NULL));
-		::Sleep(Delay_ms); //add this delay in between the 1st and 2nd lines (intended for a 2-line scan file)
+//		::Sleep(Delay_ms); //add this delay in between the 1st and 2nd lines (intended for a 2-line scan file)
 	}
 	/*******************************************/
 	// Output
