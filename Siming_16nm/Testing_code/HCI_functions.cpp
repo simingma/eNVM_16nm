@@ -3576,6 +3576,127 @@ int stress_VG_ConstPulse(char* Measure_file, double* VDS, double* VGS, char* pul
 }
 
 
+/*****************Use MM34410 to measure drain current, many sample ExtTriggers, track for a long time, to extract RTN *****************/
+int RTN_ID_MM34410(char* Measure_file, double VDS, double VGS, char* scan_file_name, int chip, int col, int direction, int Num_of_ExtTrig, float NPLCycles){
+
+	char direction_char_stress[200], direction_char_mirror[200];
+	char MUX_Address_file_stress[200], MUX_Address_file_mirror[200];
+
+	if (direction == 0){
+		sprintf(direction_char_stress, "VAsource_VBdrain");
+		sprintf(MUX_Address_file_stress, "../Scan_files/MUX_Col%02d_VAsource_VBdrain", col);
+		sprintf(direction_char_mirror, "VAdrain_VBsource");
+		sprintf(MUX_Address_file_mirror, "../Scan_files/MUX_Col%02d_VAdrain_VBsource", col);
+	}
+	else{
+		sprintf(direction_char_stress, "VAdrain_VBsource");
+		sprintf(MUX_Address_file_stress, "../Scan_files/MUX_Col%02d_VAdrain_VBsource", col);
+		sprintf(direction_char_mirror, "VAsource_VBdrain");
+		sprintf(MUX_Address_file_mirror, "../Scan_files/MUX_Col%02d_VAsource_VBdrain", col);
+	}
+
+
+	double samp_rate = 1000.0; // for now, sampling rate = 1000 for this scan files => each bit 1ms
+	char f_scan_WLpulse_ExtTrig[200];
+	sprintf(f_scan_WLpulse_ExtTrig, "../Scan_files/%s", scan_file_name);
+
+	FILE *f_ptr;
+	if ((f_ptr = fopen(Measure_file, "a")) == NULL){
+		printf("Cannot open%s.\n", Measure_file);
+		return FAIL;
+	}
+
+	int scan_equal = scan_selfcheck("../Scan_files/NIDAQ_test_data", 1);
+	fprintf(f_ptr, "scan equal =%d\n", scan_equal);
+	scan("../Scan_files/Scan_all_zero", 0, 100000.0);
+
+	/*	// scan in WL[0]=1 in column[col], pulse=0
+	char f_scan[200];
+	sprintf(f_scan, "../Scan_files/Scan_Col%02d_WL0_NOpulse", col);
+	scan(f_scan, 0, 100000.0); */
+
+	//row: WL[row] number (row=0~107), t: the number of WLpulse (t=1~Num_of_Pulse), j: number of ExtTrig measurement within one WLpulse
+	int row, j;
+	//float NPLCycles = 0.2;  //integration time for Multi-ExtTrigger-ed measurements within a WLpulse
+	//float NPLCycles = 1.0;
+	float Isense;
+	//the DMM's internal memory can hold 512 readings at most => the maximum number of (ExtTrig) measurements before fetching to output buffer
+	float Current[50001]; //DMM34410 can hold 50000 readings
+	//the output buffer is formatted as "SD.DDDDDDDDSEDD,SD.DDDDDDDDSEDD,SD.DDDDDDDDSEDD,....", so 15+1(comma) = 16 characters for each reading
+	char StrCurrent[16];
+	char RdBuffer[800001]; //for multi-trigger/sample, innitiate->fetch data retrival
+
+	MM34410A_6_MeasCurrent_Config(_MM34410A_6, NPLCycles, "EXT", 0.0, 1, Num_of_ExtTrig);
+
+	// scan in WL[0]=1 in column[col], pulse=0
+	char f_scan[200];
+	sprintf(f_scan, "../Scan_files/Scan_Col%02d_WL0_NOpulse", col);
+	scan(f_scan, 0, 100000.0);
+
+	SYSTEMTIME lt;
+	GetLocalTime(&lt);
+	fprintf(f_ptr, "The local time is: %02d:%02d:%02d\n", lt.wHour, lt.wMinute, lt.wSecond);
+
+	for (row = 0; row < 1; row++){ //Test things out: only measure 1 row ;)
+	//for (row = 0; row < Num_of_row[col]; row++){
+		E3646A_SetVoltage(_VSPARE_VAB, 2, 0); // VDS = |VB - VA|= 0V
+		//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+		DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+		DO_USB6008(MUX_Address_file_stress);
+
+		//scan("../Scan_files/MUX_ON", 0, 100000.0);
+
+		_ibwrt(_MM34410A_6, "INITiate");
+
+		E3646A_SetVoltage(_VSPARE_VAB, 2, VDS);     //VA=VDS
+		E3646A_SetVoltage(_VDD_DIG_VDD_WL, 1, VGS); //VDD_DIG=VDD_WL=VGS, avoid any un-intentional crowbar current or turn-on diodes
+		E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VGS); //VDD_WL=VGS
+
+		// 30ms initial delay is built into the beginning of the scan file to allow VDS/VDD_DIG/VDD_WL PSUs to transition->settle
+		// before toggling PULSE and trigger ID measurment
+		//multiple triggers, single sample
+		scan(f_scan_WLpulse_ExtTrig, 0, samp_rate);
+
+		E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VDD_typical); //VDD_WL=VDD_typicalV
+		E3646A_SetVoltage(_VDD_DIG_VDD_WL, 1, VDD_typical); //VDD_DIG=VDD_typicalV
+		E3646A_SetVoltage(_VSPARE_VAB, 2, 0);
+
+		/***************BUG fixed!**************/
+		scan("../Scan_files/NOpulse", 0, 100000.0);
+		/*******NOpulse after finishing measurement, before using any injection********/
+
+		//scan("../Scan_files/MUX_OFF", 0, 100000.0);
+		DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
+
+		_ibwrt(_MM34410A_6, "FETCh?");
+		_ibrd(_MM34410A_6, RdBuffer, 800000);
+		RdBuffer[ibcntl] = '\0';         // Null terminate the ASCII string    
+		//printf("%s\n", RdBuffer);
+
+		for (j = 0; j < Num_of_ExtTrig; j++){
+			//output buffer of the DMM is formatted as CSV, of all the readings fetched from its internal memory 
+			//each reading has 15 charaters, plus one comma
+			strncpy(StrCurrent, RdBuffer + j * 16, 15);
+			StrCurrent[15] = '\0';
+			sscanf(StrCurrent, "%f", &Current[j]);
+			fprintf(f_ptr, "Sample_time_%05dx10ms_WL[%d]_ID=%.12f\n", j, row, Current[j]);
+			//debug:
+			//printf("Time=%dms, Current=%.12f\n", 10 * j, Current[j]);
+		}
+
+	        GetLocalTime(&lt);
+	        fprintf(f_ptr, "The local time is: %02d:%02d:%02d\nRetention: short-term recovery\n", lt.wHour, lt.wMinute, lt.wSecond);
+		// shift down one row
+		scan("../Scan_files/Scan_shift_1_NOpulse", 0, 100000.0);
+	}
+
+	scan("../Scan_files/Scan_all_zero", 0, 100000.0);
+
+	fclose(f_ptr);
+	return 0;
+}
+
+
 int stress_VG_RampPulse_Isub(char* Measure_file, double* VDS, double* VGS, char* pulse_width_char, int chip, int col, int direction, int Num_of_Pulse){
 
 	char direction_char_stress[200], direction_char_mirror[200];

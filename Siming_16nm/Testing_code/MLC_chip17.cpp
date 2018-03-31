@@ -765,10 +765,10 @@ int main(void) {
 	
 /********* (2) probe VS/VD of col[] controlled by the slower NIDAQ (USB6008) (still much faster than PSU ramping up/down) *****
 first: MUX_OFF, PSU output on (>30ms settling), and then the USB6008 turns on MUX (enable control signals) with the correct address ************/
-	int col_probable[] = {20, 26};
+/*	int col_probable[] = {20, 26};
 	for (int i=1; i<2; i++){
 	    col = col_probable[i];
-	    char MUX_Address_file_stress[200], MUX_Address_file_mirror[200];
+	    char MUX_Address_file_stress[200], MUX_Address_file_mirror[200];*/
 
 /*	    sprintf(MUX_Address_file_stress, "../Scan_files/MUX_Col%02d_VAsource_VBdrain", col);
 	    sprintf(MUX_Address_file_mirror, "../Scan_files/MUX_Col%02d_VAdrain_VBsource", col);
@@ -782,15 +782,21 @@ first: MUX_OFF, PSU output on (>30ms settling), and then the USB6008 turns on MU
 	    DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
 	    E3646A_SetVoltage(_VSPARE_VAB, 2, 0);*/
 
-	    sprintf(MUX_Address_file_stress, "../Scan_files/toggle_MUX_Col%02d_VAsource_VBdrain", col);
+/*	    sprintf(MUX_Address_file_stress, "../Scan_files/toggle_MUX_Col%02d_VAsource_VBdrain", col);
 	    sprintf(MUX_Address_file_mirror, "../Scan_files/toggle_MUX_Col%02d_VAdrain_VBsource", col);
 	    E3646A_SetVoltage(_VSPARE_VAB, 2, VDD_typical);
 	    MUX_Delay_DO_USB6008(MUX_Address_file_stress, 1); //feed address while enableing MUX for 1ms then disable MUX
 	    MUX_Delay_DO_USB6008(MUX_Address_file_mirror, 1); //feed address while enableing MUX for 1ms then disable MUX
 	    E3646A_SetVoltage(_VSPARE_VAB, 2, 0);
-	}
-	
+	}*/
 
+	col = 30;
+	double VDS_RTN = 0.1;
+	double VGS_RTN = 0.8;
+	int Num_of_ExtTrig = 6000;
+	float NPLCycles = 0.2;
+        sprintf(Measure_file, "C:/GoogleDrive/working/Chip%02d_Col%02d_RTN_TestThingsOut_VG0p8_VD0p1_6000Samp_60sec", chip, col);   
+	RTN_ID_MM34410(Measure_file, VDS_RTN, VGS_RTN, "60000msPULSE_MUX_ON_6000ExtTrig_1000SampRate", chip, col, 0, Num_of_ExtTrig, NPLCycles);
 
 
 	// Turn off PSU outputs after tests are done!
