@@ -85,7 +85,7 @@
   <ItemGroup>
     <ClCompile Include="GpibFunctions.cpp" />
     <ClCompile Include="HCI_functions.cpp" />
-    <ClCompile Include="MLC_chip17.cpp" />
+    <ClCompile Include="MLC_chip18.cpp" />
     <ClCompile Include="Modbus_functions.cpp" />
     <ClCompile Include="scan_selfcheck.cpp" />
     <ClCompile Include="stdafx.cpp" />

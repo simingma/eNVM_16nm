@@ -55,7 +55,7 @@ int powerOFF_bake_powerON(char *Measure_file, short room_temperature, short bake
 }
 
 
-int pre-baking_characterization(char *level, int chip, int col){ //level = {'Fresh', 'MLC-1', 'MLC-2', ..., 'MLC-7'}
+int pre_baking_characterization(char *level, int chip, int col){ //level = {'Fresh', 'MLC-1', 'MLC-2', ..., 'MLC-7'}
 	
 	char Measure_file[200];
 	//standard IDS-VGS: VD=0.8, VS=VB=0, VG=0.2:0.05:0.8
@@ -65,34 +65,34 @@ int pre-baking_characterization(char *level, int chip, int col){ //level = {'Fre
 	IDS_VGS(Measure_file, col, chip, 1); 
         //VD=0.5, VS=VB=0, sweep VG=0.2:0.05:0.8
 	sprintf(Measure_file, "C:/GoogleDrive/working/%s_pre-baking_Chip%02d_Col%02d_Ids_VD0p5_VS0p0_VB0p0_VG0p2-0p8_VAsource_VBdrain", level, chip, col);
-	IDS_sweepVG(Measure_file, col, chip, 0, VD=0.5, VS=0.0, VB=0.0, VGmin=0.2, VGmax=0.8);
+	IDS_sweepVG(Measure_file, col, chip, 0, 0.5, 0.0, 0.0, 0.2, 0.8);
 	sprintf(Measure_file, "C:/GoogleDrive/working/%s_pre-baking_Chip%02d_Col%02d_Ids_VD0p5_VS0p0_VB0p0_VG0p2-0p8_VAdrain_VBsource", level, chip, col);
-	IDS_sweepVG(Measure_file, col, chip, 1, VD=0.5, VS=0.0, VB=0.0, VGmin=0.2, VGmax=0.8); 
+	IDS_sweepVG(Measure_file, col, chip, 1, 0.5, 0.0, 0.0, 0.2, 0.8); 
         //VG=0.5, VS=VB=0, sweep VD=0.0:0.05:0.8
 	sprintf(Measure_file, "C:/GoogleDrive/working/%s_pre-baking_Chip%02d_Col%02d_Ids_VG0p5_VS0p0_VB0p0_VD0p0-0p8_VAsource_VBdrain", level, chip, col);
-	IDS_sweepVD(Measure_file, col, chip, 0, VG=0.5, VS=0.0, VB=0.0, VDmin=0.0, VDmax=0.8);
+	IDS_sweepVD(Measure_file, col, chip, 0, 0.5, 0.0, 0.0, 0.0, 0.8);
 	sprintf(Measure_file, "C:/GoogleDrive/working/%s_pre-baking_Chip%02d_Col%02d_Ids_VG0p5_VS0p0_VB0p0_VD0p0-0p8_VAdrain_VBsource", level, chip, col);
-	IDS_sweepVD(Measure_file, col, chip, 1, VG=0.5, VS=0.0, VB=0.0, VDmin=0.0, VDmax=0.8); 
+	IDS_sweepVD(Measure_file, col, chip, 1, 0.5, 0.0, 0.0, 0.0, 0.8); 
         //VD=1.0, VS=0.5, VB=0, sweep VG=0.5:0.05:1.3
 	sprintf(Measure_file, "C:/GoogleDrive/working/%s_pre-baking_Chip%02d_Col%02d_Ids_VD1p0_VS0p5_VB0p0_VG0p5-1p3_VAsource_VBdrain", level, chip, col);
-	IDS_sweepVG(Measure_file, col, chip, 0, VD=1.0, VS=0.5, VB=0.0, VGmin=0.5, VGmax=1.3);
+	IDS_sweepVG(Measure_file, col, chip, 0, 1.0, 0.5, 0.0, 0.5, 1.3);
 	sprintf(Measure_file, "C:/GoogleDrive/working/%s_pre-baking_Chip%02d_Col%02d_Ids_VD1p0_VS0p5_VB0p0_VG0p5-1p3_VAdrain_VBsource", level, chip, col);
-	IDS_sweepVG(Measure_file, col, chip, 1, VD=1.0, VS=0.5, VB=0.0, VGmin=0.5, VGmax=1.3); 
+	IDS_sweepVG(Measure_file, col, chip, 1, 1.0, 0.5, 0.0, 0.5, 1.3); 
         //VG=1.0, VS=0.5, VB=0, sweep VD=0.5:0.05:1.3
 	sprintf(Measure_file, "C:/GoogleDrive/working/%s_pre-baking_Chip%02d_Col%02d_Ids_VG1p0_VS0p5_VB0p0_VD0p5-1p3_VAsource_VBdrain", level, chip, col);
-	IDS_sweepVD(Measure_file, col, chip, 0, VG=1.0, VS=0.5, VB=0.0, VDmin=0.5, VDmax=1.3);
+	IDS_sweepVD(Measure_file, col, chip, 0, 1.0, 0.5, 0.0, 0.5, 1.3);
 	sprintf(Measure_file, "C:/GoogleDrive/working/%s_pre-baking_Chip%02d_Col%02d_Ids_VG1p0_VS0p5_VB0p0_VD0p5-1p3_VAdrain_VBsource", level, chip, col);
-	IDS_sweepVD(Measure_file, col, chip, 1, VG=1.0, VS=0.5, VB=0.0, VDmin=0.5, VDmax=1.3); 
+	IDS_sweepVD(Measure_file, col, chip, 1, 1.0, 0.5, 0.0, 0.5, 1.3); 
         //VD=1.0, VS=0.5, VB=0.5, sweep VG=0.5:0.05:1.3
 	sprintf(Measure_file, "C:/GoogleDrive/working/%s_pre-baking_Chip%02d_Col%02d_Ids_VD1p0_VS0p5_VB0p5_VG0p5-1p3_VAsource_VBdrain", level, chip, col);
-	IDS_sweepVG(Measure_file, col, chip, 0, VD=1.0, VS=0.5, VB=0.5, VGmin=0.5, VGmax=1.3);
+	IDS_sweepVG(Measure_file, col, chip, 0, 1.0, 0.5, 0.5, 0.5, 1.3);
 	sprintf(Measure_file, "C:/GoogleDrive/working/%s_pre-baking_Chip%02d_Col%02d_Ids_VD1p0_VS0p5_VB0p5_VG0p5-1p3_VAdrain_VBsource", level, chip, col);
-	IDS_sweepVG(Measure_file, col, chip, 1, VD=1.0, VS=0.5, VB=0.5, VGmin=0.5, VGmax=1.3); 
+	IDS_sweepVG(Measure_file, col, chip, 1, 1.0, 0.5, 0.5, 0.5, 1.3); 
         //VG=0.8, VS=VB=0, sweep VD=0.0:0.05:0.8
 	sprintf(Measure_file, "C:/GoogleDrive/working/%s_pre-baking_Chip%02d_Col%02d_Ids_VG0p8_VS0p0_VB0p0_VD0p0-0p8_VAsource_VBdrain", level, chip, col);
-	IDS_sweepVD(Measure_file, col, chip, 0, VG=0.8, VS=0.0, VB=0.0, VDmin=0.0, VDmax=0.8);
+	IDS_sweepVD(Measure_file, col, chip, 0, 0.8, 0.0, 0.0, 0.0, 0.8);
 	sprintf(Measure_file, "C:/GoogleDrive/working/%s_pre-baking_Chip%02d_Col%02d_Ids_VG0p8_VS0p0_VB0p0_VD0p0-0p8_VAdrain_VBsource", level, chip, col);
-	IDS_sweepVD(Measure_file, col, chip, 1, VG=0.8, VS=0.0, VB=0.0, VDmin=0.0, VDmax=0.8); 
+	IDS_sweepVD(Measure_file, col, chip, 1, 0.8, 0.0, 0.0, 0.0, 0.8); 
         
 	return 0;
 }
@@ -175,9 +175,9 @@ int main(void) {
 	short room_temperature = 210;
 	short bake_temperature = 1250;
 
-	pre-baking_characterization("Fresh", chip, col); 
+	pre_baking_characterization("Fresh", chip, col); 
 	for (int t=0; t<5; t++){
-	    bake_and_characterization("Fresh", t+1, chip, col, room_temperature, bake_temperature, baking_times[t])
+		bake_and_characterization("Fresh", t + 1, chip, col, room_temperature, bake_temperature, baking_times[t]);
 	}
 
 
@@ -188,9 +188,9 @@ int main(void) {
 	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_programming_Chip%02d_Col%02d_1msPULSE_VG1p8_VD2p0_VAsource_VBdrain_01", chip, col);
 	MLC_programming(Measure_file, VDS_col33, VGS_col33, "1ms", chip, col, 0, 280, 0, 0.000100);
 
-	pre-baking_characterization("MLC-01_1msPULSE_VG1p8_VD2p0", chip, col); 
+	pre_baking_characterization("MLC-01_1msPULSE_VG1p8_VD2p0", chip, col); 
 	for (int t=0; t<5; t++){
-	    bake_and_characterization("MLC-01_1msPULSE_VG1p8_VD2p0", t+1, chip, col, room_temperature, bake_temperature, baking_times[t])
+		bake_and_characterization("MLC-01_1msPULSE_VG1p8_VD2p0", t + 1, chip, col, room_temperature, bake_temperature, baking_times[t]);
 	}
 
 
@@ -198,9 +198,9 @@ int main(void) {
 	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_programming_Chip%02d_Col%02d_3msPULSE_VG1p8_VD2p0_VAsource_VBdrain_02", chip, col);
 	MLC_programming(Measure_file, VDS_col33, VGS_col33, "3ms", chip, col, 0, 280, 0, 0.000085);
 
-	pre-baking_characterization("MLC-02_3msPULSE_VG1p8_VD2p0", chip, col); 
+	pre_baking_characterization("MLC-02_3msPULSE_VG1p8_VD2p0", chip, col); 
 	for (int t=0; t<5; t++){
-	    bake_and_characterization("MLC-02_3msPULSE_VG1p8_VD2p0", t+1, chip, col, room_temperature, bake_temperature, baking_times[t])
+		bake_and_characterization("MLC-02_3msPULSE_VG1p8_VD2p0", t + 1, chip, col, room_temperature, bake_temperature, baking_times[t]);
 	}
 
 
@@ -208,9 +208,9 @@ int main(void) {
 	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_programming_Chip%02d_Col%02d_9msPULSE_VG1p8_VD2p0_VAsource_VBdrain_03", chip, col);
 	MLC_programming(Measure_file, VDS_col33, VGS_col33, "9ms", chip, col, 0, 280, 0, 0.000070);
 
-	pre-baking_characterization("MLC-03_9msPULSE_VG1p8_VD2p0", chip, col); 
+	pre_baking_characterization("MLC-03_9msPULSE_VG1p8_VD2p0", chip, col); 
 	for (int t=0; t<5; t++){
-	    bake_and_characterization("MLC-03_9msPULSE_VG1p8_VD2p0", t+1, chip, col, room_temperature, bake_temperature, baking_times[t])
+		bake_and_characterization("MLC-03_9msPULSE_VG1p8_VD2p0", t + 1, chip, col, room_temperature, bake_temperature, baking_times[t]);
 	}
 
 
@@ -218,9 +218,9 @@ int main(void) {
 	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_programming_Chip%02d_Col%02d_27msPULSE_VG1p8_VD2p0_VAsource_VBdrain_04", chip, col);
 	MLC_programming(Measure_file, VDS_col33, VGS_col33, "27ms", chip, col, 0, 280, 0, 0.000055);
 
-	pre-baking_characterization("MLC-04_27msPULSE_VG1p8_VD2p0", chip, col); 
+	pre_baking_characterization("MLC-04_27msPULSE_VG1p8_VD2p0", chip, col); 
 	for (int t=0; t<5; t++){
-	    bake_and_characterization("MLC-04_27msPULSE_VG1p8_VD2p0", t+1, chip, col, room_temperature, bake_temperature, baking_times[t])
+		bake_and_characterization("MLC-04_27msPULSE_VG1p8_VD2p0", t + 1, chip, col, room_temperature, bake_temperature, baking_times[t]);
 	}
 
 
@@ -228,9 +228,9 @@ int main(void) {
 	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_programming_Chip%02d_Col%02d_81msPULSE_VG1p8_VD2p0_VAsource_VBdrain_05", chip, col);
 	MLC_programming(Measure_file, VDS_col33, VGS_col33, "81ms", chip, col, 0, 280, 0, 0.000040);
 
-	pre-baking_characterization("MLC-05_81msPULSE_VG1p8_VD2p0", chip, col); 
+	pre_baking_characterization("MLC-05_81msPULSE_VG1p8_VD2p0", chip, col); 
 	for (int t=0; t<5; t++){
-	    bake_and_characterization("MLC-05_81msPULSE_VG1p8_VD2p0", t+1, chip, col, room_temperature, bake_temperature, baking_times[t])
+		bake_and_characterization("MLC-05_81msPULSE_VG1p8_VD2p0", t + 1, chip, col, room_temperature, bake_temperature, baking_times[t]);
 	}
 
 
@@ -238,9 +238,9 @@ int main(void) {
 	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_programming_Chip%02d_Col%02d_243msPULSE_VG1p8_VD2p0_VAsource_VBdrain_06", chip, col);
 	MLC_programming(Measure_file, VDS_col33, VGS_col33, "243ms", chip, col, 0, 280, 0, 0.000025);
 
-	pre-baking_characterization("MLC-06_243msPULSE_VG1p8_VD2p0", chip, col); 
+	pre_baking_characterization("MLC-06_243msPULSE_VG1p8_VD2p0", chip, col); 
 	for (int t=0; t<5; t++){
-	    bake_and_characterization("MLC-06_243msPULSE_VG1p8_VD2p0", t+1, chip, col, room_temperature, bake_temperature, baking_times[t])
+		bake_and_characterization("MLC-06_243msPULSE_VG1p8_VD2p0", t + 1, chip, col, room_temperature, bake_temperature, baking_times[t]);
 	}
 
 
@@ -248,9 +248,9 @@ int main(void) {
 	sprintf(Measure_file, "C:/GoogleDrive/working/MLC_programming_Chip%02d_Col%02d_729msPULSE_VG1p8_VD2p0_VAsource_VBdrain_07", chip, col);
 	MLC_programming(Measure_file, VDS_col33, VGS_col33, "729ms", chip, col, 0, 280, 0, 0.000010);
 
-	pre-baking_characterization("MLC-07_729msPULSE_VG1p8_VD2p0", chip, col); 
+	pre_baking_characterization("MLC-07_729msPULSE_VG1p8_VD2p0", chip, col); 
 	for (int t=0; t<5; t++){
-	    bake_and_characterization("MLC-07_729msPULSE_VG1p8_VD2p0", t+1, chip, col, room_temperature, bake_temperature, baking_times[t])
+		bake_and_characterization("MLC-07_729msPULSE_VG1p8_VD2p0", t + 1, chip, col, room_temperature, bake_temperature, baking_times[t]);
 	}
 
 

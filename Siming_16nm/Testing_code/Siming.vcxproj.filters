@@ -33,7 +33,7 @@
     <ClCompile Include="Modbus_functions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MLC_chip17.cpp">
+    <ClCompile Include="MLC_chip18.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
