@@ -4529,6 +4529,9 @@ int IDS_sweepVG(char *f_name, int col, int chip, int direction, float VD, float 
 	//Modified:
 	for (VDD_WL = VGmax; VDD_WL >= VGmin - 0.0001; VDD_WL -= 0.05){
 		E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VDD_WL); // change VDD_WL
+		if (VDD_WL > VDD_typical){// change VDD_DIG=VDD_WL, if VDD_WL domain needs to be higher than scan chain domain
+			E3646A_SetVoltage(_VDD_DIG_VDD_WL, 1, VDD_WL); //otherwise driving from lower to higher supply is problematic
+		}//(driving from higher voltage into lower voltage domain should be fine, and need to ensure scan FF retention
 		Isense = MM34401A_MeasCurrent(_MM34401A); //measure leakage current through Current Meter
 		fprintf(f_ptr, "VDD_WL=%f  Isense=%.12f\n", VDD_WL, Isense);
 		if (fabs(Isense - leakage) >= 0.000001){
@@ -4547,6 +4550,7 @@ int IDS_sweepVG(char *f_name, int col, int chip, int direction, float VD, float 
 	//scan("../Scan_files/MUX_OFF", 0, 100000.0);
 	DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
 	E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VDD_typical);
+	E3646A_SetVoltage(_VDD_DIG_VDD_WL, 1, VDD_typical);
 
 	fprintf(f_ptr, "\nIds-Vgs curves of each transistor, from 0 to %d, in column[%d], chip %d\n%s\n", Num_of_row[col] - 1, col, chip, direction_char);
 	MM34401A_MeasCurrent_Config(_MM34401A, 10, "IMM", 0.1, 1, 1);
@@ -4569,6 +4573,9 @@ int IDS_sweepVG(char *f_name, int col, int chip, int direction, float VD, float 
 		//Modified:
 		for (VDD_WL = VGmax; VDD_WL >= VGmin - 0.0001; VDD_WL -= 0.05){
 			E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VDD_WL); // change VDD_WL => Vgs of WL selected transisor
+			if (VDD_WL > VDD_typical){// change VDD_DIG=VDD_WL, if VDD_WL domain needs to be higher than scan chain domain
+				E3646A_SetVoltage(_VDD_DIG_VDD_WL, 1, VDD_WL); //otherwise driving from lower to higher supply is problematic
+			}//(driving from higher voltage into lower voltage domain should be fine, and need to ensure scan FF retention
 			Isense = MM34401A_MeasCurrent(_MM34401A); //measure Ids + leakage current through Current Meter
 			//Modified:
 			fprintf(f_ptr, "VDD_WL=%f  Isense=%.12f\n", VDD_WL, Isense);
@@ -4581,6 +4588,7 @@ int IDS_sweepVG(char *f_name, int col, int chip, int direction, float VD, float 
 	scan("../Scan_files/NOpulse", 0, 100000.0);
 	fclose(f_ptr);
 	E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VDD_typical);
+	E3646A_SetVoltage(_VDD_DIG_VDD_WL, 1, VDD_typical);
 	//Modified:
 	E3646A_SetVoltage(_VSS_WL_VSS_PW, 2, 0); // VB = VSS_PW
 	E3646A_SetVoltage(_VSPARE_VAB, 1, 0); // VS = VSPARE
@@ -4630,6 +4638,9 @@ int IDS_sweepVD(char *f_name, int col, int chip, int direction, float VG, float 
 	//Modified:
 	E3646A_SetVoltage(_VSPARE_VAB, 1, VS); // VS = VSPARE
 	E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VG); // change VDD_WL => VG of WL selected transisor
+	if (VG > VDD_typical){// change VDD_DIG=VDD_WL, if VDD_WL domain needs to be higher than scan chain domain
+		E3646A_SetVoltage(_VDD_DIG_VDD_WL, 1, VG); //otherwise driving from lower to higher supply is problematic
+	}//(driving from higher voltage into lower voltage domain should be fine, and need to ensure scan FF retention
 	E3646A_SetVoltage(_VSPARE_VAB, 2, VDmax); // VD = VDmax
 	E3646A_SetVoltage(_VSS_WL_VSS_PW, 2, VB); // VB = VSS_PW
 	MM34401A_MeasCurrent_Config(_MM34401A, 10, "IMM", 0.1, 1, 1);
@@ -4664,6 +4675,7 @@ int IDS_sweepVD(char *f_name, int col, int chip, int direction, float VG, float 
 	//scan("../Scan_files/MUX_OFF", 0, 100000.0);
 	DO_USB6008("../Scan_files/MUX_OFF"); //all mux disabled
 	E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VDD_typical);
+	E3646A_SetVoltage(_VDD_DIG_VDD_WL, 1, VDD_typical);
 
 	fprintf(f_ptr, "\nIds-Vds curves of each transistor, from 0 to %d, in column[%d], chip %d\n%s\n", Num_of_row[col] - 1, col, chip, direction_char);
 	MM34401A_MeasCurrent_Config(_MM34401A, 10, "IMM", 0.1, 1, 1);
@@ -4678,6 +4690,9 @@ int IDS_sweepVD(char *f_name, int col, int chip, int direction, float VG, float 
 	//Modified:
 	E3646A_SetVoltage(_VSPARE_VAB, 1, VS); // VS = VSPARE
 	E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VG); // change VDD_WL => VG of WL selected transisor
+	if (VG > VDD_typical){// change VDD_DIG=VDD_WL, if VDD_WL domain needs to be higher than scan chain domain
+		E3646A_SetVoltage(_VDD_DIG_VDD_WL, 1, VG); //otherwise driving from lower to higher supply is problematic
+	}//(driving from higher voltage into lower voltage domain should be fine, and need to ensure scan FF retention
 	E3646A_SetVoltage(_VSPARE_VAB, 2, VDmax); // VD = VDmax
 	E3646A_SetVoltage(_VSS_WL_VSS_PW, 2, VB); // VB = VSS_PW
 
@@ -4698,6 +4713,7 @@ int IDS_sweepVD(char *f_name, int col, int chip, int direction, float VG, float 
 	scan("../Scan_files/NOpulse", 0, 100000.0);
 	fclose(f_ptr);
 	E3646A_SetVoltage(_VDD_DIG_VDD_WL, 2, VDD_typical);
+	E3646A_SetVoltage(_VDD_DIG_VDD_WL, 1, VDD_typical);
 	//Modified:
 	E3646A_SetVoltage(_VSS_WL_VSS_PW, 2, 0); // VB = VSS_PW
 	E3646A_SetVoltage(_VSPARE_VAB, 1, 0); // VS = VSPARE

@@ -59,7 +59,7 @@ int pre_baking_characterization(char *level, int chip, int col){ //level = {'Fre
 	
 	char Measure_file[200];
 	//standard IDS-VGS: VD=0.8, VS=VB=0, VG=0.2:0.05:0.8
-	sprintf(Measure_file, "C:/GoogleDrive/working/%s_pre-baking_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", level, chip, col);
+/*	sprintf(Measure_file, "C:/GoogleDrive/working/%s_pre-baking_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", level, chip, col);
 	IDS_VGS(Measure_file, col, chip, 0);
 	sprintf(Measure_file, "C:/GoogleDrive/working/%s_pre-baking_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource", level, chip, col);
 	IDS_VGS(Measure_file, col, chip, 1); 
@@ -72,7 +72,7 @@ int pre_baking_characterization(char *level, int chip, int col){ //level = {'Fre
 	sprintf(Measure_file, "C:/GoogleDrive/working/%s_pre-baking_Chip%02d_Col%02d_Ids_VG0p5_VS0p0_VB0p0_VD0p0-0p8_VAsource_VBdrain", level, chip, col);
 	IDS_sweepVD(Measure_file, col, chip, 0, 0.5, 0.0, 0.0, 0.0, 0.8);
 	sprintf(Measure_file, "C:/GoogleDrive/working/%s_pre-baking_Chip%02d_Col%02d_Ids_VG0p5_VS0p0_VB0p0_VD0p0-0p8_VAdrain_VBsource", level, chip, col);
-	IDS_sweepVD(Measure_file, col, chip, 1, 0.5, 0.0, 0.0, 0.0, 0.8); 
+	IDS_sweepVD(Measure_file, col, chip, 1, 0.5, 0.0, 0.0, 0.0, 0.8); */
         //VD=1.0, VS=0.5, VB=0, sweep VG=0.5:0.05:1.3
 	sprintf(Measure_file, "C:/GoogleDrive/working/%s_pre-baking_Chip%02d_Col%02d_Ids_VD1p0_VS0p5_VB0p0_VG0p5-1p3_VAsource_VBdrain", level, chip, col);
 	IDS_sweepVG(Measure_file, col, chip, 0, 1.0, 0.5, 0.0, 0.5, 1.3);
@@ -181,7 +181,7 @@ int main(void) {
 	}
 
 
-	double VDS_col33 = 2.0;
+/*	double VDS_col33 = 2.0;
 	double VGS_col33 = 1.8;
 
 	//MLC-01
@@ -252,7 +252,7 @@ int main(void) {
 	for (int t=0; t<5; t++){
 		bake_and_characterization("MLC-07_729msPULSE_VG1p8_VD2p0", t + 1, chip, col, room_temperature, bake_temperature, baking_times[t]);
 	}
-
+*/
 
 
 	// Turn off PSU outputs after tests are done!
