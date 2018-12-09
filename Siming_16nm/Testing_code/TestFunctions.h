@@ -147,6 +147,8 @@ int Charge_Pumping_ELTM(char* Measure_file, double* VDBS_list_Vr0, int Num_of_VD
 int RTN_ID_MM34410(char* Measure_file, double VDS, double VGS, char* scan_file_name, int chip, int col, int direction, int Num_of_ExtTrig, float NPLCycles);
 
 //************ I-V curve measurement ***************
+int IDS_sweepVG(char *f_name, int col, int chip, int direction, float VD, float VS, float VB, float VGmin, float VGmax);
+int IDS_sweepVD(char *f_name, int col, int chip, int direction, float VG, float VS, float VB, float VDmin, float VDmax);
 int IDS_diode(char *f_name, int col, int chip, int direction);
 int IDS_VGS(char *f_name, int col, int chip, int direction);
 int IDS_VDS(char* f_name, int col, int chip, int direction);
