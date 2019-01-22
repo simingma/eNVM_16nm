@@ -228,7 +228,7 @@ int main(void) {
 		bake_and_characterization("MLC-04_27msPULSE_VG1p8_VD2p0", t + 1, chip, col, room_temperature, bake_temperature, baking_times[t]);
 	}
 */
-	sprintf(Measure_file, "E:/Data/%s_125C-bake-%02d_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", "MLC-04_27msPULSE_VG1p8_VD2p0", 5, chip, col);
+/*	sprintf(Measure_file, "E:/Data/%s_125C-bake-%02d_Chip%02d_Col%02d_Ids_Vgs_VAsource_VBdrain", "MLC-04_27msPULSE_VG1p8_VD2p0", 5, chip, col);
 	IDS_VGS(Measure_file, col, chip, 0);
 	sprintf(Measure_file, "E:/Data/%s_125C-bake-%02d_Chip%02d_Col%02d_Ids_Vgs_VAdrain_VBsource", "MLC-04_27msPULSE_VG1p8_VD2p0", 5, chip, col);
 	IDS_VGS(Measure_file, col, chip, 1);
@@ -248,7 +248,8 @@ int main(void) {
 	sprintf(Measure_file, "E:/Data/MLC_programming_Chip%02d_Col%02d_243msPULSE_VG1p8_VD2p0_VAsource_VBdrain_06", chip, col);
 	MLC_programming(Measure_file, VDS_col33, VGS_col33, "243ms", chip, col, 0, 280, 0, 0.000025);
 
-	pre_baking_characterization("MLC-06_243msPULSE_VG1p8_VD2p0", chip, col); 
+	pre_baking_characterization("MLC-06_243msPULSE_VG1p8_VD2p0", chip, col);
+	*/
 	for (int t=0; t<5; t++){
 		bake_and_characterization("MLC-06_243msPULSE_VG1p8_VD2p0", t + 1, chip, col, room_temperature, bake_temperature, baking_times[t]);
 	}
