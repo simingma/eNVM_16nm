@@ -253,7 +253,7 @@ int main(void) {
 	/*for (int t=0; t<5; t++){
 		bake_and_characterization("MLC-06_243msPULSE_VG1p8_VD2p0", t + 1, chip, col, room_temperature, bake_temperature, baking_times[t]);
 	}*/
-	bake_and_characterization("MLC-06_243msPULSE_VG1p8_VD2p0", 5, chip, col, room_temperature, bake_temperature, 21600000);
+	/*bake_and_characterization("MLC-06_243msPULSE_VG1p8_VD2p0", 5, chip, col, room_temperature, bake_temperature, 21600000);
 
 	//MLC-07
 	sprintf(Measure_file, "E:/Data/MLC_programming_Chip%02d_Col%02d_729msPULSE_VG1p8_VD2p0_VAsource_VBdrain_07", chip, col);
@@ -262,8 +262,9 @@ int main(void) {
 	pre_baking_characterization("MLC-07_729msPULSE_VG1p8_VD2p0", chip, col); 
 	for (int t=0; t<5; t++){
 		bake_and_characterization("MLC-07_729msPULSE_VG1p8_VD2p0", t + 1, chip, col, room_temperature, bake_temperature, baking_times[t]);
-	}
+	}*/
 
+	bake_and_characterization("MLC-07_729msPULSE_VG1p8_VD2p0", 5, chip, col, room_temperature, bake_temperature, 73800000);
 
 	// Turn off PSU outputs after tests are done!
 	_ibwrt(_VDD_DIG_VDD_WL, "OUTP:STAT OFF");
