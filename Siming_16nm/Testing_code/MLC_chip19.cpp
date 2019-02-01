@@ -264,7 +264,7 @@ int main(void) {
 		bake_and_characterization("MLC-07_729msPULSE_VG1p8_VD2p0", t + 1, chip, col, room_temperature, bake_temperature, baking_times[t]);
 	}*/
 
-	bake_and_characterization("MLC-07_729msPULSE_VG1p8_VD2p0", 5, chip, col, room_temperature, bake_temperature, 73800000);
+	bake_and_characterization("MLC-07_729msPULSE_VG1p8_VD2p0", 5, chip, col, room_temperature, bake_temperature, 3960000);
 
 	// Turn off PSU outputs after tests are done!
 	_ibwrt(_VDD_DIG_VDD_WL, "OUTP:STAT OFF");
